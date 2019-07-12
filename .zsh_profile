@@ -1,0 +1,35 @@
+#!/usr/local/bin/zsh
+source ~/.env
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+bindkey '^ ' autosuggest-accept
+
+alias l="ls -lgohF"
+alias ll="ls -lahF"
+alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
+
+function cd() {
+  builtin cd $@
+  ls -lgohF
+}
+
+function nettest() {
+  if [ "$1" != "" ]; then
+    host="$1"
+  else
+    host="8.8.8.8"
+  fi
+  ping -o "$host" && terminal-notifier -message "The internet is back!"
+}
+
+# Use nvim if available
+if type nvim > /dev/null 2>&1; then
+  alias vim='nvim'
+fi
+
+# Add custom scripts
+if [ -d "$HOME/.bin" ] ; then
+  PATH="$PATH:$HOME/.bin"
+fi
