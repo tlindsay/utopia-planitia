@@ -18,6 +18,8 @@ if !has('nvim')
 endif
 
 " Editor Plugins
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -29,7 +31,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'shougo/deoplete.nvim'
 Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
 Plug 'w0rp/ale'
-Plug 'mattn/emmet-vim'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -39,35 +40,22 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'whiteinge/diffconflicts'
 Plug 'jremmen/vim-ripgrep'
 Plug 'janko/vim-test'
 
 " Languages
-Plug 'othree/html5.vim'
-Plug 'kchmck/vim-coffee-script'
-Plug 'tpope/vim-haml'
-Plug 'slim-template/vim-slim'
+Plug 'sheerun/vim-polyglot'
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'kana/vim-textobj-user' " Dependency for textobj-rubyblock and textobj-javascript
-Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'jasonlong/vim-textobj-css'
-Plug 'pangloss/vim-javascript'
-Plug 'poetic/vim-textobj-javascript'
-" Plug 'mxw/vim-jsx'
-" Plug 'neoclide/vim-jsx-improve'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'elixir-lang/vim-elixir'
-Plug 'joukevandermaas/vim-ember-hbs'
-Plug 'elmcast/elm-vim'
-Plug 'sudar/vim-arduino-syntax'
-Plug 'tpope/vim-markdown'
-Plug 'chrisbra/csv.vim'
 Plug 'bfontaine/Brewfile.vim'
 
 " Lang/Framework specific plugins
 Plug 'tpope/vim-rails'
 Plug 'mattn/emmet-vim'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'jasonlong/vim-textobj-css'
+Plug 'kana/vim-textobj-function'
+" Plug 'poetic/vim-textobj-javascript'
 
 call plug#end()
 
@@ -101,14 +89,18 @@ set showmatch
 
 " Theme Settings
 let base16colorspace=256
-" This is super broken for some reason
-" if filereadable(expand("~/.vimrc_background"))
-"   source ~/.vimrc_background
-" endif
+if filereadable(expand("~/.vimrc_background"))
+  source ~/.vimrc_background
+endif
 
+let g:airline_extensions = ['ale', 'branch', 'ctrlp', 'fugitiveline', 'hunks', 'keymap', 'netrw', 'quickfix', 'term', 'vista', 'whitespace']
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_skip_empty_sections = 1
+let g:airline_highlighting_cache = 1
+let g:airline_section_y = ''
+let g:airline_section_z = ' %l/%L : %c'
 
 set statusline+=%#warningmsg#
 set statusline+=%*
@@ -131,7 +123,7 @@ set clipboard=unnamed
 
 " Set ignores for CtrlP, etc.
 set wildignore+=*/.git/*,*/tmp/*,*.swp
-set wildignore-=.env
+set wildignore-=.env*,.eslint*,.prettierrc,.gitignore
 
 " Make C-c work the way I want it to
 imap <C-c> <Esc>
@@ -142,10 +134,10 @@ inoremap <silent><expr> <TAB>
   \ pumvisible() ? "\<C-n>" :
   \ <SID>check_back_space() ? "\<TAB>" :
   \ deoplete#mappings#manual_complete()
-  function! s:check_back_space() abort "{{{
+  function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction "}}}
+  endfunction
 
 " Lintin' yo scripts
 let g:ale_completion_enabled = 1
@@ -162,8 +154,11 @@ hi SpellBad ctermbg=darkred ctermfg=black
 hi Visual term=reverse cterm=reverse
 
 " Prettify JS
-set foldmethod=syntax
-set nofoldenable
+augroup javascript_folding
+  au!
+  au FileType javascript setlocal foldmethod=syntax
+  au FileType javascript normal zR
+augroup END
 let g:javascript_conceal_function             = "ƒ"
 let g:javascript_conceal_null                 = "ø"
 let g:javascript_conceal_this                 = "@"
@@ -174,7 +169,7 @@ let g:javascript_conceal_prototype            = "¶"
 let g:javascript_conceal_static               = "•"
 let g:javascript_conceal_super                = "Ω"
 let g:javascript_conceal_arrow_function       = "⇒"
-let g:conceallevel = 1
+let g:conceallevel = 0
 
 if executable('rg')
   " Make CtrlP use rg for listing the files. Way faster and no useless files.
@@ -222,6 +217,9 @@ set splitright
 autocmd Filetype help nmap <buffer> q :q<CR>
 autocmd Filetype vundle  nmap <buffer> q :q<CR>
 
+" Fix Handlebars comment strings
+autocmd Filetype html.handlebars setlocal commentstring={{!--\ %s\ --}}
+
 " Ignore my typos
 command! Q q
 command! Qall qall
@@ -263,7 +261,7 @@ nmap <leader>s :GitGutterStageHunk<cr>
 nmap <leader><Space> :StripWhitespace<cr>
 
 " Pretty print JSON
-nmap <leader>j :%!python -m json.tool<cr>
+nmap <leader>j :%!python -m json.tool<cr>:setf json<cr>gg=G
 
 " Toggle JS prettification
 nmap <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"<cr>
@@ -315,4 +313,16 @@ function! RenameTab()
   endif
   return
 endfunction
+
 colorscheme base16-paraiso
+
+" Highlight Handlebars Angle-bracket Components
+" NOTE: This _must_ come after the colorscheme declaration
+hi mustacheAngleComponentName guifg=blue ctermfg=blue
+hi mustacheHbsComponent guifg=blue ctermfg=blue
+
+
+function! ShowCurrentHighlight()
+  echom "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
+endfunction
+nnoremap <leader>i :call ShowCurrentHighlight()<CR>
