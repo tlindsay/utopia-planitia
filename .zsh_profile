@@ -10,6 +10,11 @@ alias l="ls -lgohF"
 alias ll="ls -lahF"
 alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
 
+alias ya="yadm add"
+alias yc="yadm commit"
+alias yp="yadm push"
+alias yst="yadm status"
+
 function cd() {
   builtin cd $@
   ls -lgohF
