@@ -30,4 +30,5 @@ cask "qlmarkdown"
 cask "quicklook-json"
 cask "qlimagesize"
 cask "skitch"
+cask "typora"
 
