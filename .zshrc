@@ -104,6 +104,10 @@ if [[ -a ~/.zsh_profile.local ]]; then
   source ~/.zsh_profile.local
 fi
 
+if [[ -a ~/.bin/tmuxinator.zsh ]]; then
+  source ~/.bin/tmuxinator.zsh
+fi
+
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
@@ -138,3 +142,8 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
