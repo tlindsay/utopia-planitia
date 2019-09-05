@@ -7,6 +7,7 @@ tap "homebrew/services"
 
 brew "bat"
 brew "diff-so-fancy"
+brew "exa"
 brew "fzf"
 brew "gnupg"
 brew "grv"

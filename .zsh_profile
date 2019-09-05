@@ -1,14 +1,18 @@
 #!/usr/local/bin/zsh
 source ~/.env
 
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 bindkey '^ ' autosuggest-accept
 
-alias l="ls -lgohF"
-alias ll="ls -lahF"
+alias l="exa -1 -F -@ --git --group-directories-first --icons"
+alias ll="exa -l -F -@ --git --group-directories-first --icons"
+alias lll="ll --git -g --header -a"
 alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
+
+alias rule="cd ~/Code/apple/mt-validator-ui"
+alias blog="cd ~/Documents/blog"
 
 alias ya="yadm add"
 alias yc="yadm commit"
@@ -17,7 +21,7 @@ alias yst="yadm status"
 
 function cd() {
   builtin cd $@
-  ls -lgohF
+  l
 }
 
 function nettest() {
@@ -27,6 +31,32 @@ function nettest() {
     host="8.8.8.8"
   fi
   ping -o "$host" && terminal-notifier -message "The internet is back!"
+}
+
+function office() {
+  lights="6,8"
+
+  if [ "$1" = "up" ]; then
+    if [ "$2" != "" ]; then
+      echo "Increasing brightness $2%"
+      cmd="+$2%"
+    else
+      echo "Increasing brightness to 100%"
+      cmd="=100%"
+    fi
+  elif [ "$1" = "down" ]; then
+    if [ "$2" != "" ]; then
+      echo "Decreasing brightness $2%"
+      cmd="-$2%"
+    else
+      echo "Decreasing brightness 10%"
+      cmd="-10%"
+    fi
+  else
+    cmd="$1"
+  fi
+
+  hue lights $lights $cmd
 }
 
 # Use nvim if available
