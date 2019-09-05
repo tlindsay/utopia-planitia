@@ -6,6 +6,8 @@ export EDITOR="$VISUAL"
 
 bindkey '^ ' autosuggest-accept
 
+unalias grv
+
 alias l="exa -1 -F -@ --git --group-directories-first --icons"
 alias ll="exa -l -F -@ --git --group-directories-first --icons"
 alias lll="ll --git -g --header -a"
