@@ -1,4 +1,5 @@
 let mapleader = ","
+set nocompatible
 
 " ========================================================================
 " Vim Plug
@@ -33,15 +34,20 @@ Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
 Plug 'w0rp/ale'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tpope/vim-fugitive'
+Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'airblade/vim-gitgutter'
 Plug 'gcmt/taboo.vim'
-Plug 'skammer/vim-css-color' " Highlights CSS colors
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'jremmen/vim-ripgrep'
 Plug 'janko/vim-test'
+Plug 'yggdroot/indentLine'
+Plug 'majutsushi/tagbar'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+Plug 'chrisbra/Colorizer'
 
 " Languages
 Plug 'sheerun/vim-polyglot'
@@ -51,6 +57,7 @@ Plug 'bfontaine/Brewfile.vim'
 
 " Lang/Framework specific plugins
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-markdown'
 Plug 'mattn/emmet-vim'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'jasonlong/vim-textobj-css'
@@ -63,6 +70,9 @@ set autoread
 
 " Ruby Integration
 let g:ruby_host_prog = 'rvm system do neovim-ruby-host'
+
+" Use Tim Pope's Markdown, instead
+let g:polyglot_disabled = ['markdown']
 
 " ========================================================================
 " Display Preferences
@@ -93,6 +103,10 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+let g:colorizer_auto_filetypes = 'css,scss,html'
+
+let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'help', 'startify']
+
 let g:airline_extensions = ['ale', 'branch', 'ctrlp', 'fugitiveline', 'hunks', 'keymap', 'netrw', 'quickfix', 'term', 'vista', 'whitespace']
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16'
@@ -102,11 +116,63 @@ let g:airline_highlighting_cache = 1
 let g:airline_section_y = ''
 let g:airline_section_z = ' %l/%L : %c'
 
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+let g:ale_sign_error = ' '
+let g:ale_sign_warning = ' '
+let g:ale_sign_highlight_linenrs = 1
+
 set statusline+=%#warningmsg#
 set statusline+=%*
 
-let g:taboo_tab_format = "%N: %f%l%m "
-let g:taboo_renamed_tab_format = "%N:[%l]%m "
+let g:taboo_modified_tab_flag = "ﴖ "
+
+let g:taboo_tab_format = "%N:%m%f%l %d  "
+let g:taboo_renamed_tab_format = "%N:%m[%l] "
+
+let g:ascii = [
+      \'      ::::    :::  ::::::::::  ::::::::   :::     :::  :::::::::::    :::   :::' ,
+      \'     :+:+:   :+:  :+:        :+:    :+:  :+:     :+:      :+:       :+:+: :+:+:' ,
+      \'    :+:+:+  +:+  +:+        +:+    +:+  +:+     +:+      +:+      +:+ +:+:+ +:+' ,
+      \'   +#+ +:+ +#+  +#++:++#   +#+    +:+  +#+     +:+      +#+      +#+  +:+  +#+'  ,
+      \'  +#+  +#+#+#  +#+        +#+    +#+   +#+   +#+       +#+      +#+       +#+'   ,
+      \' #+#   #+#+#  #+#        #+#    #+#    #+#+#+#        #+#      #+#       #+#'    ,
+      \'###    ####  ##########  ########       ###      ###########  ###       ###'     ,
+      \''
+      \]
+let g:startify_custom_header = map(g:ascii + startify#fortune#boxed(), '"   ".v:val')
+let g:webdevicons_enable_startify = 1
+
+let g:tagbar_type_javascript = {
+      \ 'ctagstype': 'javascript',
+      \ 'kinds': [
+      \ 'A:arrays',
+      \ 'P:properties',
+      \ 'T:tags',
+      \ 'O:objects',
+      \ 'G:generator functions',
+      \ 'F:functions',
+      \ 'C:constructors/classes',
+      \ 'M:methods',
+      \ 'V:variables',
+      \ 'I:imports',
+      \ 'E:exports',
+      \ 'S:styled components'
+      \ ]}
+
+let g:tagbar_type_scss = {
+      \ 'ctagstype': 'scss',
+      \ 'kinds': [
+      \ 'm:mixins',
+      \ 'v:variables',
+      \ 'c:classes',
+      \ 'i:ids',
+      \ 't:tags',
+      \ 'd:media'
+      \ ]}
 
 " ========================================================================
 " Search Preferences
@@ -121,12 +187,16 @@ set incsearch
 " ========================================================================
 set clipboard=unnamed
 
+" Unfuck my screen
+nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
+
 " Set ignores for CtrlP, etc.
 set wildignore+=*/.git/*,*/tmp/*,*.swp
 set wildignore-=.env*,.eslint*,.prettierrc,.gitignore
 
 " Make C-c work the way I want it to
 imap <C-c> <Esc>
+nmap <C-c> <Esc>
 
 " Get some autocompletion up in here
 let g:deoplete#enable_at_startup = 1
@@ -153,23 +223,22 @@ let g:ale_fixers = {
 hi SpellBad ctermbg=darkred ctermfg=black
 hi Visual term=reverse cterm=reverse
 
+" Show indent guides
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_concealcursor = 'inc'
+let g:indentLine_enabled = 1
+let g:indentLine_conceallevel = 2
+
 " Prettify JS
 augroup javascript_folding
   au!
   au FileType javascript setlocal foldmethod=syntax
+  au FileType javascript setlocal foldlevelstart=99
   au FileType javascript normal zR
 augroup END
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:conceallevel = 0
+
+" Highlight Markdown fenced code blocks
+let g:markdown_github_languages = ['ruby', 'erb=eruby', 'js']
 
 if executable('rg')
   " Make CtrlP use rg for listing the files. Way faster and no useless files.
@@ -215,10 +284,13 @@ set splitright
 
 " Easy exits
 autocmd Filetype help nmap <buffer> q :q<CR>
-autocmd Filetype vundle  nmap <buffer> q :q<CR>
 
 " Fix Handlebars comment strings
 autocmd Filetype html.handlebars setlocal commentstring={{!--\ %s\ --}}
+
+" Disable editor features in startify
+autocmd FileType startify setlocal conceallevel=0
+autocmd FileType startify DisableWhitespace
 
 " Ignore my typos
 command! Q q
@@ -233,7 +305,7 @@ command! QA qall
 let g:elm_setup_keybindings = 0
 
 " Close all buffers, except those with unwritten changes
-nmap <leader><Del> :bufdo! bw<cr>
+nmap <leader><Del> :%bw! <bar> Startify<cr>
 
 " Close a tab easily
 nmap <leader>x :tabclose<cr>
@@ -250,6 +322,7 @@ nmap <leader>e :e! %<cr>
 
 " Try to autofix the file
 nmap <leader>f :ALEFix<cr>
+nmap <leader>a :ALENextWrap<cr>
 
 " Run tests with vim-test
 nmap <leader>R :TestFile<cr>
@@ -268,6 +341,15 @@ nmap <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"
 
 " Toggle relative line numbers
 nmap <leader>. :set relativenumber!<cr>
+
+" Highlight colors
+nmap <leader>c :ColorHighlight<cr>
+
+" Toggle Tagbar
+nmap <leader>m :TagbarToggle<cr>
+
+" Toggle Pencil
+nmap <leader>P :PencilToggle<cr>
 
 " Open NERDTree
 nmap <leader>t :NERDTreeToggle<cr>
@@ -298,6 +380,8 @@ nmap <leader>h :nohlsearch<cr>
 " ========================================================================
 
 command! FixEmberSetGet :%s/\(this\).\([s,g]et\)(/\2(\1, /g
+command! ProfileStart :profile start ~/profile.log | profile func * | profile file *<cr>
+command! ProfileStop :profile pause<cr>
 
 " Wraps TabooRename to make it interactive
 function! RenameTab()
@@ -314,13 +398,11 @@ function! RenameTab()
   return
 endfunction
 
+function! StartifyEntryFormat()
+        return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+    endfunction
+
 colorscheme base16-paraiso
-
-" Highlight Handlebars Angle-bracket Components
-" NOTE: This _must_ come after the colorscheme declaration
-hi mustacheAngleComponentName guifg=blue ctermfg=blue
-hi mustacheHbsComponent guifg=blue ctermfg=blue
-
 
 function! ShowCurrentHighlight()
   echom "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
