@@ -133,6 +133,8 @@ let g:taboo_modified_tab_flag = "ﴖ "
 let g:taboo_tab_format = "%N:%m%f%l %d  "
 let g:taboo_renamed_tab_format = "%N:%m[%l] "
 
+set sessionoptions+=tabpages,globals
+
 let g:ascii = [
       \'      ::::    :::  ::::::::::  ::::::::   :::     :::  :::::::::::    :::   :::' ,
       \'     :+:+:   :+:  :+:        :+:    :+:  :+:     :+:      :+:       :+:+: :+:+:' ,
@@ -220,8 +222,9 @@ let g:ale_fixers = {
 \  'javascript': ['eslint'],
 \  'ruby': ['rubocop']
 \}
+
 hi SpellBad ctermbg=darkred ctermfg=black
-hi Visual term=reverse cterm=reverse
+hi ALEErrorSign ctermbg=18 ctermfg=darkred
 
 " Show indent guides
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -237,20 +240,36 @@ augroup javascript_folding
   au FileType javascript normal zR
 augroup END
 
+" Adapted from https://gist.github.com/romainl/ce55ce6fdc1659c5fbc0f4224fd6ad29
+augroup Linting
+  autocmd!
+  autocmd FileType javascript setlocal makeprg=eslint\ --format=unix\ .
+  autocmd FileType qf setlocal nowrap
+  autocmd FileType qf setlocal nonumber
+  autocmd FileType qf setlocal norelativenumber
+  autocmd Filetype qf nmap <buffer> q :q<CR>
+  " autocmd QuickFixCmdPre [^l]* tabnew   Lint Fix
+  autocmd QuickFixCmdPost [^l]* vertical topleft 30 cwindow
+augroup END
+
 " Highlight Markdown fenced code blocks
 let g:markdown_github_languages = ['ruby', 'erb=eruby', 'js']
 
 if executable('rg')
   " Make CtrlP use rg for listing the files. Way faster and no useless files.
   " https://elliotekj.com/2016/11/22/setup-ctrlp-to-use-ripgrep-in-vim/
-  set grepprg=rg\ --color=never
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
   let g:ctrlp_use_caching = 0
+
+  set grepformat=%f:%l:%c:%m
+  set grepprg=rg\ -S\ --vimgrep\ --no-heading
 elseif executable('ag')
   " Make CtrlP use ag for listing the files. Way faster, but not as fast as rg
   set grepprg=ag\ --nogroup\ --nocolor
   let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
   let g:ctrlp_use_caching = 0
+
+  set grepprg=ag\ -S\ --vimgrep
 endif
 
 " bind & to grep word under cursor
@@ -269,6 +288,12 @@ nnoremap J :m+<cr>==
 nnoremap K :m-2<cr>==
 xnoremap J :m'>+<cr>gv=gv
 xnoremap K :m-2<cr>gv=gv
+
+" Resize panes
+noremap <A-S-Right> :vertical resize +10<cr>
+noremap <A-S-Left> :vertical resize -10<cr>
+noremap <A-S-Up> :resize +10<cr>
+noremap <A-S-Down> :resize -10<cr>
 
 " Better method movement
 nmap m ]m
@@ -336,8 +361,12 @@ nmap <leader><Space> :StripWhitespace<cr>
 " Pretty print JSON
 nmap <leader>j :%!python -m json.tool<cr>:setf json<cr>gg=G
 
-" Toggle JS prettification
-nmap <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"<cr>
+" Lint project and open failures in QuickFix window
+nmap <leader>l :silent make<cr>
+
+" Quickfix navigation
+nmap <leader>n :cn<cr>
+nmap <leader>p :cp<cr>
 
 " Toggle relative line numbers
 nmap <leader>. :set relativenumber!<cr>
@@ -357,6 +386,9 @@ nmap <leader>t :NERDTreeToggle<cr>
 " Save a session
 nmap <leader>S :mksession!<cr>
 
+" Move buffer to new tab
+nmap <leader>T <C-w>T
+
 " Better splits
 nmap <C-w>\ :vnew<cr>
 nmap <C-w>- :new<cr>
@@ -367,6 +399,9 @@ nmap <C-w>, :call RenameTab()<cr>
 " Navigate tabs like tmux
 map <C-w>n :tabnext<cr>
 map <C-w>p :tabprevious<cr>
+
+" Remap tabnew
+map <C-w>t :tabnew<cr>
 
 " Misc
 nmap <leader>q :q<cr>
@@ -399,10 +434,10 @@ function! RenameTab()
 endfunction
 
 function! StartifyEntryFormat()
-        return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
-    endfunction
+  return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
 
-colorscheme base16-paraiso
+source ~/.vimrc_background
 
 function! ShowCurrentHighlight()
   echom "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
