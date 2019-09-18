@@ -61,6 +61,19 @@ function office() {
   hue lights $lights $cmd
 }
 
+function theme() {
+  local theme_path=~/.config/base16-shell/scripts/
+  local file
+
+  read file <<< "$(l $theme_path | fzf -q "$1" | sed 's/[^a-zA-Z0-9\._-]//')"
+  if [ "$file" ]; then
+    echo "$(echo $file | sed 's/.sh$//')"
+    zsh $theme_path$file
+  else
+    echo $BASE16_THEME
+  fi
+}
+
 # Use nvim if available
 if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
