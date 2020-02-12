@@ -5,13 +5,14 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 bindkey '^ ' autosuggest-accept
-
-unalias grv
+bindkey '^P' up-line-or-search
+bindkey '^N' down-line-or-search
 
 alias l="exa -1 -F -@ --git --group-directories-first --icons"
 alias ll="exa -l -F -@ --git --group-directories-first --icons"
 alias lll="ll --git -g --header -a"
 alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
+alias tableflip="echo '(╯°□°)╯︵ ┻━┻' && yarn cache clean && rm -rf ./node_modules && yarn --check-files && yarn test --clearCache"
 
 alias rule="cd ~/Code/apple/mt-validator-ui"
 alias blog="cd ~/Documents/blog"
@@ -24,6 +25,24 @@ alias yst="yadm status"
 function cd() {
   builtin cd $@
   l
+}
+
+function toggle_vpn() {
+  if [ "$1" != "" ]; then
+    host="$1"
+  else
+    host="Corporate"
+  fi
+
+  vpn_status=$(scutil --nc status $host | sed -n 1p)
+
+  if [ $vpn_status != "Connected" ]; then
+    vpn_command="start"
+  else
+    vpn_command="stop"
+  fi
+
+  scutil --nc $vpn_command $host
 }
 
 function nettest() {
