@@ -52,5 +52,6 @@ cask "rocket"
 cask "setapp"
 cask "sip"
 cask "skitch"
+cask "spotify"
 cask "typora"
 
