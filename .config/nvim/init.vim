@@ -25,6 +25,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-abolish'
 Plug 'jiangmiao/auto-pairs' " This may not be the best one. Should get you auto closed brackets, etc.
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chriskempson/base16-vim'
@@ -193,7 +194,7 @@ set clipboard=unnamed
 nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
 
 " Set ignores for CtrlP, etc.
-set wildignore+=*/.git/*,*/tmp/*,*.swp
+set wildignore+=*/.git/*,*/tmp/*,*.swp,*/_build/*
 set wildignore-=.env*,.eslint*,.prettierrc,.gitignore
 
 " Make C-c work the way I want it to
@@ -232,13 +233,10 @@ let g:indentLine_concealcursor = 'inc'
 let g:indentLine_enabled = 1
 let g:indentLine_conceallevel = 2
 
-" Prettify JS
-augroup javascript_folding
-  au!
-  au FileType javascript setlocal foldmethod=syntax
-  au FileType javascript setlocal foldlevelstart=99
-  au FileType javascript normal zR
-augroup END
+"-- FOLDING --
+set foldmethod=syntax "syntax highlighting items specify folds
+let javaScript_fold=1 "activate folding by JS syntax
+set foldlevelstart=99 "start file with all folds opened
 
 " Adapted from https://gist.github.com/romainl/ce55ce6fdc1659c5fbc0f4224fd6ad29
 augroup Linting
@@ -290,10 +288,10 @@ xnoremap J :m'>+<cr>gv=gv
 xnoremap K :m-2<cr>gv=gv
 
 " Resize panes
-noremap <A-S-Right> :vertical resize +10<cr>
-noremap <A-S-Left> :vertical resize -10<cr>
-noremap <A-S-Up> :resize +10<cr>
-noremap <A-S-Down> :resize -10<cr>
+noremap <A-S-Right> :vertical resize +5<cr>
+noremap <A-S-Left> :vertical resize -5<cr>
+noremap <A-S-Up> :resize +5<cr>
+noremap <A-S-Down> :resize -5<cr>
 
 " Better method movement
 nmap m ]m
@@ -357,6 +355,9 @@ nmap <leader>s :GitGutterStageHunk<cr>
 
 " Strip bad whitespace
 nmap <leader><Space> :StripWhitespace<cr>
+
+" Toggle line-wrapping
+nmap <leader><leader><Space> :setlocal nowrap!<cr>
 
 " Pretty print JSON
 nmap <leader>j :%!python -m json.tool<cr>:setf json<cr>gg=G
