@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
 # Bootstrap Homebrew
 system_type=$(uname -s)
 if [ "$system_type" = "Darwin" ]; then
@@ -24,4 +21,10 @@ fi
 if command -v nvim >/dev/null 2>&1; then
   echo "Bootstraping Neovim"
   nvim '+PlugUpdate' '+PlugClean!' '+PlugUpdate' '+qall'
+fi
+
+# Bootstrap ZSH
+if command -v antibody > /dev/null 2>&1; then
+  echo "Bootstrapping Zsh"
+  antibody bundle < ~/.zsh_plugins > ~/.zsh_bundle
 fi
