@@ -49,6 +49,7 @@ cask "quicklook-json"
 cask "qlimagesize"
 cask "rocket"
 cask "setapp"
+cask "sip"
 cask "skitch"
 cask "typora"
 
