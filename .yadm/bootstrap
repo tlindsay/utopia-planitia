@@ -15,6 +15,11 @@ if [ "$system_type" = "Darwin" ]; then
     brew bundle --global
   fi
 
+  # Configure iTerm2
+  if [ -d "$HOME/.iterm2" ]; then
+      echo "Setting iTerm preference folder"
+      defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.config/iterm"
+  fi
 fi
 
 # Bootstrap Neovim
