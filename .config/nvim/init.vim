@@ -51,6 +51,7 @@ Plug 'mhinz/vim-startify'
 Plug 'chrisbra/Colorizer'
 
 " Languages
+Plug 'liuchengxu/vista.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'kana/vim-textobj-user' " Dependency for textobj-rubyblock and textobj-javascript
