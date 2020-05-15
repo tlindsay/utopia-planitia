@@ -216,6 +216,7 @@ inoremap <silent><expr> <TAB>
 " Lintin' yo scripts
 let g:ale_completion_enabled = 1
 let g:airline#extensions#ale#enabled = 1
+let g:ale_javascript_eslint_suppress_missing_config = 0
 let g:ale_linters = {
 \  'javascript': ['eslint'],
 \  'ruby': ['rubocop']
@@ -347,6 +348,10 @@ nmap <leader>e :e! %<cr>
 " Try to autofix the file
 nmap <leader>f :ALEFix<cr>
 nmap <leader>a :ALENextWrap<cr>
+nmap <leader>l :lwindow<cr>
+
+" Lint project and open failures in QuickFix window
+nmap <leader><leader>l :silent make<cr>
 
 " Run tests with vim-test
 nmap <leader>R :TestFile<cr>
@@ -362,9 +367,6 @@ nmap <leader><leader><Space> :setlocal nowrap!<cr>
 
 " Pretty print JSON
 nmap <leader>j :%!python -m json.tool<cr>:setf json<cr>gg=G
-
-" Lint project and open failures in QuickFix window
-nmap <leader>l :silent make<cr>
 
 " Quickfix navigation
 nmap <leader>n :cn<cr>
