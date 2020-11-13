@@ -340,6 +340,7 @@ nmap <leader>T :tabnew<cr>
 " Edit this file!
 nmap <leader>vr :tabe $MYVIMRC<cr>
 nmap <leader>rv :source $MYVIMRC<cr>:PlugInstall<cr>
+nmap <leader>zr :tabe ~/.zsh_profile<cr>:vsp ~/.zshrc<cr>:sp ~/.zsh_profile.local<cr>
 
 " Update file in buffer
 nmap <leader>e :e! %<cr>
