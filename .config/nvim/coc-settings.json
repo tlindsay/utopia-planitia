@@ -1,0 +1,7 @@
+{
+  "diagnostic.displayByAle": true,
+  "tsserver.log": "normal",
+  "tsserver.enable": true,
+  "prettier.tslintIntegration": true,
+  "javascript.suggestionActions.enabled": false
+}

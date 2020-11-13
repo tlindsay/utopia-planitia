@@ -1,1 +1,1 @@
-autocmd BufNew,BufNewFile,BufRead *.frag,*.vert :setfiletype glsl
+autocmd BufNew,BufNewFile,BufRead *.glsl,*.frag,*.vert :setfiletype glsl

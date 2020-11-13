@@ -1,5 +1,7 @@
 let mapleader = ","
 set nocompatible
+let g:polyglot_disabled = []
+let g:ale_disable_lsp = 1
 
 " ========================================================================
 " Vim Plug
@@ -18,9 +20,11 @@ if !has('nvim')
   Plug 'tpope/vim-sensible'
 endif
 
+" EXPERIMENTAL
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+
 " Editor Plugins
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -30,8 +34,8 @@ Plug 'jiangmiao/auto-pairs' " This may not be the best one. Should get you auto 
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'shougo/deoplete.nvim'
 Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+Plug 'psychollama/further.vim'
 Plug 'w0rp/ale'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tpope/vim-fugitive'
@@ -67,6 +71,8 @@ Plug 'kana/vim-textobj-function'
 " Plug 'poetic/vim-textobj-javascript'
 
 call plug#end()
+
+let g:coc_global_extensions = ['coc-tsserver', 'coc-tslint-plugin', 'coc-eslint', 'coc-json', 'coc-prettier']
 
 set autoread
 
@@ -126,6 +132,7 @@ let g:airline_right_alt_sep = ''
 let g:ale_sign_error = ' '
 let g:ale_sign_warning = ' '
 let g:ale_sign_highlight_linenrs = 1
+let g:ale_javascript_eslint_suppress_missing_config = 1
 
 set statusline+=%#warningmsg#
 set statusline+=%*
@@ -196,33 +203,25 @@ nnoremap U :syntax sync fromstart<cr>:redraw!<cr>
 
 " Set ignores for CtrlP, etc.
 set wildignore+=*/.git/*,*/tmp/*,*.swp,*/_build/*
-set wildignore-=.env*,.eslint*,.prettierrc,.gitignore
+set wildignore-=.env*,.eslint*,.gitignore
 
 " Make C-c work the way I want it to
 imap <C-c> <Esc>
 nmap <C-c> <Esc>
 
-" Get some autocompletion up in here
-let g:deoplete#enable_at_startup = 1
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ deoplete#mappings#manual_complete()
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-
 " Lintin' yo scripts
 let g:ale_completion_enabled = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_javascript_eslint_suppress_missing_config = 0
+let g:ale_linters_explicit = 1
 let g:ale_linters = {
 \  'javascript': ['eslint'],
+\  'typescript': ['tsserver'],
 \  'ruby': ['rubocop']
 \}
 let g:ale_fixers = {
 \  'javascript': ['eslint'],
+\  'typescript': ['eslint', 'tslint', 'prettier'],
 \  'ruby': ['rubocop']
 \}
 
@@ -258,7 +257,7 @@ let g:markdown_github_languages = ['ruby', 'erb=eruby', 'js']
 if executable('rg')
   " Make CtrlP use rg for listing the files. Way faster and no useless files.
   " https://elliotekj.com/2016/11/22/setup-ctrlp-to-use-ripgrep-in-vim/
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob "" --no-require-git'
   let g:ctrlp_use_caching = 0
 
   set grepformat=%f:%l:%c:%m
@@ -406,6 +405,8 @@ map <C-w>p :tabprevious<cr>
 
 " Remap tabnew
 map <C-w>t :tabnew<cr>
+
+nmap <C-n> :GitGutterNextHunk<cr>
 
 " Misc
 nmap <leader>q :q<cr>
