@@ -29,7 +29,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:
 if [[ -a ~/.zsh_bundle ]]; then
   source ~/.zsh_bundle
 else
-  antibody < ~/.zsh_plugins > .zsh_bundle
+  antibody bundle < ~/.zsh_plugins > .zsh_bundle
   source ~/.zsh_bundle
 fi
 
