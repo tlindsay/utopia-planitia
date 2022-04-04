@@ -15,6 +15,9 @@ diverged = "⇅"
 disabled = true
 symbol = " "
 
+[gcloud]
+disabled = true
+
 # NERDFont substitutions
 
 [aws]
