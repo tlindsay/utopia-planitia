@@ -4,12 +4,12 @@ local wk = require("which-key")
 -----------------------------------------------------------
 
 local function map(target_mode, lhs, rhs, opts)
-	local options = { noremap = true, silent = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(target_mode, lhs, rhs, options)
-	-- wk.register({[lhs] = rhs}, opts)
+  local options = { noremap = true, silent = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.api.nvim_set_keymap(target_mode, lhs, rhs, options)
+  -- wk.register({[lhs] = rhs}, opts)
 end
 
 -- Change leader to a comma
@@ -17,10 +17,10 @@ vim.g.mapleader = ","
 
 wk.register({ ["?"] = { ":WhichKey ", "Show WhichKey" } }, { noremap = false, silent = false })
 wk.register({
-	["<leader>"] = {
-		["."] = { ":set relativenumber!<CR>", "Toggle Relative Line Numbers" },
-		X = { ":tabclose<CR>", "Close window" },
-	},
+  ["<leader>"] = {
+    ["."] = { ":set relativenumber!<CR>", "Toggle Relative Line Numbers" },
+    X = { ":tabclose<CR>", "Close window" },
+  },
 })
 
 -----------------------------------------------------------
