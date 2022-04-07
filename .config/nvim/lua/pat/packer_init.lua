@@ -89,6 +89,13 @@ return packer.startup(function()
     },
   })
 
+  -- Bufferline
+  use({
+    "akinsho/bufferline.nvim",
+    tag = "*",
+    requires = "kyazdani42/nvim-web-devicons",
+  })
+
   -- Statusline
   use({
     "famiu/feline.nvim",
