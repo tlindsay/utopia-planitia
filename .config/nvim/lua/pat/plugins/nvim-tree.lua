@@ -26,10 +26,10 @@ g.nvim_tree_show_icons = {
 }
 
 g.nvim_tree_icons = {
-  default = "‣ ",
+  default = '‣ ',
 }
 
-require("nvim-tree").setup({
+require('nvim-tree').setup({
   open_on_setup = true,
   auto_close = false,
   update_cwd = true,
@@ -46,7 +46,7 @@ require("nvim-tree").setup({
   },
   filters = {
     dotfiles = true,
-    custom = { ".git", "node_modules", ".cache", ".bin" },
+    custom = { '.git', 'node_modules', '.cache', '.bin' },
   },
   view = { width = 32 },
 })

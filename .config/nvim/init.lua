@@ -9,7 +9,6 @@ Website: https://github.com/brainfucksec/neovim-lua
 require('pat.core/settings')
 require('pat.core/autocmds')
 require('pat.core/keymaps')
-require('pat.core/colors')
 require('pat.packer_init')
 require('pat.plugins/nvim-tree')
 require('pat.plugins/indent-blankline')

@@ -18,10 +18,10 @@ local opt = vim.opt -- Set options (global/buffer/windows-scoped)
 -----------------------------------------------------------
 -- General
 -----------------------------------------------------------
-opt.mouse = "a" -- Enable mouse support
-opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
+opt.mouse = 'a' -- Enable mouse support
+opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard
 opt.swapfile = false -- Don't use swapfile
-opt.completeopt = "menuone,noselect" -- Autocomplete options
+opt.completeopt = 'menuone,noselect' -- Autocomplete options
 
 -----------------------------------------------------------
 -- Neovim UI
@@ -29,8 +29,8 @@ opt.completeopt = "menuone,noselect" -- Autocomplete options
 opt.number = true -- Show line number
 opt.relativenumber = true -- Default to relative line numbers
 opt.showmatch = true -- Highlight matching parenthesis
-opt.foldmethod = "marker" -- Enable folding (default 'foldmarker')
-opt.colorcolumn = "80" -- Line lenght marker at 80 columns
+opt.foldmethod = 'marker' -- Enable folding (default 'foldmarker')
+opt.colorcolumn = '80' -- Line lenght marker at 80 columns
 opt.splitright = true -- Vertical split to the right
 opt.splitbelow = true -- Orizontal split to the bottom
 opt.ignorecase = true -- Ignore case letters when search
@@ -61,32 +61,32 @@ opt.updatetime = 400 -- ms to wait for trigger 'document_highlight'
 -----------------------------------------------------------
 
 -- Disable nvim intro
-opt.shortmess:append("sI")
+opt.shortmess:append('sI')
 
 -- Disable builtins plugins
 local disabled_built_ins = {
-  "netrw",
-  "netrwPlugin",
-  "netrwSettings",
-  "netrwFileHandlers",
-  "gzip",
-  "zip",
-  "zipPlugin",
-  "tar",
-  "tarPlugin",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "logipat",
-  "rrhelper",
-  "spellfile_plugin",
-  "matchit",
+  'netrw',
+  'netrwPlugin',
+  'netrwSettings',
+  'netrwFileHandlers',
+  'gzip',
+  'zip',
+  'zipPlugin',
+  'tar',
+  'tarPlugin',
+  'getscript',
+  'getscriptPlugin',
+  'vimball',
+  'vimballPlugin',
+  '2html_plugin',
+  'logipat',
+  'rrhelper',
+  'spellfile_plugin',
+  'matchit',
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-  g["loaded_" .. plugin] = 1
+  g['loaded_' .. plugin] = 1
 end
 
 -----------------------------------------------------------
