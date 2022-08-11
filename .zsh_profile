@@ -25,6 +25,9 @@ bindkey '^ ' autosuggest-accept
 bindkey '^P' up-line-or-search
 bindkey '^N' down-line-or-search
 bindkey '^X' clear-screen
+bindkey '^B' emoji-fzf-zle
+
+# alias sed="echo 'Did you mean to use sad?\r\n'; sed"
 
 alias l="exa -1 -F -@ --git --group-directories-first --icons"
 alias ll="exa -l -F -@ --git --group-directories-first --icons"
@@ -33,6 +36,8 @@ alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
 alias ytop="ytop -f"
 alias root='cd $(npm root)/..'
 alias forgit='alias | fzf -q forgit::'
+alias update-neovim='asdf uninstall neovim nightly && asdf install neovim nightly'
+forgit_checkout_commit='gcco'
 
 alias tableflip="echo '(╯°□°)╯︵ ┻━┻' && yarn cache clean && rm -rf ./node_modules && yarn --check-files && yarn test --clearCache"
 alias vpn="(toggle-vpn && tmux refresh-client -S) &"
@@ -119,6 +124,11 @@ function theme() {
   fi
 }
 
+function randomSha() {
+  local n = $1
+  for i in `seq $n`; do od -vAn -N2 -tu2 < /dev/urandom | sha1sum; done
+}
+
 # Use nvim if available
 if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
@@ -127,4 +137,7 @@ fi
 # Add custom scripts
 if [ -d "$HOME/.bin" ] ; then
   PATH="$PATH:$HOME/.bin"
+fi
+if [ -d "$HOME/.cargo/bin" ]; then
+  PATH="$PATH:$HOME/.cargo/bin"
 fi

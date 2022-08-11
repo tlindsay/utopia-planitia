@@ -30,6 +30,7 @@ brew "tealdeer"
 brew "tmux"
 brew "tmuxinator"
 brew "yarn"
+brew "ms-jpq/sad/sad"
 
 cask "1password"
 cask "alfred"
