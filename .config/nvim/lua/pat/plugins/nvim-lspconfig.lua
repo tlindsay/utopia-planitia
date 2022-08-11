@@ -5,8 +5,33 @@
 -- Plugin: nvim-lspconfig
 -- url: https://github.com/neovim/nvim-lspconfig
 
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches.
+-- Add your language server below:
+local servers = {
+  'bashls',
+  'pyright',
+  'clangd',
+  'html', --[[ 'eslint', ]]
+  'gopls',
+}
+
+-- require('nvim-lsp-installer').setup({
+--   ensure_installed = {
+--     Moses.append(servers, { 'tsserver', 'ember', 'sumneko_lua' }),
+--   },
+-- })
+
 local nvim_lsp = require('lspconfig')
+local lines = require('lsp_lines')
 local wk = require('which-key')
+require('mason').setup()
+require('mason-lspconfig').setup({})
+require('fidget').setup({ text = { spinner = 'dots' } })
+
+lines.setup()
+vim.diagnostic.config({ virtual_text = false })
+vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -26,30 +51,49 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
+local troubleGroup = vim.api.nvim_create_augroup('TroubleWindow', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'Trouble',
+  command = 'nmap <silent> <leader>xx :TroubleToggle<CR>',
+  group = troubleGroup,
+})
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
 
   -- Highlighting references
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]],
-      false
+  if client.server_capabilities.document_highlight then
+    local hi_group = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+    local buffer = vim.api.nvim_get_current_buf()
+    vim.api.nvim_create_autocmd(
+      'CursorHold',
+      { callback = vim.lsp.buf.document_highlight, buffer = buffer, group = hi_group }
+    )
+    vim.api.nvim_create_autocmd(
+      'CursorMoved',
+      { callback = vim.lsp.buf.clear_references, buffer = buffer, group = hi_group }
     )
   end
 
+  -- Autoformat on save
+  if client.server_capabilities.document_formatting then
+    local group = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
+    local buffer = vim.api.nvim_get_current_buf()
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      callback = function()
+        if vim.api.nvim_get_var('PAT_format_on_save') then
+          -- vim.lsp.buf.formatting_sync({}, 5000)
+          vim.lsp.buf.format({ timeout_ms = 5000 })
+        end
+      end,
+      group = group,
+      buffer = buffer,
+    })
+  end
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -57,14 +101,23 @@ local on_attach = function(client, bufnr)
   local opts = { buffer = bufnr, noremap = true, silent = true }
 
   wk.register({
-    ['<space>'] = { '<cmd>lua vim.lsp.buf.hover()<CR>', 'Show Inline Documentation' },
+    ['<space>'] = { vim.lsp.buf.hover, 'Show Inline Documentation' },
     ['<leader>'] = {
-      a = { '<cmd>lua vim.diagnostic.goto_next()<CR>', 'Go to next issue' },
-      z = { '<cmd>lua vim.diagnostic.goto_prev()<CR>', 'Go to previous issue' },
-      D = { '<cmd>lua vim.lsp.buf.type_definition()<CR>', 'Show Type Definition' },
-      rn = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename Symbol' },
-      f = { '<cmd>lua vim.lsp.buf.code_action()<CR>', 'Fix Diagnostic' },
-      F = { '<cmd>lua vim.lsp.buf.formatting()<CR>', 'Autoformat' },
+      a = { vim.diagnostic.goto_next, 'Go to next issue' },
+      A = { vim.diagnostic.goto_prev, 'Go to previous issue' },
+      D = { vim.lsp.buf.type_definition, 'Show Type Definition' },
+      rn = { vim.lsp.buf.rename, 'Rename Symbol' },
+      k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
+      f = { vim.lsp.buf.code_action, 'Fix Diagnostic' },
+      F = { vim.lsp.buf.format, 'Autoformat' },
+      -- l = {
+      --   function()
+      --     -- local vtext = vim.diagnostic.config().virtual_text
+      --     -- vim.diagnostic.config({ virtual_text = not vtext })
+      --     lines.toggle()
+      --   end,
+      --   'Toggle LSP Lines',
+      -- },
       s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Open symbol selector' },
       x = {
         name = 'Trouble',
@@ -76,73 +129,15 @@ local on_attach = function(client, bufnr)
       },
     },
     g = {
-      D = { '<cmd>lua vim.lsp.buf.declaration()<CR>', 'Go to Declaration' },
-      d = { '<cmd>lua vim.lsp.buf.definition()<CR>', 'Go to Definition' },
-      i = { '<cmd>lua vim.lsp.buf.implementation()<CR>', 'Go to Implementation' },
-      I = { '<cmd>vsp | lua vim.lsp.buf.implementation()<CR>', 'Split to Implementation' },
-      r = { '<cmd>lua vim.lsp.buf.references()<CR>', 'List References' },
+      D = { vim.lsp.buf.declaration, 'Go to Declaration' },
+      d = { vim.lsp.buf.definition, 'Go to Definition' },
+      i = { vim.lsp.buf.implementation, 'Go to Implementation' },
+      I = { '<cmd>vsp | lua vim.lsp.buf.definition()<CR>', 'Split to Implementation' },
+      r = { vim.lsp.buf.references, 'List References' },
       R = { '<cmd>TroubleToggle lsp_references<cr>', 'List References in Trouble' },
     },
   }, opts)
-  -- local troubleGroup = vim.api.nvim_create_augroup("TroubleWindow", { clear = true })
-  -- api.nvim_create_autocmd("BindTroubleToggle", {
-  --   command = "nmap <leader>xx :TroubleToggle<CR>",
-  --   group = troubleGroup
-  -- })
-  vim.cmd([[
-    augroup TroubleWindow
-      au!
-      autocmd FileType Trouble map <buffer><silent> <leader>xx :TroubleToggle<CR>
-    augroup END
-  ]])
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  -- buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  -- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  -- -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  -- buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  -- buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  -- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  -- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  -- -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
-
---[[
-
-Language servers setup:
-
-For language servers list see:
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-
-Bash --> bashls
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#bashls
-
-Python --> pyright
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
-
-C-C++ -->  clangd
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#clangd
-
-HTML/CSS/JSON --> vscode-html-languageserver
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#html
-
-JavaScript/TypeScript --> tsserver
-https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tsserver
-
---]]
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches.
--- Add your language server below:
-local servers = { 'bashls', 'pyright', 'clangd', 'html', 'eslint', 'gopls' }
 
 -- Define border chars for hover window
 -- ╭─╮
@@ -171,28 +166,16 @@ local handlers = {
   -- )
 }
 
--- Call setup
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup({
-    handlers = handlers,
-    on_attach = on_attach,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    },
-  })
-end
-
 local ts_utils = require('nvim-lsp-ts-utils')
 require('lspconfig').tsserver.setup({
   handlers = handlers,
   init_options = ts_utils.init_options,
   on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-
     -- Use null-ls for formatting instead of builtin
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
+
+    on_attach(client, bufnr)
 
     ts_utils.setup({
       enable_import_on_completion = true,
@@ -206,9 +189,9 @@ require('lspconfig').tsserver.setup({
         name = 'TS Utils',
         s = { '<cmd>TSLspOrganize<CR>', 'Organize imports' },
         rn = { '<cmd>TSLspRenameFile<CR>', 'Rename file' },
-        -- I = {'<cmd>TSLspImportAll<CR>', 'Add missing imports'}
+        m = { '<cmd>TSLspImportAll<CR>', 'Add missing imports' },
       },
-    })
+    }, opts)
   end,
 })
 require('lspconfig').ember.setup({
@@ -220,3 +203,52 @@ require('lspconfig').ember.setup({
   },
   root_dir = require('lspconfig.util').root_pattern('.ember-cli'),
 })
+
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
+require('lspconfig').sumneko_lua.setup({
+  handlers = handlers,
+  on_attach = function(client, bufnr)
+    -- Use null-ls for formatting instead of builtin
+    client.server_capabilities.diagnostics = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
+
+    on_attach(client, bufnr)
+  end,
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = runtime_path,
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim', 'use', 'lvim', 'use_rocks' },
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file('~/.config/nvim/**/*.lua', true),
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+})
+
+-- Call setup
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup({
+    handlers = handlers,
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 150,
+    },
+  })
+end

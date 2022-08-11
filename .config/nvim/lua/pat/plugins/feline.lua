@@ -44,6 +44,15 @@ end
 
 -- My components
 local comps = {
+  format_on_save = {
+    provider = function()
+      local label = ''
+      if vim.api.nvim_get_var('PAT_format_on_save') then
+        label = '💅'
+      end
+      return label
+    end,
+  },
   -- vi_mode -> NORMAL, INSERT..
   vi_mode = {
     left = {
@@ -72,7 +81,8 @@ local comps = {
         name = 'file_info',
         opts = {
           type = 'relative',
-          file_modified_icon = '',
+          -- file_modified_icon = '',
+          file_modified_icon = '⧆ ',
           file_readonly_icon = ' ',
         },
       },
@@ -135,6 +145,12 @@ local comps = {
     -- Simple scrollbar
     scroll_bar = {
       provider = { name = 'scroll_bar' },
+      hl = { fg = colors.cyan },
+      left_sep = ' ',
+      right_sep = ' ',
+    },
+    scroll_wheel = {
+      provider = { name = 'scroll_wheel' },
       hl = { fg = colors.cyan },
       left_sep = ' ',
       right_sep = ' ',
@@ -216,6 +232,39 @@ local comps = {
   },
 }
 
+-- Custom providers
+-- local scroll_wheel_slices = { '○', '◔', '◑', '◕', '●' }
+local scroll_wheel_slices = {
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+}
+local custom_providers = {
+  scroll_wheel = function(_, opts)
+    local curr_line = vim.api.nvim_win_get_cursor(0)[1]
+    local lines = vim.api.nvim_buf_line_count(0)
+    local mod = #scroll_wheel_slices - 1
+
+    if opts.reverse then
+      return scroll_wheel_slices[5 - math.floor(curr_line / lines * mod)]
+    else
+      return scroll_wheel_slices[math.floor(curr_line / lines * mod) + 1]
+    end
+  end,
+}
+
 -- Get active/inactive components
 --- see: https://github.com/famiu/feline.nvim/blob/master/USAGE.md#components
 local components = {
@@ -229,6 +278,7 @@ table.insert(components.inactive, {})
 table.insert(components.inactive, {})
 
 -- Left section
+table.insert(components.active[1], comps.format_on_save)
 table.insert(components.active[1], comps.vi_mode.left)
 table.insert(components.active[1], comps.file.info)
 -- table.insert(components.active[1], comps.git.branch)
@@ -247,11 +297,12 @@ table.insert(components.active[2], comps.lsp.name)
 table.insert(components.active[2], comps.file.type)
 -- table.insert(components.active[2], comps.file.os)
 table.insert(components.active[2], comps.file.position)
-table.insert(components.active[2], comps.file.scroll_bar)
+table.insert(components.active[2], comps.file.scroll_wheel)
 -- table.insert(components.active[2], comps.file.line_percentage)
 
 -- Call feline
 require('feline').setup({
+  custom_providers = custom_providers,
   theme = {
     bg = colors.bg,
     fg = colors.fg,
@@ -270,4 +321,54 @@ require('feline').setup({
     },
     bufnames = {},
   },
+})
+
+local wcomps = {
+  active_file_info = {
+    provider = {
+      name = 'file_info',
+      opts = vim.tbl_extend('force', comps.file.info.provider.opts, { colored_icon = true }),
+    },
+    hl = {
+      fg = vi_mode_utils.get_mode_color(),
+      -- fg = colors.cyan,
+      bg = colors.bg,
+      style = 'underline',
+    },
+  },
+
+  active_spacer = {
+    hl = {
+      fg = vi_mode_utils.get_mode_color(),
+      -- fg = colors.cyan,
+      style = 'underdashed',
+    },
+  },
+
+  inactive_file_info = {
+    provider = {
+      name = 'file_info',
+      opts = vim.tbl_extend('force', comps.file.info.provider.opts, { colored_icon = false }),
+    },
+    hl = {
+      fg = colors.comment,
+      bg = colors.bg,
+    },
+  },
+}
+
+local winbar_components = {
+  active = {},
+  inactive = {},
+}
+
+table.insert(winbar_components.active, { wcomps.active_spacer })
+table.insert(winbar_components.active, {})
+table.insert(winbar_components.active[2], wcomps.active_file_info)
+table.insert(winbar_components.inactive, {})
+table.insert(winbar_components.inactive, {})
+table.insert(winbar_components.inactive[2], wcomps.inactive_file_info)
+
+require('feline').winbar.setup({
+  components = winbar_components,
 })

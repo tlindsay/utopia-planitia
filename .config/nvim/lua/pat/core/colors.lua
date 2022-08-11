@@ -2,7 +2,7 @@
 -- Color schemes configuration file
 -----------------------------------------------------------
 
-local tokyoColors = require('tokyonight.colors').setup()
+local tokyoColors = R('tokyonight.colors').setup()
 
 vim.g.tokyonight_colors = {
   ['border'] = tokyoColors.magenta,
@@ -65,6 +65,7 @@ M.rose_pine = {
   red = '#ebbcba',
 }
 
--- vim.api.nvim_set_hl(0, 'WinSeparator', { fg = require('tokyonight.colors').purple, bg = 'None'})
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = require('tokyonight.colors').purple, bg = 'None' })
+vim.api.nvim_set_hl(0, 'DiagnosticWarn', { underline = false })
 
 return M

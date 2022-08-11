@@ -10,10 +10,17 @@
 -- Neovim API aliases
 -----------------------------------------------------------
 local cmd = vim.cmd -- Execute Vim commands
-local exec = vim.api.nvim_exec -- Execute Vimscript
 local g = vim.g -- Global variables
 local opt = vim.opt -- Set options (global/buffer/windows-scoped)
 --local fn = vim.fn       				    -- Call Vim functions
+
+-----------------------------------------------------------
+-- Custom
+-----------------------------------------------------------
+g.PAT_format_on_save = true
+g.tmux_navigator_no_mappings = 1
+g.sleuth_go_tabstop = 2
+g.sleuth_go_shiftwidth = 2
 
 -----------------------------------------------------------
 -- General
@@ -22,6 +29,7 @@ opt.mouse = 'a' -- Enable mouse support
 opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard
 opt.swapfile = false -- Don't use swapfile
 opt.completeopt = 'menuone,noselect' -- Autocomplete options
+g.sessionoptions = 'curdir,options,skiprtp,tabpages,winsize'
 
 -----------------------------------------------------------
 -- Neovim UI
@@ -29,23 +37,30 @@ opt.completeopt = 'menuone,noselect' -- Autocomplete options
 opt.number = true -- Show line number
 opt.relativenumber = true -- Default to relative line numbers
 opt.showmatch = true -- Highlight matching parenthesis
-opt.foldmethod = 'marker' -- Enable folding (default 'foldmarker')
-opt.colorcolumn = '80' -- Line lenght marker at 80 columns
+-- opt.foldmethod = 'marker' -- Enable folding (default 'foldmarker')
+opt.colorcolumn = '80' -- Line length marker at 80 columns
 opt.splitright = true -- Vertical split to the right
 opt.splitbelow = true -- Orizontal split to the bottom
 opt.ignorecase = true -- Ignore case letters when search
 opt.smartcase = true -- Ignore lowercase for the whole pattern
 opt.linebreak = true -- Wrap on word boundary
 opt.termguicolors = true -- Enable 24-bit RGB colors
--- opt.laststatus = 3                    -- Single global statusline instead of per-buffer (will land in 0.7)
+opt.laststatus = 3 -- Single global statusline instead of per-buffer (will land in 0.7)
+opt.cursorline = true
+opt.scrolloff = 5 -- Keep 5 lines of padding when scrolling
+
+-- Treesitter overrides
+opt.syntax = 'off'
+opt.foldmethod = 'expr'
+opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
 -----------------------------------------------------------
 -- Tabs, indent
 -----------------------------------------------------------
 -- opt.expandtab = true                  -- Use spaces instead of tabs
--- opt.shiftwidth = 4                    -- Shift 4 spaces when tab
--- opt.tabstop = 4                       -- 1 tab == 4 spaces
--- opt.smartindent = true                -- Autoindent new lines
+opt.shiftwidth = 2 -- Shift 4 spaces when tab
+opt.tabstop = 2 -- 1 tab == 4 spaces
+opt.smartindent = true -- Autoindent new lines
 
 -----------------------------------------------------------
 -- Memory, CPU
@@ -93,63 +108,8 @@ end
 -- Diagnostic Styles
 -----------------------------------------------------------
 cmd([[
-  sign define DiagnosticSignError text=│ texthl=DiagnosticSignError linehl= numhl=
-  sign define DiagnosticSignWarn  text=│ texthl=DiagnosticSignWarn linehl= numhl=
-  sign define DiagnosticSignInfo  text=│ texthl=DiagnosticSignInfo linehl= numhl=
-  sign define DiagnosticSignHint  text=│ texthl=DiagnosticSignHint linehl= numhl=
-]])
-
------------------------------------------------------------
--- Autocommands
------------------------------------------------------------
-
--- Remove whitespace on save
-cmd([[au BufWritePre * :%s/\s\+$//e]])
-
--- Highlight on yank
-exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=800}
-  augroup end
-]],
-  false
-)
-
--- Don't auto commenting new lines
-cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
-
--- Remove line lenght marker for selected filetypes
-cmd([[autocmd FileType text,markdown,html,xhtml,javascript setlocal cc=0]])
-
--- -- 2 spaces for selected filetypes
--- cmd [[
---   autocmd FileType xml,html,xhtml,css,scss,json,javascript,javascriptreact,typescript,typescriptreact,lua,yaml setlocal shiftwidth=2 tabstop=2
--- ]]
--- -- 8 spaces for golang
--- cmd [[
---   autocmd FileType go setlocal shiftwidth=8 tabstop=8
--- ]]
-
--- easy exits
-cmd([[
-  autocmd FileType help nmap <buffer> q :q<CR>
-  autocmd FileType list nmap <buffer> q :q<CR>
-]])
-
------------------------------------------------------------
--- Terminal
------------------------------------------------------------
-
--- Open a terminal pane on the right using :Term
-cmd([[command Term :botright vsplit term://$SHELL]])
-
--- Terminal visual tweaks:
---- enter insert mode when switching to terminal
---- close terminal buffer on process exit
-cmd([[
-    autocmd TermOpen * setlocal listchars= nonumber norelativenumber nocursorline
-    autocmd TermOpen * startinsert
-    autocmd BufLeave term://* stopinsert
+  sign define DiagnosticSignError text=┃ texthl=DiagnosticSignError linehl= numhl=
+  sign define DiagnosticSignWarn  text=┃ texthl=DiagnosticSignWarn linehl= numhl=
+  sign define DiagnosticSignInfo  text=┃ texthl=DiagnosticSignInfo linehl= numhl=
+  sign define DiagnosticSignHint  text=┃ texthl=DiagnosticSignHint linehl= numhl=
 ]])

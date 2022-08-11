@@ -1,9 +1,23 @@
 local M = {}
-notify = require('notify')
+
+-- Moses = require('moses')
+P = function(v)
+  print(vim.inspect(v))
+  return v
+end
+
+if pcall(require, 'plenary') then
+  RELOAD = require('plenary.reload').reload_module
+
+  R = function(name)
+    RELOAD(name)
+    return require(name)
+  end
+end
 
 M['unload_lua_namespace'] = function(prefix)
   local prefix_with_dot = prefix .. '.'
-  for key, value in pairs(package.loaded) do
+  for key in pairs(package.loaded) do
     if key == prefix or key:sub(1, #prefix_with_dot) == prefix_with_dot then
       package.loaded[key] = nil
     end
@@ -18,9 +32,11 @@ end
 function M:load() end
 
 function M:reload()
-  M.unload_lua_namespace('core')
-  M.unload_lua_namespace('plugins')
+  M.unload_lua_namespace('pat.core')
+  M.unload_lua_namespace('pat.plugins')
   dofile(vim.fn.stdpath('config') .. '/init.lua')
   print('Reloaded vimrc!')
-  notify('Config updated!', 'success')
+  vim.notify('Config updated!', 'success')
 end
+
+return M

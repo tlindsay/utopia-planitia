@@ -36,9 +36,9 @@ local defaults = {
   },
 }
 
-function M.config()
-  lvim.builtin.notify = vim.tbl_deep_extend('force', defaults, lvim.builtin.notify or {})
-end
+-- function M.config()
+--   lvim.builtin.notify = vim.tbl_deep_extend('force', defaults, lvim.builtin.notify or {})
+-- end
 
 function M.setup()
   if #vim.api.nvim_list_uis() == 0 then
@@ -46,11 +46,13 @@ function M.setup()
     return
   end
 
-  local opts = lvim.builtin.notify and lvim.builtin.notify.opts or defaults
+  -- local opts = pcall(lvim.builtin.notify) and pcall(lvim.builtin.notify.opts) or defaults
+  local opts = defaults
   local notify = require('notify')
 
   notify.setup(opts)
   vim.notify = notify
 end
 
+M.setup()
 return M

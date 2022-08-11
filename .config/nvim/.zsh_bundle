@@ -1,0 +1,15 @@
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-laurenkt-SLASH-zsh-vimto/zsh-vimto.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-laurenkt-SLASH-zsh-vimto )
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-mdumitru-SLASH-git-aliases/git-aliases.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-mdumitru-SLASH-git-aliases )
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-wfxr-SLASH-forgit/forgit.plugin.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-wfxr-SLASH-forgit )
+
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-Aloxaf-SLASH-fzf-tab/fzf-tab.plugin.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-Aloxaf-SLASH-fzf-tab )
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zdharma-SLASH-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zdharma-SLASH-fast-syntax-highlighting )
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions )
+source /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-completions/zsh-completions.plugin.zsh
+fpath+=( /Users/plindsay/Library/Caches/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-completions )
