@@ -26,6 +26,8 @@ return packer.startup({
     use('nvim-lua/plenary.nvim')
     use_rocks('moses') -- Moses is a utility lib for functional programming in lua
 
+    use('smartpde/debuglog') -- Logging plugin for debugging lua configs
+
     -- Pane Management
     use('mrjones2014/smart-splits.nvim')
 
@@ -40,7 +42,8 @@ return packer.startup({
       },
     })
     use('nvim-telescope/telescope-file-browser.nvim')
-    use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+    -- use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+    use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'arch -arm64 make' })
     use('nvim-telescope/telescope-github.nvim')
     use('nvim-telescope/telescope-node-modules.nvim')
     use('nvim-telescope/telescope-ui-select.nvim')
@@ -61,14 +64,7 @@ return packer.startup({
     use('folke/which-key.nvim')
 
     -- Autopair
-    use({
-      'windwp/nvim-autopairs',
-      config = function()
-        vim.api.nvim_echo({ { 'start' } }, true, {})
-        require('plugins.nvim-autopairs')
-        vim.api.nvim_echo({ { 'end' } }, true, {})
-      end,
-    })
+    use('windwp/nvim-autopairs')
 
     -- Pretty Fold
     use('anuvyklack/pretty-fold.nvim')
@@ -91,17 +87,12 @@ return packer.startup({
     use({ 'p00f/nvim-ts-rainbow', requires = { 'nvim-treesitter/nvim-treesitter' } })
 
     -- Color schemes
-    use('navarasu/onedark.nvim')
-
-    use('tanvirtin/monokai.nvim')
-
-    use({ 'rose-pine/neovim', as = 'rose-pine' })
-
     use('folke/tokyonight.nvim')
+
+    use('nvchad/nvim-colorizer.lua')
 
     -- LSP
     use('neovim/nvim-lspconfig')
-    -- use('williamboman/nvim-lsp-installer')
     use('williamboman/mason.nvim')
     use('williamboman/mason-lspconfig.nvim')
     use('onsails/lspkind-nvim')
@@ -137,10 +128,6 @@ return packer.startup({
     use('mizlan/iswap.nvim')
 
     -- Bufferline
-    -- use({
-    --   'noib3/nvim-cokeline',
-    --   requires = 'kyazdani42/nvim-web-devicons',
-    -- })
     use({
       'akinsho/bufferline.nvim',
       tag = '*',
@@ -171,7 +158,9 @@ return packer.startup({
 
     -- comments
     use('JoosepAlviste/nvim-ts-context-commentstring')
-    use({ 'numToStr/Comment.nvim', branch = 'jsx' })
+    use({
+      'numToStr/Comment.nvim',--[[ branch = 'jsx' ]]
+    })
 
     -- debugging
     use({
@@ -186,6 +175,7 @@ return packer.startup({
     use('nvim-telescope/telescope-dap.nvim')
 
     -- Dashboard (start screen)
+    -- use('glepnir/dashboard-nvim')
     use({
       'goolord/alpha-nvim',
       requires = { 'kyazdani42/nvim-web-devicons' },
@@ -211,7 +201,6 @@ return packer.startup({
 
     -- Tpope
     use('tpope/vim-abolish')
-    -- use('tpope/vim-commentary')
     use('tpope/vim-eunuch')
     use('tpope/vim-fugitive')
     use('tpope/vim-surround')

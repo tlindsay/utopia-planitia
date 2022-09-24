@@ -48,10 +48,11 @@ local comps = {
     provider = function()
       local label = ''
       if vim.api.nvim_get_var('PAT_format_on_save') then
-        label = '💅'
+        label = '  '
       end
       return label
     end,
+    hl = { fg = colors.bg, bg = colors.pink },
   },
   -- vi_mode -> NORMAL, INSERT..
   vi_mode = {
@@ -61,15 +62,14 @@ local comps = {
         return label
       end,
       hl = function()
-        local set_color = {
+        return {
           name = vi_mode_utils.get_mode_highlight_name(),
           fg = colors.bg,
           bg = vi_mode_utils.get_mode_color(),
           style = 'bold',
         }
-        return set_color
       end,
-      left_sep = ' ',
+      left_sep = '',
       right_sep = ' ',
     },
   },

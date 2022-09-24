@@ -1,18 +1,40 @@
 local null = require('null-ls')
+-- local prettierPath = vim.cmd([[echo exepath]])
 null.setup({
+  debug = true,
   sources = {
-    null.builtins.formatting.stylua,
     null.builtins.code_actions.eslint_d,
-    null.builtins.formatting.eslint_d,
+
+    -- DIAGNOSTICS
+    null.builtins.diagnostics.commitlint,
+    null.builtins.diagnostics.luacheck,
+    null.builtins.diagnostics.tsc,
+    null.builtins.diagnostics.zsh,
     null.builtins.diagnostics.eslint_d.with({
-      -- ignore prettier warnings from eslint-plugin-prettier
       filter = function(diagnostic)
-        return diagnostic.code ~= 'prettier/prettier'
+        -- ignore prettier warnings from eslint-plugin-prettier
+        local isPrettier = diagnostic.code == 'prettier/prettier'
+        if isPrettier then
+          return false
+        end
+
+        -- Supress "No ESLint Config" errors
+        local hasEslintConfig = (diagnostic.message):find('No ESLint config') == nil
+        if not hasEslintConfig then
+          return false
+        end
+
+        return true
       end,
     }),
+
+    -- FORMATTERS
+    null.builtins.formatting.gofmt,
+    null.builtins.formatting.stylua,
+    null.builtins.formatting.eslint_d,
     null.builtins.formatting.prettierd.with({
       condition = function(utils)
-        return utils.root_has_file({ 'node_modules/.bin/prettier' })
+        return utils.root_has_file('node_modules/.bin/prettier')
       end,
     }),
   },
@@ -32,7 +54,7 @@ null.setup({
               -- timeout_ms = 5000,
               -- filter = function(c) -- Only use null-ls for formatting
               --   return c.name == 'null-ls'
-              -- end
+              -- end,
             })
           end
         end,

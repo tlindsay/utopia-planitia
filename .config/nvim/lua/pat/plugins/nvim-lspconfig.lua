@@ -12,6 +12,7 @@ local servers = {
   'bashls',
   'pyright',
   'clangd',
+  'cssls',
   'html', --[[ 'eslint', ]]
   'gopls',
 }
@@ -129,7 +130,7 @@ local on_attach = function(client, bufnr)
       },
     },
     g = {
-      D = { vim.lsp.buf.declaration, 'Go to Declaration' },
+      D = { vim.lsp.buf.type_definition, 'Go to Type Definition' },
       d = { vim.lsp.buf.definition, 'Go to Definition' },
       i = { vim.lsp.buf.implementation, 'Go to Implementation' },
       I = { '<cmd>vsp | lua vim.lsp.buf.definition()<CR>', 'Split to Implementation' },

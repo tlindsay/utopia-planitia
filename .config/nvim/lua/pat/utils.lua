@@ -1,3 +1,7 @@
+-- require('debuglog').setup({ log_to_file = true, log_to_console = true })
+-- local dlog = require('debuglog')
+-- Vlog = dlog('nvim')
+
 local M = {}
 
 -- Moses = require('moses')
@@ -6,6 +10,11 @@ P = function(v)
   return v
 end
 
+-- Plog = function(v)
+--   Vlog(vim.inspect(v))
+--   return v
+-- end
+
 if pcall(require, 'plenary') then
   RELOAD = require('plenary.reload').reload_module
 
@@ -13,6 +22,12 @@ if pcall(require, 'plenary') then
     RELOAD(name)
     return require(name)
   end
+end
+
+function _G.reload_config()
+  local reload = require('plenary.reload').reload_module
+  reload('pat', false)
+  dofile(vim.env.MYVIMRC)
 end
 
 M['unload_lua_namespace'] = function(prefix)

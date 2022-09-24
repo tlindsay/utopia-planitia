@@ -1,3 +1,4 @@
+local wk = require('which-key')
 local ls = require('luasnip')
 local fmt = require('luasnip.extras.fmt').fmt
 local snippet = ls.snippet
@@ -8,6 +9,23 @@ local snippet_node = ls.snippet_node
 local rep = require('luasnip.extras').rep
 
 require('luasnip.loaders.from_vscode').lazy_load()
+
+wk.register({
+  ['<C-y>'] = {
+    n = {
+      function()
+        ls.jump(1)
+      end,
+      'Jump to next snippet node',
+    },
+    N = {
+      function()
+        ls.jump(-1)
+      end,
+      'Jump to previous snippet node',
+    },
+  },
+}, { mode = 'i' })
 
 -- Get a list of  the property names given an `interface_declaration`
 -- treesitter *tsx* node.

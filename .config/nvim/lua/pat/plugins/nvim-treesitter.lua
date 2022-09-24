@@ -7,11 +7,17 @@
 
 local ts = require('nvim-treesitter.configs')
 local ctx = require('treesitter-context')
+local wk = require('which-key')
+
+wk.register({
+  ['<leader>H'] = { ':TSHighlightCapturesUnderCursor<CR>', 'Display TS Highlight' },
+})
 
 ts.setup({
   autopairs = { enable = true },
   context_commentstring = {
     enable = true,
+    enable_autocmd = false, -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
     config = {
       handlebars = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
       glimmer = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
@@ -69,3 +75,24 @@ vim.api.nvim_set_hl(
   { italic = true, fg = colors.tokyonight.magenta, bg = colors.tokyonight.bg_highlight, blend = 50 }
 )
 vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
+
+local tokyoRainbow = {
+  -- colors.tokyonight.purple,
+  colors.tokyonight.magenta,
+  -- colors.tokyonight.blue,
+  colors.tokyonight.cyan,
+  -- colors.tokyonight.blue1,
+  colors.tokyonight.blue6,
+  -- colors.tokyonight.green1,
+  colors.tokyonight.teal,
+  -- colors.tokyonight.green,
+  colors.tokyonight.yellow,
+  colors.tokyonight.orange,
+  colors.tokyonight.red,
+  -- colors.tokyonight.fg,
+}
+
+for i, c in ipairs(tokyoRainbow) do
+  local hlGroup = 'rainbowcol' .. i
+  vim.api.nvim_set_hl(0, hlGroup, { fg = c })
+end

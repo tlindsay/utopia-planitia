@@ -9,23 +9,26 @@ vim.api.nvim_command('packadd packer.nvim')
 
 local no_errors, error_msg = pcall(function()
 
-  local time
-  local profile_info
-  local should_profile = true
-  if should_profile then
-    local hrtime = vim.loop.hrtime
-    profile_info = {}
-    time = function(chunk, start)
-      if start then
-        profile_info[chunk] = hrtime()
-      else
-        profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
-      end
+_G._packer = _G._packer or {}
+_G._packer.inside_compile = true
+
+local time
+local profile_info
+local should_profile = false
+if should_profile then
+  local hrtime = vim.loop.hrtime
+  profile_info = {}
+  time = function(chunk, start)
+    if start then
+      profile_info[chunk] = hrtime()
+    else
+      profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
     end
-  else
-    time = function(chunk, start) end
   end
-  
+else
+  time = function(chunk, start) end
+end
+
 local function save_profiles(threshold)
   local sorted_times = {}
   for chunk_name, time_taken in pairs(profile_info) do
@@ -38,8 +41,10 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
-  _G._packer = _G._packer or {}
   _G._packer.profile_output = results
 end
 
@@ -83,11 +88,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
-  },
-  ["alpha-nvim"] = {
-    loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/alpha-nvim",
-    url = "https://github.com/goolord/alpha-nvim"
   },
   ["bufferline.nvim"] = {
     loaded = true,
@@ -139,6 +139,16 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["dashboard-nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/dashboard-nvim",
+    url = "https://github.com/glepnir/dashboard-nvim"
+  },
+  debuglog = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/debuglog",
+    url = "https://github.com/smartpde/debuglog"
+  },
   ["diffview.nvim"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/diffview.nvim",
@@ -154,6 +164,11 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/fidget.nvim",
     url = "https://github.com/j-hui/fidget.nvim"
   },
+  ["friendly-snippets"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/friendly-snippets",
+    url = "https://github.com/rafamadriz/friendly-snippets"
+  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
@@ -163,6 +178,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
+  },
+  ["iswap.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/iswap.nvim",
+    url = "https://github.com/mizlan/iswap.nvim"
+  },
+  ["lsp_lines.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/lsp_lines.nvim",
+    url = "https://github.com/Maan2003/lsp_lines.nvim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -174,10 +199,15 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/lua-language-server",
     url = "https://github.com/sumneko/lua-language-server"
   },
-  ["monokai.nvim"] = {
+  ["mason-lspconfig.nvim"] = {
     loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/monokai.nvim",
-    url = "https://github.com/tanvirtin/monokai.nvim"
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
+    url = "https://github.com/williamboman/mason-lspconfig.nvim"
+  },
+  ["mason.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://github.com/williamboman/mason.nvim"
   },
   ["neo-tree.nvim"] = {
     loaded = true,
@@ -210,7 +240,6 @@ _G.packer_plugins = {
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
   },
   ["nvim-autopairs"] = {
-    config = { "\27LJ\2\n<\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0" },
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
@@ -219,6 +248,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
+  },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
+    url = "https://github.com/nvchad/nvim-colorizer.lua"
   },
   ["nvim-dap"] = {
     loaded = true,
@@ -239,11 +273,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-gps",
     url = "https://github.com/SmiteshP/nvim-gps"
-  },
-  ["nvim-lsp-installer"] = {
-    loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
-    url = "https://github.com/williamboman/nvim-lsp-installer"
   },
   ["nvim-lsp-ts-utils"] = {
     loaded = true,
@@ -270,6 +299,11 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
+  ["nvim-treesitter-context"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-treesitter-context",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-context"
+  },
   ["nvim-treesitter-endwise"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-treesitter-endwise",
@@ -290,15 +324,15 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
     url = "https://github.com/p00f/nvim-ts-rainbow"
   },
+  ["nvim-ufo"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ufo",
+    url = "https://github.com/kevinhwang91/nvim-ufo"
+  },
   ["nvim-web-devicons"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
-  },
-  ["onedark.nvim"] = {
-    loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/onedark.nvim",
-    url = "https://github.com/navarasu/onedark.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -320,10 +354,10 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/pretty-fold.nvim",
     url = "https://github.com/anuvyklack/pretty-fold.nvim"
   },
-  ["rose-pine"] = {
+  ["promise-async"] = {
     loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/rose-pine",
-    url = "https://github.com/rose-pine/neovim"
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/promise-async",
+    url = "https://github.com/kevinhwang91/promise-async"
   },
   ["smart-splits.nvim"] = {
     loaded = true,
@@ -430,11 +464,6 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
     url = "https://github.com/christoomey/vim-tmux-navigator"
   },
-  ["vista.vim"] = {
-    loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vista.vim",
-    url = "https://github.com/liuchengxu/vista.vim"
-  },
   ["vscode-chrome-debug"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vscode-chrome-debug",
@@ -453,10 +482,13 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0", "config", "nvim-autopairs")
-time([[Config for nvim-autopairs]], false)
+
+_G._packer.inside_compile = false
+if _G._packer.needs_bufread == true then
+  vim.cmd("doautocmd BufRead")
+end
+_G._packer.needs_bufread = false
+
 if should_profile then save_profiles() end
 
 end)
