@@ -28,6 +28,7 @@ wk.register({
 wk.register({
   ['<leader>'] = {
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
+    ['rv'] = { _G.reload_config, 'Reload Vim config' },
     ['<space>'] = { ':set wrap!<CR>', 'Toggle line wrapping' },
     ['<Del>'] = { ':bufdo bwipeout! | Alpha<CR>', 'Close all buffers' },
     x = { ':tabclose<CR>', 'Close window' },

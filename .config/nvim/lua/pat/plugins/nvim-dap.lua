@@ -20,6 +20,36 @@ dap.adapters.firefox = {
   },
 }
 
+dap.adapters.codelldb = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = os.getenv('HOME') .. '/.local/share/nvim/mason/bin/codelldb',
+    args = { '--port', '${port}' },
+  },
+}
+dap.configurations.rust = {
+  {
+    name = 'Launch file',
+    type = 'codelldb',
+    request = 'launch',
+    program = function()
+      return coroutine.create(function(dapco)
+        vim.ui.select(vim.fn.systemlist('fd -tx --no-ignore'), {
+          prompt = 'Select an executable',
+          kind = 'file',
+        }, function(choice)
+          coroutine.resume(dapco, choice)
+        end)
+      end)
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+}
+dap.configurations.cpp = dap.configurations.rust
+dap.configurations.c = dap.configurations.cpp
+
 dap.configurations.typescriptreact = { -- change to typescript if needed
   {
     type = 'chrome',

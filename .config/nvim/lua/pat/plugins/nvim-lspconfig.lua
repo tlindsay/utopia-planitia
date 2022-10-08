@@ -15,6 +15,7 @@ local servers = {
   'cssls',
   'html', --[[ 'eslint', ]]
   'gopls',
+  'rust_analyzer',
 }
 
 -- require('nvim-lsp-installer').setup({
@@ -27,7 +28,7 @@ local nvim_lsp = require('lspconfig')
 local lines = require('lsp_lines')
 local wk = require('which-key')
 require('mason').setup()
-require('mason-lspconfig').setup({})
+require('mason-lspconfig').setup({ ensure_installed = servers })
 require('fidget').setup({ text = { spinner = 'dots' } })
 
 lines.setup()
@@ -111,14 +112,19 @@ local on_attach = function(client, bufnr)
       k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
       f = { vim.lsp.buf.code_action, 'Fix Diagnostic' },
       F = { vim.lsp.buf.format, 'Autoformat' },
-      -- l = {
-      --   function()
-      --     -- local vtext = vim.diagnostic.config().virtual_text
-      --     -- vim.diagnostic.config({ virtual_text = not vtext })
-      --     lines.toggle()
-      --   end,
-      --   'Toggle LSP Lines',
-      -- },
+      l = {
+        function()
+          local vtext = vim.diagnostic.config().virtual_text
+          local vline = vim.diagnostic.config().virtual_lines
+          vim.diagnostic.config({ virtual_text = not vtext })
+          if vline then
+            vim.diagnostic.config({ virtual_lines = false })
+          else
+            vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
+          end
+        end,
+        'Toggle LSP Lines',
+      },
       s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Open symbol selector' },
       x = {
         name = 'Trouble',
@@ -157,16 +163,10 @@ local border = {
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-  -- ["textDocument/implementation"] = vim.lsp.with(
-  --   vim.lsp.handlers.location, {
-  --     location_callback = function(location)
-  --       vim.cmd [[vsplit]]
-  --       vim.lsp.util.jump_to_location(location)
-  --     end
-  --   }
-  -- )
 }
-
+--[[=========================
+    == CUSTOM SERVER CONFIGS
+    ========================= ]]
 local ts_utils = require('nvim-lsp-ts-utils')
 require('lspconfig').tsserver.setup({
   handlers = handlers,
@@ -239,6 +239,21 @@ require('lspconfig').sumneko_lua.setup({
         enable = false,
       },
     },
+  },
+})
+
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+require('lspconfig').emmet_ls.setup({
+  capabilities = capabilities,
+  filetypes = {
+    'html',
+    'typescriptreact',
+    'javascriptreact',
+    'css',
+    'sass',
+    'scss',
+    'less',
+    'hbs',
   },
 })
 

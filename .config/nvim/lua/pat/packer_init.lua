@@ -28,6 +28,18 @@ return packer.startup({
 
     use('smartpde/debuglog') -- Logging plugin for debugging lua configs
 
+    -- Project Management
+    use({
+      'Dax89/IDE.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'rcarriga/nvim-notify',
+        'stevearc/dressing.nvim',
+        'mfussenegger/nvim-dap',
+        'rcarriga/nvim-dap-ui',
+      },
+    })
+
     -- Pane Management
     use('mrjones2014/smart-splits.nvim')
 

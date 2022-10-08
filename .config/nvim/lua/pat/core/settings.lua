@@ -47,6 +47,7 @@ opt.smartcase = true -- Ignore lowercase for the whole pattern
 opt.linebreak = true -- Wrap on word boundary
 opt.termguicolors = true -- Enable 24-bit RGB colors
 opt.laststatus = 3 -- Single global statusline instead of per-buffer (will land in 0.7)
+opt.cmdheight = 0 -- No dedicated cmd line
 opt.cursorline = true
 opt.scrolloff = 5 -- Keep 5 lines of padding when scrolling
 
@@ -108,9 +109,17 @@ end
 -----------------------------------------------------------
 -- Diagnostic Styles
 -----------------------------------------------------------
+opt.signcolumn = 'auto:1-3'
+-- cmd([[
+--   sign define DiagnosticSignError text=┃ texthl=DiagnosticSignError linehl= numhl=
+--   sign define DiagnosticSignWarn  text=┃ texthl=DiagnosticSignWarn linehl= numhl=
+--   sign define DiagnosticSignInfo  text=┃ texthl=DiagnosticSignInfo linehl= numhl=
+--   sign define DiagnosticSignHint  text=┃ texthl=DiagnosticSignHint linehl= numhl=
+-- ]])
+-- local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
 cmd([[
-  sign define DiagnosticSignError text=┃ texthl=DiagnosticSignError linehl= numhl=
-  sign define DiagnosticSignWarn  text=┃ texthl=DiagnosticSignWarn linehl= numhl=
-  sign define DiagnosticSignInfo  text=┃ texthl=DiagnosticSignInfo linehl= numhl=
-  sign define DiagnosticSignHint  text=┃ texthl=DiagnosticSignHint linehl= numhl=
+  sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=
+  sign define DiagnosticSignWarn  text= texthl=DiagnosticSignWarn  linehl= numhl=
+  sign define DiagnosticSignInfo  text= texthl=DiagnosticSignInfo  linehl= numhl=
+  sign define DiagnosticSignHint  text= texthl=DiagnosticSignHint  linehl= numhl=
 ]])

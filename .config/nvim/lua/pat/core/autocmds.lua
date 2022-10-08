@@ -1,4 +1,7 @@
 local cmd = vim.cmd
+local wk = require('which-key')
+local utils = require('pat.utils')
+
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
@@ -30,6 +33,30 @@ vim.api.nvim_create_autocmd('FileType', {
   desc = 'Use builtin syntax-highlighting for selected filetypes',
   pattern = 'help,text',
   command = 'setlocal syntax=on',
+})
+
+local rustGroup = vim.api.nvim_create_augroup('RustPlayground', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  group = rustGroup,
+  pattern = 'rust',
+  callback = function(opts)
+    wk.register({
+      ['<leader>rP'] = {
+        function()
+          utils.rust_playground({ open = true })
+        end,
+        'Open current file as Rust Playground',
+      },
+      ['<leader>rp'] = {
+        function()
+          utils.rust_playground({ copy = true })
+          print('Rust Playground URL copied to clipboard!')
+        end,
+        'Copy URL to current file as Rust Playground',
+      },
+    }, { buffer = opts.buf })
+    return true
+  end,
 })
 
 -- This may be causing problems after adding nvim-ufo

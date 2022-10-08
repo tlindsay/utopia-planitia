@@ -87,8 +87,11 @@ require('telescope').setup({
 })
 
 local function get_files()
-  if not pcall(builtins.git_files, { show_untracked = true }) then
-    pcall(builtins.find_files)
+  local in_git_repo = vim.fn.systemlist('git rev-parse --is-inside-work-tree')[1] == 'true'
+  if in_git_repo then
+    builtins.git_files({ show_untracked = true })
+  else
+    builtins.find_files()
   end
 end
 
@@ -96,6 +99,7 @@ telescope.load_extension('fzf')
 telescope.load_extension('ui-select')
 telescope.load_extension('file_browser')
 telescope.load_extension('node_modules')
+telescope.load_extension('notify')
 telescope.load_extension('gh')
 telescope.load_extension('command_palette')
 telescope.load_extension('lsp_handlers')

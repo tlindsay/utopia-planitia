@@ -24,6 +24,7 @@ local defaults = {
 
     ---@usage minimum width for notification windows
     minimum_width = 50,
+    max_width = 80,
 
     ---@usage Icons for the different levels
     icons = {

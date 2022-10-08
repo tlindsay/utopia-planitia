@@ -38,7 +38,7 @@ local gps = require('nvim-gps')
 
 -- LSP diagnostic
 local lsp_get_diag = function(str)
-  local count = vim.lsp, diagnostic.get_count(0, str)
+  local count = vim.lsp.diagnostic.get_count(0, str)
   return (count > 0) and ' ' .. count .. ' ' or ''
 end
 
@@ -327,22 +327,16 @@ local wcomps = {
   active_file_info = {
     provider = {
       name = 'file_info',
-      opts = vim.tbl_extend('force', comps.file.info.provider.opts, { colored_icon = true }),
+      opts = vim.tbl_extend('force', comps.file.info.provider.opts, { colored_icon = true, type = 'unique-short' }),
     },
-    hl = {
-      fg = vi_mode_utils.get_mode_color(),
-      -- fg = colors.cyan,
-      bg = colors.bg,
-      style = 'underline',
-    },
-  },
-
-  active_spacer = {
-    hl = {
-      fg = vi_mode_utils.get_mode_color(),
-      -- fg = colors.cyan,
-      style = 'underdashed',
-    },
+    hl = function()
+      return {
+        bg = vi_mode_utils.get_mode_color(),
+        fg = colors.bg,
+      }
+    end,
+    left_sep = '█',
+    right_sep = '',
   },
 
   inactive_file_info = {
@@ -351,9 +345,11 @@ local wcomps = {
       opts = vim.tbl_extend('force', comps.file.info.provider.opts, { colored_icon = false }),
     },
     hl = {
-      fg = colors.comment,
-      bg = colors.bg,
+      fg = colors.bg,
+      bg = colors.comment,
     },
+    left_sep = '█',
+    right_sep = '',
   },
 }
 
@@ -362,7 +358,7 @@ local winbar_components = {
   inactive = {},
 }
 
-table.insert(winbar_components.active, { wcomps.active_spacer })
+table.insert(winbar_components.active, {})
 table.insert(winbar_components.active, {})
 table.insert(winbar_components.active[2], wcomps.active_file_info)
 table.insert(winbar_components.inactive, {})

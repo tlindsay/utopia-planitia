@@ -6,8 +6,6 @@ null.setup({
     null.builtins.code_actions.eslint_d,
 
     -- DIAGNOSTICS
-    null.builtins.diagnostics.commitlint,
-    null.builtins.diagnostics.luacheck,
     null.builtins.diagnostics.tsc,
     null.builtins.diagnostics.zsh,
     null.builtins.diagnostics.eslint_d.with({
@@ -30,6 +28,7 @@ null.setup({
 
     -- FORMATTERS
     null.builtins.formatting.gofmt,
+    null.builtins.formatting.rustfmt,
     null.builtins.formatting.stylua,
     null.builtins.formatting.eslint_d,
     null.builtins.formatting.prettierd.with({
@@ -48,7 +47,7 @@ null.setup({
         callback = function()
           if vim.api.nvim_get_var('PAT_format_on_save') then
             -- vim.lsp.buf.formatting_sync({}, 5000)
-            vim.api.nvim_echo({ { 'Trying to format' } }, true, {})
+            -- vim.api.nvim_echo({ { 'Trying to format' } }, true, {})
             vim.lsp.buf.format({
               bufnr = bufnr,
               -- timeout_ms = 5000,
