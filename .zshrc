@@ -23,9 +23,16 @@ setopt share_history          # share command history data
 # load asdf
 . $(brew --prefix asdf)/libexec/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
 # Set up tab-completions
 autoload -U compaudit compinit
 compinit -i -C -d ~/.zcompdump*
+# set up 1password completions
+eval "$(op completion zsh)"; compdef _op op
 
 # Arrow key menu for completions
 zstyle ':completion:*' menu select
