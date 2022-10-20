@@ -224,6 +224,16 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neo-tree.nvim",
     url = "https://github.com/nvim-neo-tree/neo-tree.nvim"
   },
+  neorg = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neorg",
+    url = "https://github.com/nvim-neorg/neorg"
+  },
+  ["neorg-telescope"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neorg-telescope",
+    url = "https://github.com/nvim-neorg/neorg-telescope"
+  },
   neotest = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neotest",
@@ -369,10 +379,20 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/promise-async",
     url = "https://github.com/kevinhwang91/promise-async"
   },
+  ["rust-tools.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/rust-tools.nvim",
+    url = "https://github.com/simrat39/rust-tools.nvim"
+  },
   ["smart-splits.nvim"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/smart-splits.nvim",
     url = "https://github.com/mrjones2014/smart-splits.nvim"
+  },
+  ["symbols-outline.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/symbols-outline.nvim",
+    url = "https://github.com/simrat39/symbols-outline.nvim"
   },
   ["telescope-command-palette.nvim"] = {
     loaded = true,

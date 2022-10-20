@@ -13,7 +13,8 @@ local servers = {
   'pyright',
   'clangd',
   'cssls',
-  'html', --[[ 'eslint', ]]
+  'html',
+  'eslint_d',
   'gopls',
   'rust_analyzer',
 }
@@ -37,28 +38,27 @@ vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
-
-local troubleGroup = vim.api.nvim_create_augroup('TroubleWindow', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'Trouble',
-  command = 'nmap <silent> <leader>xx :TroubleToggle<CR>',
-  group = troubleGroup,
-})
+capabilities.textDocument.completion.completionItem = vim.tbl_extend(
+  'force',
+  capabilities.textDocument.completion.completionItem,
+  {
+    documentationFormat = { 'markdown', 'plaintext' },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+      properties = {
+        'documentation',
+        'detail',
+        'additionalTextEdits',
+      },
+    },
+  }
+)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -167,104 +167,189 @@ local handlers = {
 --[[=========================
     == CUSTOM SERVER CONFIGS
     ========================= ]]
-local ts_utils = require('nvim-lsp-ts-utils')
-require('lspconfig').tsserver.setup({
-  handlers = handlers,
-  init_options = ts_utils.init_options,
-  on_attach = function(client, bufnr)
-    -- Use null-ls for formatting instead of builtin
-    client.server_capabilities.document_formatting = false
-    client.server_capabilities.document_range_formatting = false
-
-    on_attach(client, bufnr)
-
-    ts_utils.setup({
-      enable_import_on_completion = true,
-      auto_inlay_hints = false,
+require('mason-lspconfig').setup_handlers({
+  function(server_name)
+    nvim_lsp[server_name].setup({
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      flags = {
+        debounce_text_changes = 150,
+      },
     })
-    ts_utils.setup_client(client)
-    -- Mappings.
-    local opts = { buffer = bufnr, noremap = true, silent = true }
-    wk.register({
-      g = {
-        name = 'TS Utils',
-        s = { '<cmd>TSLspOrganize<CR>', 'Organize imports' },
-        rn = { '<cmd>TSLspRenameFile<CR>', 'Rename file' },
-        m = { '<cmd>TSLspImportAll<CR>', 'Add missing imports' },
+  end,
+  ['rust_analyzer'] = function()
+    -- local tools = {
+    --   autoSetHints = true,
+    --   runnables = { use_telescope = true },
+    --   inlay_hints = { show_parameter_hints = true },
+    --   hover_actions = { border = border, auto_focus = true },
+    -- }
+    -- local rt = require('rust-tools')
+    -- rt.setup({
+    --   tools = tools,
+    --   server = {
+    --     on_attach = function(client, bufnr)
+    --       on_attach(client, bufnr)
+    --       wk.register({
+    --         ['<space>'] = { rt.hover_actions.hover_actions, 'Rust Tools Hover Actions' },
+    --       }, { buf = bufnr })
+    --     end,
+    --     capabilities = capabilities,
+    --     flags = { debounce_text_changes = 150 },
+    --   },
+    -- })
+    local rustCapabilities = vim.lsp.protocol.make_client_capabilities()
+
+    -- snippets
+    rustCapabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    -- send actions with hover request
+    rustCapabilities.experimental = {
+      hoverActions = true,
+      hoverRange = true,
+      serverStatusNotification = true,
+      snippetTextEdit = true,
+      codeActionGroup = true,
+      ssr = true,
+    }
+
+    -- enable auto-import
+    rustCapabilities.textDocument.completion.completionItem.resolveSupport = {
+      properties = { 'documentation', 'detail', 'additionalTextEdits' },
+    }
+
+    -- rust analyzer goodies
+    rustCapabilities.experimental.commands = {
+      commands = {
+        'rust-analyzer.runSingle',
+        'rust-analyzer.debugSingle',
+        'rust-analyzer.showReferences',
+        'rust-analyzer.gotoLocation',
+        'editor.action.triggerParameterHints',
       },
-    }, opts)
+    }
+
+    rustCapabilities = vim.tbl_deep_extend('keep', rustCapabilities, capabilities or {})
+
+    require('lspconfig').rust_analyzer.setup({
+      handlers = handlers,
+      capabilities = rustCapabilities,
+      on_attach = on_attach,
+    })
+  end,
+  ['tsserver'] = function()
+    local ts_utils = require('nvim-lsp-ts-utils')
+    require('lspconfig').tsserver.setup({
+      handlers = handlers,
+      init_options = ts_utils.init_options,
+      on_attach = function(client, bufnr)
+        -- Use null-ls for formatting instead of builtin
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
+
+        on_attach(client, bufnr)
+
+        ts_utils.setup({
+          enable_import_on_completion = true,
+          auto_inlay_hints = false,
+        })
+        ts_utils.setup_client(client)
+        -- Mappings.
+        local opts = { buffer = bufnr, noremap = true, silent = true }
+        wk.register({
+          g = {
+            name = 'TS Utils',
+            s = { '<cmd>TSLspOrganize<CR>', 'Organize imports' },
+            rn = { '<cmd>TSLspRenameFile<CR>', 'Rename file' },
+            m = { '<cmd>TSLspImportAll<CR>', 'Add missing imports' },
+          },
+        }, opts)
+      end,
+    })
+  end,
+  ['ember'] = function()
+    require('lspconfig').ember.setup({
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      flags = {
+        debounce_text_changes = 150,
+      },
+      root_dir = require('lspconfig.util').root_pattern('.ember-cli'),
+    })
+  end,
+  ['sumneko_lua'] = function()
+    local runtime_path = vim.split(package.path, ';')
+    table.insert(runtime_path, 'lua/?.lua')
+    table.insert(runtime_path, 'lua/?/init.lua')
+    require('lspconfig').sumneko_lua.setup({
+      handlers = handlers,
+      on_attach = function(client, bufnr)
+        -- Use null-ls for formatting instead of builtin
+        client.server_capabilities.diagnostics = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
+
+        on_attach(client, bufnr)
+      end,
+      settings = {
+        Lua = {
+          runtime = {
+            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+            -- Setup your lua path
+            path = runtime_path,
+          },
+          diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = { 'vim', 'use', 'lvim', 'use_rocks' },
+          },
+          workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = vim.api.nvim_get_runtime_file('~/.config/nvim/**/*.lua', true),
+          },
+          -- Do not send telemetry data containing a randomized but unique identifier
+          telemetry = {
+            enable = false,
+          },
+        },
+      },
+    })
+  end,
+  ['emmet_ls'] = function()
+    require('lspconfig').emmet_ls.setup({
+      capabilities = capabilities,
+      filetypes = {
+        'html',
+        'typescriptreact',
+        'javascriptreact',
+        'css',
+        'sass',
+        'scss',
+        'less',
+        'hbs',
+      },
+    })
   end,
 })
-require('lspconfig').ember.setup({
-  handlers = handlers,
-  on_attach = on_attach,
-  capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
-  root_dir = require('lspconfig.util').root_pattern('.ember-cli'),
-})
 
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
-require('lspconfig').sumneko_lua.setup({
-  handlers = handlers,
-  on_attach = function(client, bufnr)
-    -- Use null-ls for formatting instead of builtin
-    client.server_capabilities.diagnostics = false
-    client.server_capabilities.document_formatting = false
-    client.server_capabilities.document_range_formatting = false
-
-    on_attach(client, bufnr)
-  end,
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = { 'vim', 'use', 'lvim', 'use_rocks' },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file('~/.config/nvim/**/*.lua', true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-})
-
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
-require('lspconfig').emmet_ls.setup({
-  capabilities = capabilities,
-  filetypes = {
-    'html',
-    'typescriptreact',
-    'javascriptreact',
-    'css',
-    'sass',
-    'scss',
-    'less',
-    'hbs',
-  },
-})
-
--- Call setup
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup({
-    handlers = handlers,
-    on_attach = on_attach,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    },
-  })
-end
+-- local function setup_rust_tools()
+--   local tools = {
+--     autoSetHints = true,
+--     runnables = { use_telescope = true },
+--     inlay_hints = { show_parameter_hints = true },
+--     hover_actions = { auto_focus = true },
+--   }
+--   require('rust-tools').setup({
+--     tools = tools,
+--     server = {
+--       on_attach = on_attach,
+--       capabilities = capabilities,
+--       flags = { debounce_text_changes = 150 },
+--     },
+--   })
+--   require('rust-tools-debug').setup()
+-- end
+--
+-- pcall(setup_rust_tools)

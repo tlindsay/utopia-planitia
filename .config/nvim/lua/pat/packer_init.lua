@@ -69,6 +69,17 @@ return packer.startup({
       },
     })
 
+    use({
+      'nvim-neorg/neorg',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'nvim-neorg/neorg-telescope',
+      },
+    })
+
+    -- Symbol Outline
+    use('simrat39/symbols-outline.nvim')
+
     -- Indentation Guides
     use('lukas-reineke/indent-blankline.nvim')
 
@@ -100,7 +111,6 @@ return packer.startup({
 
     -- Color schemes
     use('folke/tokyonight.nvim')
-
     use('nvchad/nvim-colorizer.lua')
 
     -- LSP
@@ -117,6 +127,7 @@ return packer.startup({
     use('jose-elias-alvarez/nvim-lsp-ts-utils')
     use('sumneko/lua-language-server')
     use('j-hui/fidget.nvim')
+    use('simrat39/rust-tools.nvim')
 
     -- Autocomplete
     use({
@@ -170,9 +181,7 @@ return packer.startup({
 
     -- comments
     use('JoosepAlviste/nvim-ts-context-commentstring')
-    use({
-      'numToStr/Comment.nvim',--[[ branch = 'jsx' ]]
-    })
+    use('numToStr/Comment.nvim')
 
     -- debugging
     use({
@@ -187,7 +196,6 @@ return packer.startup({
     use('nvim-telescope/telescope-dap.nvim')
 
     -- Dashboard (start screen)
-    -- use('glepnir/dashboard-nvim')
     use({
       'goolord/alpha-nvim',
       requires = { 'kyazdani42/nvim-web-devicons' },

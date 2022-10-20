@@ -1,6 +1,4 @@
 local cmd = vim.cmd
-local wk = require('which-key')
-local utils = require('pat.utils')
 
 -----------------------------------------------------------
 -- Autocommands
@@ -35,28 +33,12 @@ vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal syntax=on',
 })
 
-local rustGroup = vim.api.nvim_create_augroup('RustPlayground', { clear = true })
+-- Fix "<leader>xx" shortcut for closing Trouble
+local troubleGroup = vim.api.nvim_create_augroup('TroubleWindow', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-  group = rustGroup,
-  pattern = 'rust',
-  callback = function(opts)
-    wk.register({
-      ['<leader>rP'] = {
-        function()
-          utils.rust_playground({ open = true })
-        end,
-        'Open current file as Rust Playground',
-      },
-      ['<leader>rp'] = {
-        function()
-          utils.rust_playground({ copy = true })
-          print('Rust Playground URL copied to clipboard!')
-        end,
-        'Copy URL to current file as Rust Playground',
-      },
-    }, { buffer = opts.buf })
-    return true
-  end,
+  pattern = 'Trouble',
+  command = 'nmap <silent> <leader>xx :TroubleToggle<CR>',
+  group = troubleGroup,
 })
 
 -- This may be causing problems after adding nvim-ufo

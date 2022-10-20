@@ -83,9 +83,9 @@ map('n', '<C-l>', ':TmuxNavigateRight<CR>')
 -- map('n', '<C-l>', '<C-w>l')
 
 map('n', 'K', ':m .-2<CR>')
+map('v', 'K', ':m -2<cr>gv=gv')
+map('v', 'J', ":m '>+<cr>gv=gv")
 map('n', 'J', ':m .+1<CR>')
-map('v', 'K', ':m <-2<CR>gv=gv')
-map('v', 'J', ':m >+1<CR>gv=gv')
 
 -- Pane management
 map('n', '<A-h>', ':SmartResizeLeft<CR>')
@@ -114,6 +114,3 @@ map('n', '&', ':Telescope grep_string<CR>')
 -- Terminal mappings
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
 map('t', '<Esc>', '<C-\\><C-n>') -- exit
-
--- Vista tag-viewer
-map('n', '<leader><leader>v', ':Vista!!<CR>') -- open/close

@@ -117,6 +117,7 @@ wk.register({
     ['?'] = { builtins.help_tags, 'Search vim-help' },
     ['<leader>'] = {
       ['.'] = { M.edit_neovim, 'Dotfiles' },
+      ['j'] = { ':Telescope neorg find_linkable<CR>', 'Neorg' },
     },
   },
 })

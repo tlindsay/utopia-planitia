@@ -49,6 +49,7 @@ opt.termguicolors = true -- Enable 24-bit RGB colors
 opt.laststatus = 3 -- Single global statusline instead of per-buffer (will land in 0.7)
 opt.cmdheight = 0 -- No dedicated cmd line
 opt.cursorline = true
+opt.termguicolors = true
 opt.scrolloff = 5 -- Keep 5 lines of padding when scrolling
 
 -- Treesitter overrides

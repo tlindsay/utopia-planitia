@@ -60,6 +60,7 @@ ts.setup({
         ['ax'] = '@call.outer',
         ['ix'] = '@call.inner',
       },
+      include_surrounding_whitespace = false,
     },
   },
 })

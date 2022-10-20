@@ -91,9 +91,10 @@ cmp.setup({
 
   -- Load sources, see: https://github.com/topics/nvim-cmp
   sources = {
+    { name = 'neorg' },
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
-    -- { name = 'nvim_lsp_signature_help' }, -- Causing problems in ember files 05/27
+    { name = 'nvim_lsp_signature_help' }, -- Causing problems in ember files 05/27
     { name = 'treesitter' },
     { name = 'nvim_lua' },
     { name = 'path' },
