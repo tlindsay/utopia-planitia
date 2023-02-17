@@ -14,23 +14,36 @@ local servers = {
   'clangd',
   'cssls',
   'html',
-  'eslint_d',
   'gopls',
   'rust_analyzer',
 }
 
--- require('nvim-lsp-installer').setup({
---   ensure_installed = {
---     Moses.append(servers, { 'tsserver', 'ember', 'sumneko_lua' }),
---   },
--- })
-
+-- Define border chars for hover window
+-- ╭─╮
+-- │ │
+-- ╰─╯
+local border = {
+  { '╭', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '╮', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+  { '╯', 'FloatBorder' },
+  { '─', 'FloatBorder' },
+  { '╰', 'FloatBorder' },
+  { '│', 'FloatBorder' },
+}
 local nvim_lsp = require('lspconfig')
 local lines = require('lsp_lines')
 local wk = require('which-key')
-require('mason').setup()
+require('mason').setup({
+  ui = {
+    border = border,
+  },
+})
 require('mason-lspconfig').setup({ ensure_installed = servers })
+require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
+require('go').setup()
 
 lines.setup()
 vim.diagnostic.config({ virtual_text = false })
@@ -105,8 +118,18 @@ local on_attach = function(client, bufnr)
   wk.register({
     ['<space>'] = { vim.lsp.buf.hover, 'Show Inline Documentation' },
     ['<leader>'] = {
-      a = { vim.diagnostic.goto_next, 'Go to next issue' },
-      A = { vim.diagnostic.goto_prev, 'Go to previous issue' },
+      a = {
+        function()
+          vim.diagnostic.goto_next({ float = { border = border } })
+        end,
+        'Go to next issue',
+      },
+      A = {
+        function()
+          vim.diagnostic.goto_prev({ float = { border = border } })
+        end,
+        'Go to previous issue',
+      },
       D = { vim.lsp.buf.type_definition, 'Show Type Definition' },
       rn = { vim.lsp.buf.rename, 'Rename Symbol' },
       k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
@@ -146,20 +169,6 @@ local on_attach = function(client, bufnr)
   }, opts)
 end
 
--- Define border chars for hover window
--- ╭─╮
--- │ │
--- ╰─╯
-local border = {
-  { '╭', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╮', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-  { '╯', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╰', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-}
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
@@ -236,8 +245,27 @@ require('mason-lspconfig').setup_handlers({
       handlers = handlers,
       capabilities = rustCapabilities,
       on_attach = on_attach,
+      checkOnSave = {
+        allFeatures = true,
+        overrideCommand = {
+          'cargo',
+          'clippy',
+          '--workspace',
+          '--message-format=json',
+          '--all-targets',
+          '--all-features',
+        },
+      },
     })
   end,
+  -- ['eslint_d'] = function()
+  --   require('lspconfig').eslint_d.setup({
+  --     handlers = handlers,
+  --     capabilities = capabilities,
+  --     on_attach = on_attach,
+  --   })
+  -- end,
+
   ['tsserver'] = function()
     local ts_utils = require('nvim-lsp-ts-utils')
     require('lspconfig').tsserver.setup({
@@ -279,11 +307,11 @@ require('mason-lspconfig').setup_handlers({
       root_dir = require('lspconfig.util').root_pattern('.ember-cli'),
     })
   end,
-  ['sumneko_lua'] = function()
+  ['lua_ls'] = function()
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, 'lua/?.lua')
     table.insert(runtime_path, 'lua/?/init.lua')
-    require('lspconfig').sumneko_lua.setup({
+    require('lspconfig').lua_ls.setup({
       handlers = handlers,
       on_attach = function(client, bufnr)
         -- Use null-ls for formatting instead of builtin
@@ -302,6 +330,7 @@ require('mason-lspconfig').setup_handlers({
             path = runtime_path,
           },
           diagnostics = {
+            disable = true,
             -- Get the language server to recognize the `vim` global
             globals = { 'vim', 'use', 'lvim', 'use_rocks' },
           },
@@ -329,6 +358,34 @@ require('mason-lspconfig').setup_handlers({
         'scss',
         'less',
         'hbs',
+        'gohtmltmpl',
+      },
+    })
+  end,
+  ['gopls'] = function()
+    -- https://github.com/ChrisAmelia/dotfiles/blob/c4175cafa39671a3a66849b83a06749822fa4b59/nvim/lua/lsp.lua#L154
+    require('lspconfig').gopls.setup({
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      cmd = { 'gopls', 'serve' },
+      settings = {
+        gopls = {
+          analyses = {
+            unusedparams = true,
+            unusedvariable = true,
+          },
+          linksInHover = true,
+          -- codelenses = {
+          --   generate = true,
+          --   gc_details = false,
+          --   regenerate_cgo = true,
+          --   tidy = true,
+          --   upgrade_depdendency = true,
+          --   vendor = true,
+          -- },
+          usePlaceholders = true,
+        },
       },
     })
   end,

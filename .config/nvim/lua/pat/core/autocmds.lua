@@ -33,6 +33,17 @@ vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal syntax=on',
 })
 
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Toggle TS Rainbow to prevent colorscheme breakages',
+  pattern = { '*.json', '*.js', '*.jsx', '*.ts', '*.tsx' },
+  command = 'TSDisable rainbow | TSEnable rainbow',
+})
+vim.api.nvim_create_autocmd('BufWritePost', {
+  desc = 'Toggle TS Rainbow to prevent colorscheme breakages',
+  pattern = { '*.json', '*.js', '*.jsx', '*.ts', '*.tsx' },
+  command = 'TSDisable rainbow | TSEnable rainbow',
+})
+
 -- Fix "<leader>xx" shortcut for closing Trouble
 local troubleGroup = vim.api.nvim_create_augroup('TroubleWindow', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {

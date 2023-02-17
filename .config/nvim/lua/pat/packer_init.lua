@@ -28,6 +28,14 @@ return packer.startup({
 
     use('smartpde/debuglog') -- Logging plugin for debugging lua configs
 
+    use({
+      'folke/noice.nvim',
+      requires = {
+        'MunifTanjim/nui.nvim',
+        'rcarriga/nvim-notify',
+      },
+    })
+
     -- Project Management
     use({
       'Dax89/IDE.nvim',
@@ -89,6 +97,9 @@ return packer.startup({
     -- Autopair
     use('windwp/nvim-autopairs')
 
+    -- Token Highlight
+    use('tzachar/local-highlight.nvim')
+
     -- Pretty Fold
     use('anuvyklack/pretty-fold.nvim')
     use({
@@ -107,7 +118,10 @@ return packer.startup({
     use('nvim-treesitter/nvim-treesitter-textobjects')
     use('nvim-treesitter/nvim-treesitter-context')
     use('RRethy/nvim-treesitter-endwise')
-    use({ 'p00f/nvim-ts-rainbow', requires = { 'nvim-treesitter/nvim-treesitter' } })
+    use({ 'https://git.sr.ht/~p00f/nvim-ts-rainbow', requires = { 'nvim-treesitter/nvim-treesitter' } })
+
+    -- More textobjects
+    use('chrisgrieser/nvim-various-textobjs')
 
     -- Color schemes
     use('folke/tokyonight.nvim')
@@ -119,15 +133,21 @@ return packer.startup({
     use('williamboman/mason-lspconfig.nvim')
     use('onsails/lspkind-nvim')
     use('Maan2003/lsp_lines.nvim')
+    -- use('~/code/make/lsp_lines.nvim')
     use({
       'folke/trouble.nvim',
       requires = 'kyazdani42/nvim-web-devicons',
     })
     use('jose-elias-alvarez/null-ls.nvim')
     use('jose-elias-alvarez/nvim-lsp-ts-utils')
-    use('sumneko/lua-language-server')
+    use('jose-elias-alvarez/typescript.nvim')
+    use('LuaLS/lua-language-server')
     use('j-hui/fidget.nvim')
     use('simrat39/rust-tools.nvim')
+    use('ray-x/go.nvim')
+
+    -- Syntax Definitions
+    use('fladson/vim-kitty')
 
     -- Autocomplete
     use({
@@ -166,6 +186,9 @@ return packer.startup({
       'SmiteshP/nvim-gps',
       requires = 'nvim-treesitter/nvim-treesitter',
     })
+
+    -- Scroll Bar
+    use('petertriho/nvim-scrollbar')
 
     -- git diffs
     use({
@@ -215,6 +238,7 @@ return packer.startup({
         'nvim-treesitter/nvim-treesitter',
         'antoinemadec/FixCursorHold.nvim',
         'haydenmeade/neotest-jest',
+        'marilari88/neotest-vitest',
         'nvim-neotest/neotest-go',
       },
     })

@@ -13,7 +13,7 @@ neotree.setup({
 
 wk.register({
   ['<C-n>'] = {
-    ':Neotree toggle left reveal<CR>',
+    ':Neotree toggle float reveal<CR>',
     'Open file browser',
   },
 })

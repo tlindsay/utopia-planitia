@@ -46,13 +46,19 @@ cmp.setup({
 
   -- Completion settings
   completion = {
-    --completeopt = 'menu,menuone,noselect'
+    completeopt = 'menu,menuone,noselect,preview',
     keyword_length = 2,
   },
 
   window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
+  },
+
+  view = {
+    entries = {
+      ghost_text = true,
+    },
   },
 
   -- Key mapping
@@ -69,11 +75,18 @@ cmp.setup({
     }),
 
     -- Tab mapping
+    -- ['<Tab>'] = function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   else
+    --     fallback()
+    --   end
+    -- end,
     ['<Tab>'] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -94,7 +107,7 @@ cmp.setup({
     { name = 'neorg' },
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' }, -- Causing problems in ember files 05/27
+    { name = 'nvim_lsp_signature_help' },
     { name = 'treesitter' },
     { name = 'nvim_lua' },
     { name = 'path' },
@@ -115,25 +128,6 @@ cmp.setup({
         spell = ' 暈',
       },
     }),
-    -- format = function(entry, vim_item)
-    --   -- print(vim.inspect(vim_item.kind))
-    --   vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-    --   vim_item.menu = ({
-    --     buffer = ' ﬘',
-    --     nvim_lsp = ' ',
-    --     luasnip = ' 🐍',
-    --     treesitter = ' ',
-    --     nvim_lua = ' ',
-    --     spell = ' 暈',
-    --   })[entry.source.name]
-    --   return vim_item
-    -- end,
-
-    before = function(entry, vim_item)
-      P(entry)
-      P(vim_item)
-      return vim_item
-    end,
   },
 
   -- Here there be dragons

@@ -2,13 +2,16 @@
 -- Color schemes configuration file
 -----------------------------------------------------------
 
+local tokyonight = R('tokyonight')
+local hl = R('local-highlight')
+
 local M = {}
 
 -- Theme: TokyoNight
 --- See: https://github.com/folke/tokyonight.nvim/blob/main/lua/tokyonight/colors.lua
 
 local theme = 'moon'
-R('tokyonight').setup({
+tokyonight.setup({
   style = theme,
   dim_inactive = true,
 
@@ -19,19 +22,21 @@ R('tokyonight').setup({
 
   on_highlights = function(highlights, colors)
     highlights.WinSeparator = {
-      fg = colors.purple,--[[ , bg = 'None' ]]
+      fg = colors.purple, --[[ , bg = 'None' ]]
     }
     highlights.DiagnosticWarn = { fg = colors.yellow, underline = false }
     highlights['AlphaHeader'] = {
-      fg = colors.blue,--[[ , bg = 'None' ]]
+      fg = colors.blue, --[[ , bg = 'None' ]]
     }
     highlights['AlphaFooter'] = {
-      fg = colors.yellow,--[[ , bg = 'None' ]]
+      fg = colors.yellow, --[[ , bg = 'None' ]]
     }
   end,
 })
 
 -- Load nvim color scheme:
 vim.cmd([[colorscheme tokyonight]])
+
+hl.setup({ hlgroup = 'CursorLine' })
 
 return M

@@ -5,9 +5,9 @@
 local M = {}
 
 -- Moses = require('moses')
-_G.P = function(v)
-  print(vim.inspect(v))
-  return v
+_G.P = function(...)
+  print(vim.inspect(...))
+  return ...
 end
 
 -- Plog = function(v)

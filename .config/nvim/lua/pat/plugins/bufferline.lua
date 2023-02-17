@@ -1,4 +1,4 @@
-local colors = require('pat.core.colors').tokyonight
+local colors = require('pat.core/colors').tokyonight
 require('bufferline').setup({
   options = {
     mode = 'tabs',

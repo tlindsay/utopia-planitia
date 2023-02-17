@@ -4,6 +4,7 @@ null.setup({
   debug = true,
   sources = {
     null.builtins.code_actions.eslint_d,
+    require('typescript.extensions.null-ls.code-actions'),
 
     -- DIAGNOSTICS
     null.builtins.diagnostics.tsc,
@@ -18,7 +19,8 @@ null.setup({
 
         -- Supress "No ESLint Config" errors
         local hasEslintConfig = (diagnostic.message):find('No ESLint config') == nil
-        if not hasEslintConfig then
+        local isIgnored = (diagnostic.message):find('File ignored') ~= nil
+        if not hasEslintConfig or isIgnored then
           return false
         end
 
@@ -39,21 +41,16 @@ null.setup({
   },
   -- format on save
   on_attach = function(client, bufnr)
-    -- if client.server_capabilities.document_formatting then
     if client.server_capabilities.documentFormattingProvider then
       local group = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
-      -- local buffer = vim.api.nvim_get_current_buf()
       vim.api.nvim_create_autocmd('BufWritePre', {
         callback = function()
           if vim.api.nvim_get_var('PAT_format_on_save') then
-            -- vim.lsp.buf.formatting_sync({}, 5000)
-            -- vim.api.nvim_echo({ { 'Trying to format' } }, true, {})
             vim.lsp.buf.format({
               bufnr = bufnr,
-              -- timeout_ms = 5000,
-              -- filter = function(c) -- Only use null-ls for formatting
-              --   return c.name == 'null-ls'
-              -- end,
+              filter = function(c) -- Only use null-ls for formatting
+                return c.name == 'null-ls'
+              end,
             })
           end
         end,

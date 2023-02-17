@@ -184,6 +184,11 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
   },
+  ["go.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/go.nvim",
+    url = "https://github.com/ray-x/go.nvim"
+  },
   ["indent-blankline.nvim"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
@@ -193,6 +198,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/iswap.nvim",
     url = "https://github.com/mizlan/iswap.nvim"
+  },
+  ["local-highlight.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/local-highlight.nvim",
+    url = "https://github.com/tzachar/local-highlight.nvim"
   },
   ["lsp_lines.nvim"] = {
     loaded = true,
@@ -207,7 +217,7 @@ _G.packer_plugins = {
   ["lua-language-server"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/lua-language-server",
-    url = "https://github.com/sumneko/lua-language-server"
+    url = "https://github.com/LuaLS/lua-language-server"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -248,6 +258,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neotest-jest",
     url = "https://github.com/haydenmeade/neotest-jest"
+  },
+  ["neotest-vitest"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/neotest-vitest",
+    url = "https://github.com/marilari88/neotest-vitest"
+  },
+  ["noice.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/noice.nvim",
+    url = "https://github.com/folke/noice.nvim"
   },
   ["nui.nvim"] = {
     loaded = true,
@@ -314,6 +334,11 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-notify",
     url = "https://github.com/rcarriga/nvim-notify"
   },
+  ["nvim-scrollbar"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-scrollbar",
+    url = "https://github.com/petertriho/nvim-scrollbar"
+  },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
@@ -342,12 +367,17 @@ _G.packer_plugins = {
   ["nvim-ts-rainbow"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
-    url = "https://github.com/p00f/nvim-ts-rainbow"
+    url = "https://git.sr.ht/~p00f/nvim-ts-rainbow"
   },
   ["nvim-ufo"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ufo",
     url = "https://github.com/kevinhwang91/nvim-ufo"
+  },
+  ["nvim-various-textobjs"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-various-textobjs",
+    url = "https://github.com/chrisgrieser/nvim-various-textobjs"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -454,6 +484,11 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
   },
+  ["typescript.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/typescript.nvim",
+    url = "https://github.com/jose-elias-alvarez/typescript.nvim"
+  },
   ["vim-abolish"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vim-abolish",
@@ -473,6 +508,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vim-fugitive-blame-ext",
     url = "https://github.com/tommcdo/vim-fugitive-blame-ext"
+  },
+  ["vim-kitty"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/vim-kitty",
+    url = "https://github.com/fladson/vim-kitty"
   },
   ["vim-repeat"] = {
     loaded = true,

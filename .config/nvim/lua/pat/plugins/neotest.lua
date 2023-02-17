@@ -3,9 +3,10 @@ local wk = require('which-key')
 
 neotest.setup({
   adapters = {
-    require('neotest-jest')({
-      jestCommand = 'yarn test --watchAll=false',
-    }),
+    require('neotest-vitest'),
+    -- require('neotest-jest')({
+    --   jestCommand = 'yarn test --watchAll=false',
+    -- }),
     require('neotest-go'),
   },
   icons = {
