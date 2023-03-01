@@ -2,7 +2,7 @@
 -- Color schemes configuration file
 -----------------------------------------------------------
 
-local tokyonight = R('tokyonight')
+local tokyonight = require('tokyonight')
 local hl = R('local-highlight')
 
 local M = {}

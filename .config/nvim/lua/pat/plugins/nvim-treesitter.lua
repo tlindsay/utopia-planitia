@@ -37,7 +37,10 @@ ts.setup({
     enable = true,
   },
   rainbow = {
-    enable = true,
+    enable = false,
+    query = 'rainbow-parens',
+    strategy = require('ts-rainbow.strategy.global'),
+    max_file_lines = 3000,
     extended_mode = true,
   },
   textobjects = {
@@ -78,19 +81,19 @@ vim.api.nvim_set_hl(
 vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
 
 local tokyoRainbow = {
-  -- colors.tokyonight.purple,
-  colors.tokyonight.magenta,
-  -- colors.tokyonight.blue,
-  colors.tokyonight.cyan,
-  -- colors.tokyonight.blue1,
-  colors.tokyonight.blue6,
-  -- colors.tokyonight.green1,
-  colors.tokyonight.teal,
-  -- colors.tokyonight.green,
-  colors.tokyonight.yellow,
-  colors.tokyonight.orange,
-  colors.tokyonight.red,
   -- colors.tokyonight.fg,
+  colors.tokyonight.red,
+  colors.tokyonight.orange,
+  colors.tokyonight.yellow,
+  -- colors.tokyonight.green,
+  colors.tokyonight.teal,
+  -- colors.tokyonight.green1,
+  colors.tokyonight.blue6,
+  -- colors.tokyonight.blue1,
+  colors.tokyonight.cyan,
+  -- colors.tokyonight.blue,
+  colors.tokyonight.magenta,
+  colors.tokyonight.purple,
 }
 
 for i, c in ipairs(tokyoRainbow) do

@@ -107,7 +107,7 @@ cmp.setup({
     { name = 'neorg' },
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
+    -- { name = 'nvim_lsp_signature_help' },
     { name = 'treesitter' },
     { name = 'nvim_lua' },
     { name = 'path' },
@@ -121,7 +121,7 @@ cmp.setup({
       menu = {
         buffer = ' ﬘',
         nvim_lsp = ' ',
-        nvim_lsp_signature_help = ' ',
+        -- nvim_lsp_signature_help = ' ',
         luasnip = ' 🐍',
         treesitter = ' ',
         nvim_lua = ' ',

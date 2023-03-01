@@ -167,7 +167,7 @@ _G.packer_plugins = {
   ["feline.nvim"] = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/feline.nvim",
-    url = "https://github.com/famiu/feline.nvim"
+    url = "https://github.com/freddiehaddad/feline.nvim"
   },
   ["fidget.nvim"] = {
     loaded = true,
@@ -218,6 +218,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/lua-language-server",
     url = "https://github.com/LuaLS/lua-language-server"
+  },
+  ["lualine.nvim"] = {
+    loaded = true,
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/lualine.nvim",
+    url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -364,10 +369,10 @@ _G.packer_plugins = {
     path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ts-context-commentstring",
     url = "https://github.com/JoosepAlviste/nvim-ts-context-commentstring"
   },
-  ["nvim-ts-rainbow"] = {
+  ["nvim-ts-rainbow2"] = {
     loaded = true,
-    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
-    url = "https://git.sr.ht/~p00f/nvim-ts-rainbow"
+    path = "/Users/plindsay/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow2",
+    url = "https://github.com/HiPhish/nvim-ts-rainbow2"
   },
   ["nvim-ufo"] = {
     loaded = true,

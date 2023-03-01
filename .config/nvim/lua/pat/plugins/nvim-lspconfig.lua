@@ -266,36 +266,36 @@ require('mason-lspconfig').setup_handlers({
   --   })
   -- end,
 
-  ['tsserver'] = function()
-    local ts_utils = require('nvim-lsp-ts-utils')
-    require('lspconfig').tsserver.setup({
-      handlers = handlers,
-      init_options = ts_utils.init_options,
-      on_attach = function(client, bufnr)
-        -- Use null-ls for formatting instead of builtin
-        client.server_capabilities.document_formatting = false
-        client.server_capabilities.document_range_formatting = false
-
-        on_attach(client, bufnr)
-
-        ts_utils.setup({
-          enable_import_on_completion = true,
-          auto_inlay_hints = false,
-        })
-        ts_utils.setup_client(client)
-        -- Mappings.
-        local opts = { buffer = bufnr, noremap = true, silent = true }
-        wk.register({
-          g = {
-            name = 'TS Utils',
-            s = { '<cmd>TSLspOrganize<CR>', 'Organize imports' },
-            rn = { '<cmd>TSLspRenameFile<CR>', 'Rename file' },
-            m = { '<cmd>TSLspImportAll<CR>', 'Add missing imports' },
-          },
-        }, opts)
-      end,
-    })
-  end,
+  -- ['tsserver'] = function()
+  --   local ts_utils = require('nvim-lsp-ts-utils')
+  --   require('lspconfig').tsserver.setup({
+  --     handlers = handlers,
+  --     init_options = ts_utils.init_options,
+  --     on_attach = function(client, bufnr)
+  --       -- Use null-ls for formatting instead of builtin
+  --       client.server_capabilities.document_formatting = false
+  --       client.server_capabilities.document_range_formatting = false
+  --
+  --       on_attach(client, bufnr)
+  --
+  --       ts_utils.setup({
+  --         enable_import_on_completion = true,
+  --         auto_inlay_hints = false,
+  --       })
+  --       ts_utils.setup_client(client)
+  --       -- Mappings.
+  --       local opts = { buffer = bufnr, noremap = true, silent = true }
+  --       wk.register({
+  --         g = {
+  --           name = 'TS Utils',
+  --           s = { '<cmd>TSLspOrganize<CR>', 'Organize imports' },
+  --           rn = { '<cmd>TSLspRenameFile<CR>', 'Rename file' },
+  --           m = { '<cmd>TSLspImportAll<CR>', 'Add missing imports' },
+  --         },
+  --       }, opts)
+  --     end,
+  --   })
+  -- end,
   ['ember'] = function()
     require('lspconfig').ember.setup({
       handlers = handlers,
@@ -336,7 +336,7 @@ require('mason-lspconfig').setup_handlers({
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file('~/.config/nvim/**/*.lua', true),
+            library = vim.api.nvim_get_runtime_file('', true),
           },
           -- Do not send telemetry data containing a randomized but unique identifier
           telemetry = {
@@ -389,6 +389,40 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
+})
+require('typescript').setup({
+  go_to_source_definition = { fallback = true },
+  server = {
+    handlers = handlers,
+    capabilities = capabilities,
+    filetypes = {
+      "typescript", "typescriptreact", "tsx"
+    },
+    -- init_options = ts_utils.init_options,
+    on_attach = function(client, bufnr)
+      -- Use null-ls for formatting instead of builtin
+      client.server_capabilities.document_formatting = false
+      client.server_capabilities.document_range_formatting = false
+
+      on_attach(client, bufnr)
+
+      -- ts_utils.setup({
+      --   enable_import_on_completion = true,
+      --   auto_inlay_hints = false,
+      -- })
+      -- ts_utils.setup_client(client)
+      -- Mappings.
+      local opts = { buffer = bufnr, noremap = true, silent = true }
+      wk.register({
+        g = {
+          name = 'TS Utils',
+          s = { '<cmd>TypescriptOrganizeImports<CR>', 'Organize imports' },
+          rn = { '<cmd>TypescriptRenameFile<CR>', 'Rename file' },
+          m = { '<cmd>TypescriptAddMissingImports<CR>', 'Add missing imports' },
+        },
+      }, opts)
+    end,
+  },
 })
 
 -- local function setup_rust_tools()

@@ -118,7 +118,8 @@ return packer.startup({
     use('nvim-treesitter/nvim-treesitter-textobjects')
     use('nvim-treesitter/nvim-treesitter-context')
     use('RRethy/nvim-treesitter-endwise')
-    use({ 'https://git.sr.ht/~p00f/nvim-ts-rainbow', requires = { 'nvim-treesitter/nvim-treesitter' } })
+    -- use({ 'https://git.sr.ht/~p00f/nvim-ts-rainbow', requires = { 'nvim-treesitter/nvim-treesitter' } })
+    use({ 'HiPhish/nvim-ts-rainbow2', requires = { 'nvim-treesitter/nvim-treesitter' } })
 
     -- More textobjects
     use('chrisgrieser/nvim-various-textobjs')
@@ -179,7 +180,11 @@ return packer.startup({
 
     -- Statusline
     use({
-      'famiu/feline.nvim',
+      'freddiehaddad/feline.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons' },
+    })
+    use({
+      'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons' },
     })
     use({
