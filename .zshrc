@@ -41,6 +41,9 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 forgit_checkout_commit='gcco'
+
+# Set Cache Dir for dotenv plugin
+export ZSH_CACHE_DIR="$HOME/.local/cache"
 # Load antibody plugins
 if [[ -a ~/.zsh_bundle ]]; then
   source ~/.zsh_bundle
