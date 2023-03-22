@@ -22,16 +22,7 @@ local servers = {
 -- ╭─╮
 -- │ │
 -- ╰─╯
-local border = {
-  { '╭', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╮', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-  { '╯', 'FloatBorder' },
-  { '─', 'FloatBorder' },
-  { '╰', 'FloatBorder' },
-  { '│', 'FloatBorder' },
-}
+local border = 'rounded'
 local nvim_lsp = require('lspconfig')
 local lines = require('lsp_lines')
 local wk = require('which-key')
@@ -322,6 +313,7 @@ require('mason-lspconfig').setup_handlers({
         on_attach(client, bufnr)
       end,
       settings = {
+        editor = { semanticHighlighting = { enabled = true } },
         Lua = {
           runtime = {
             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
@@ -334,7 +326,12 @@ require('mason-lspconfig').setup_handlers({
             -- Get the language server to recognize the `vim` global
             globals = { 'vim', 'use', 'lvim', 'use_rocks' },
           },
+          semantic = {
+            enable = true,
+          },
+          signatureHelp = { enable = true },
           workspace = {
+            checkThirdParty = false,
             -- Make the server aware of Neovim runtime files
             library = vim.api.nvim_get_runtime_file('', true),
           },
@@ -396,7 +393,9 @@ require('typescript').setup({
     handlers = handlers,
     capabilities = capabilities,
     filetypes = {
-      "typescript", "typescriptreact", "tsx"
+      'typescript',
+      'typescriptreact',
+      'tsx',
     },
     -- init_options = ts_utils.init_options,
     on_attach = function(client, bufnr)

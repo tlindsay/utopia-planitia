@@ -100,4 +100,11 @@ function M:reload()
   vim.notify('Config updated!', 'success')
 end
 
+function M:get_global_theme()
+  local ryaml = require('lua-ryaml')
+  local theme_file = io.open(os.getenv('HOME') .. '.config/theme.yml', 'r')
+  local theme = ryaml.decode(theme_file)
+  print(theme)
+end
+
 return M

@@ -9,11 +9,21 @@ local ts = require('nvim-treesitter.configs')
 local ctx = require('treesitter-context')
 local wk = require('which-key')
 
+-- Apply "Various TextObjects"
+require('various-textobjs').setup({ useDefaultKeymaps = true })
+
+-- Fix compiler issue on MacOS
+-- (Prerequisite is $ brew install gcc)
+require('nvim-treesitter.install').compilers = { 'gcc-12' }
+
 wk.register({
   ['<leader>H'] = { ':TSHighlightCapturesUnderCursor<CR>', 'Display TS Highlight' },
 })
 
+require('treesj').setup()
+
 ts.setup({
+  auto_install = true,
   autopairs = { enable = true },
   context_commentstring = {
     enable = true,
@@ -37,11 +47,20 @@ ts.setup({
     enable = true,
   },
   rainbow = {
-    enable = false,
+    enable = true,
     query = 'rainbow-parens',
     strategy = require('ts-rainbow.strategy.global'),
     max_file_lines = 3000,
     extended_mode = true,
+    hlgroups = {
+      'TSRainbowCyan',
+      'TSRainbowViolet',
+      'TSRainbowGreen',
+      'TSRainbowOrange',
+      'TSRainbowBlue',
+      'TSRainbowYellow',
+      'TSRainbowRed',
+    },
   },
   textobjects = {
     lsp_interop = {
@@ -72,31 +91,11 @@ ctx.setup({
   enable = true,
   max_lines = 0,
 })
-local colors = require('pat.core.colors')
+local colors = require('pat.core/colors')
 vim.api.nvim_set_hl(
   0,
   'TreesitterContext',
   { italic = true, fg = colors.tokyonight.magenta, bg = colors.tokyonight.bg_highlight, blend = 50 }
 )
 vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
-
-local tokyoRainbow = {
-  -- colors.tokyonight.fg,
-  colors.tokyonight.red,
-  colors.tokyonight.orange,
-  colors.tokyonight.yellow,
-  -- colors.tokyonight.green,
-  colors.tokyonight.teal,
-  -- colors.tokyonight.green1,
-  colors.tokyonight.blue6,
-  -- colors.tokyonight.blue1,
-  colors.tokyonight.cyan,
-  -- colors.tokyonight.blue,
-  colors.tokyonight.magenta,
-  colors.tokyonight.purple,
-}
-
-for i, c in ipairs(tokyoRainbow) do
-  local hlGroup = 'rainbowcol' .. i
-  vim.api.nvim_set_hl(0, hlGroup, { fg = c })
-end
+vim.api.nvim_set_hl(0, 'TSRainbowGreen', { fg = colors.tokyonight.blue6 })

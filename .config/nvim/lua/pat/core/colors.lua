@@ -21,6 +21,9 @@ tokyonight.setup({
   end,
 
   on_highlights = function(highlights, colors)
+    -- if theme == 'day' then
+    --   highlights.Cursor = { bg = colors.fg_dark }
+    -- end
     highlights.WinSeparator = {
       fg = colors.purple, --[[ , bg = 'None' ]]
     }

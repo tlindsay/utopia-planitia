@@ -12,7 +12,6 @@
 local cmd = vim.cmd -- Execute Vim commands
 local g = vim.g -- Global variables
 local opt = vim.opt -- Set options (global/buffer/windows-scoped)
---local fn = vim.fn       				    -- Call Vim functions
 
 -----------------------------------------------------------
 -- Custom
@@ -80,6 +79,8 @@ opt.updatetime = 400 -- ms to wait for trigger 'document_highlight'
 
 -- Disable nvim intro
 opt.shortmess:append('sI')
+-- opt.shortmess = 'fiTsoOIltFxnw'
+-- fiTsoOIltFxn
 
 -- Disable builtins plugins
 local disabled_built_ins = {

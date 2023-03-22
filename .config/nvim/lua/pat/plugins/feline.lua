@@ -273,7 +273,7 @@ local right = {
   component.diagnos.warn,
   component.diagnos.hint,
   component.diagnos.info,
-  component.search,
+  -- component.search,
   component.file.type,
   component.file.position,
   component.file.scroll_wheel,
@@ -329,7 +329,7 @@ local wcomps = {
         fg = colors.bg,
       }
     end,
-    left_sep = '█',
+    left_sep = '',
     right_sep = '',
   },
   inactive_file_info = {
@@ -341,7 +341,7 @@ local wcomps = {
       fg = colors.bg,
       bg = colors.comment,
     },
-    left_sep = '█',
+    left_sep = '',
     right_sep = '',
   },
 }
@@ -352,7 +352,19 @@ local winbar_components = {
 }
 
 table.insert(winbar_components.active, { component.gps, {} })
-table.insert(winbar_components.active, { wcomps.active_file_info })
+table.insert(winbar_components.active, {
+  {
+    provider = 'search_count',
+    hl = {
+      bg = colors.yellow,
+      fg = colors.bg_dark,
+    },
+    icon = ' ',
+    left_sep = '',
+    right_sep = ' ',
+  },
+  wcomps.active_file_info,
+})
 table.insert(winbar_components.inactive, {})
 table.insert(winbar_components.inactive, { wcomps.inactive_file_info })
 

@@ -1,50 +1,50 @@
-local tokyo = require('pat.core/colors').tokyonight
-local colors = {
-  black        = tokyo.black,
-  white        = tokyo.white,
-  red          = tokyo.red1,
-  green        = tokyo.green,
-  blue         = tokyo.blue5,
-  yellow       = tokyo.yellow,
-  gray         = tokyo.bg,
-  darkgray     = tokyo.bg_dark,
-  lightgray    = tokyo.dark3,
-  inactivegray = tokyo.dark5,
-  pink	       = tokyo.purple,
-  purple       = tokyo.magenta,
+local colors = require('pat.core/colors').tokyonight
+local theme = {
+  black = colors.black,
+  white = colors.white,
+  red = colors.red1,
+  green = colors.green,
+  blue = colors.blue5,
+  yellow = colors.yellow,
+  gray = colors.bg,
+  darkgray = colors.bg_dark,
+  lightgray = colors.dark3,
+  inactivegray = colors.dark5,
+  pink = colors.purple,
+  purple = colors.magenta,
 }
 local moon = {
   normal = {
-    a = {bg = colors.blue, fg = colors.black},
-    b = {bg = colors.lightgray, fg = colors.white},
-    c = {bg = tokyo.black, fg = colors.white},
-    z = {bg = colors.purple, fg = colors.black}
+    a = { bg = theme.blue, fg = theme.black },
+    b = { bg = theme.lightgray, fg = theme.white },
+    c = { bg = colors.black, fg = theme.white },
+    z = { bg = theme.purple, fg = theme.black },
   },
   insert = {
-    a = {bg = colors.green, fg = colors.black},
-    b = {bg = colors.lightgray, fg = colors.white},
-    c = {bg = tokyo.black, fg = colors.white}
+    a = { bg = theme.green, fg = theme.black },
+    b = { bg = theme.lightgray, fg = theme.white },
+    c = { bg = colors.black, fg = theme.white },
   },
   visual = {
-    a = {bg = colors.yellow, fg = colors.black},
-    b = {bg = colors.lightgray, fg = colors.white},
-    c = {bg = tokyo.black, fg = colors.white}
+    a = { bg = theme.yellow, fg = theme.black },
+    b = { bg = theme.lightgray, fg = theme.white },
+    c = { bg = colors.black, fg = theme.white },
   },
   replace = {
-    a = {bg = colors.red, fg = colors.black},
-    b = {bg = colors.lightgray, fg = colors.white},
-    c = {bg = tokyo.bg, fg = colors.white}
+    a = { bg = theme.red, fg = theme.black },
+    b = { bg = theme.lightgray, fg = theme.white },
+    c = { bg = colors.bg, fg = theme.white },
   },
   command = {
-    a = {bg = colors.green, fg = colors.black},
-    b = {bg = colors.lightgray, fg = colors.white},
-    c = {bg = tokyo.bg, fg = colors.black}
+    a = { bg = theme.green, fg = theme.black },
+    b = { bg = theme.lightgray, fg = theme.white },
+    c = { bg = colors.bg, fg = theme.black },
   },
   inactive = {
-    a = {bg = tokyo.comment, fg = colors.gray},
-    b = {bg = tokyo.comment, fg = colors.gray},
-    c = {bg = tokyo.comment, fg = colors.gray}
-  }
+    a = { bg = colors.comment, fg = theme.gray },
+    b = { bg = colors.comment, fg = theme.gray },
+    c = { bg = colors.comment, fg = theme.gray },
+  },
 }
 
 return moon

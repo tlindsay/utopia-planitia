@@ -5,15 +5,34 @@ Maintainer: brainf+ck
 Website: https://github.com/brainfucksec/neovim-lua
 --]]
 
--- Import Lua modules
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
+-- Install plugins
+local plugins = require('pat.plugins')
+require('lazy').setup(plugins, {
+  ui = { border = 'rounded' },
+})
+
+-- Import Lua modules
 require('pat.utils')
 
-R('pat.core/settings')
-R('pat.core/autocmds')
-R('pat.core/colors')
-R('pat.core/keymaps')
-R('pat.packer_init')
+require('pat.core/settings')
+require('pat.core/autocmds')
+require('pat.core/colors')
+require('pat.core/keymaps')
+
+-- Configure plugins
 R('pat.plugins/alpha-nvim')
 R('pat.plugins/bufferline')
 R('pat.plugins/colorizer')
@@ -44,4 +63,4 @@ R('pat.plugins/symbols-outline')
 R('pat.plugins/smart-splits')
 R('pat.plugins/telescope')
 R('pat.plugins/textobjs')
--- R('pat.plugins/noice')
+R('pat.plugins/noice')

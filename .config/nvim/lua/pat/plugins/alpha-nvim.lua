@@ -28,7 +28,7 @@ local fortune = require('alpha.fortune')
 local function footer()
   local version = vim.version()
   local print_version = 'v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
-  -- local total_plugins = #vim.tbl_keys(vim.g.plugs)
+  local lazy_stats = require('lazy').stats()
   local datetime = os.date('%m/%d/%y %H:%M')
 
   local text = fortune()
@@ -36,7 +36,8 @@ local function footer()
   table.insert(text, '')
   table.insert(text, ' ' .. datetime)
   table.insert(text, ' Neovim ' .. print_version)
-  -- table.insert(text, '  ' .. total_plugins .. ' plugins')
+  table.insert(text, '  ' .. lazy_stats.loaded .. ' plugins')
+  table.insert(text, ' 󰔛 ' .. math.floor(lazy_stats.startuptime) .. 'ms')
   return text
 end
 
@@ -134,7 +135,7 @@ local buttons = {
     { type = 'padding', val = 1 },
     dashboard.button('s', '  Settings', ':e $MYVIMRC<CR>'),
     { type = 'padding', val = 1 },
-    dashboard.button('u', '  Update plugins', ':PackerUpdate<CR>'),
+    dashboard.button('u', '  Update plugins', ':Lazy sync<CR>'),
     { type = 'padding', val = 1 },
     dashboard.button('q', '  Quit', ':qa<CR>'),
   },
