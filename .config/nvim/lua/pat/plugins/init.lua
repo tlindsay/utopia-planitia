@@ -1,5 +1,4 @@
 return {
-  'wbthomason/packer.nvim', -- packer can manage itself
   'nvim-lua/plenary.nvim',
   'smartpde/debuglog', -- Logging plugin for debugging lua configs
   {
@@ -28,7 +27,7 @@ return {
   -- File explorer
   {
     'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
@@ -120,14 +119,25 @@ return {
   'LuaLS/lua-language-server',
   'j-hui/fidget.nvim',
   'simrat39/rust-tools.nvim',
-  'ray-x/go.nvim',
+  {
+    'ray-x/go.nvim',
+    dependencies = {
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    ft = { 'go', 'gomod' },
+    build = ':lua require("go.install").update_all_sync()',
+  },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
 
   -- Autocomplete
   {
-    'hrsh7th/nvim-cmp',
+    -- 'hrsh7th/nvim-cmp',
+    'soifou/nvim-cmp',
+    branch = 'ghost-text-fix',
     dependencies = {
       'L3MON4D3/LuaSnip',
       'hrsh7th/cmp-nvim-lsp',
@@ -162,9 +172,13 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'kyazdani42/nvim-web-devicons' },
   },
+  -- {
+  --   'SmiteshP/nvim-gps',
+  --   dependencies = 'nvim-treesitter/nvim-treesitter',
+  -- },
   {
-    'SmiteshP/nvim-gps',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
+    'SmiteshP/nvim-navic',
+    dependencies = 'neovim/nvim-lspconfig',
   },
 
   -- Scroll Bar
@@ -173,6 +187,7 @@ return {
   -- git diffs
   {
     'sindrets/diffview.nvim',
+    commit = '6420a73b340fdb1f842479cd7640dcca9ec6f5d1',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
 

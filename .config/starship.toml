@@ -1,4 +1,22 @@
 add_newline = false
+continuation_prompt = "[ ](bold bright-black)"
+
+# The following adds a right-aligned timestamp, but also causes char-width bugs
+# format = """
+# $all\
+# $fill\
+# $time\
+# $line_break\
+# $character
+# """
+#
+# [fill]
+# symbol = " "
+#
+# [time]
+# disabled = false
+# style = "bold bright-black"
+# format = "[$time]($style)"
 
 [character]
 success_symbol = "[](bold green)"

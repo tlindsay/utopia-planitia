@@ -33,7 +33,7 @@ local vi_mode_colors = {
 
 -- Providers (LSP, vi_mode)
 local vi_mode_utils = require('feline.providers.vi_mode')
-local gps = require('nvim-gps')
+local navic = require('nvim-navic')
 
 -- My components
 local component = {}
@@ -217,13 +217,13 @@ component.git = {
     left_sep = ' ',
   },
 }
--- gps
-component.gps = {
+-- navic
+component.navic = {
   provider = function()
-    return gps.get_location()
+    return navic.get_location()
   end,
   enabled = function()
-    return gps.is_available()
+    return navic.is_available()
   end,
   hl = { bg = colors.pink, fg = colors.bg },
   left_sep = '█',
@@ -265,7 +265,7 @@ local left = {
   component.format_on_save,
   component.vi_mode.left,
   component.file.info,
-  -- component.gps,
+  -- component.navic,
 }
 local middle = {}
 local right = {
@@ -351,7 +351,7 @@ local winbar_components = {
   inactive = {},
 }
 
-table.insert(winbar_components.active, { component.gps, {} })
+table.insert(winbar_components.active, { component.navic, {} })
 table.insert(winbar_components.active, {
   {
     provider = 'search_count',

@@ -32,6 +32,7 @@ null.setup({
     null.builtins.formatting.gofmt,
     null.builtins.formatting.rustfmt,
     null.builtins.formatting.stylua,
+    null.builtins.formatting.fixjson,
     null.builtins.formatting.eslint_d,
     null.builtins.formatting.prettierd.with({
       condition = function(utils)

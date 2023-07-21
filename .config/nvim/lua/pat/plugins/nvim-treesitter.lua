@@ -48,8 +48,15 @@ ts.setup({
   },
   rainbow = {
     enable = true,
-    query = 'rainbow-parens',
-    strategy = require('ts-rainbow.strategy.global'),
+    query = {
+      'rainbow-parens',
+      html = 'rainbow-tags',
+      javascript = 'rainbow-parens',
+      typescript = 'rainbow-parens',
+      jsx = 'rainbow-parens',
+      tsx = 'rainbow-parens-react',
+    },
+    strategy = require('ts-rainbow.strategy.local'),
     max_file_lines = 3000,
     extended_mode = true,
     hlgroups = {

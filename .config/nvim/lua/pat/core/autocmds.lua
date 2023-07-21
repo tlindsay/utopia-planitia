@@ -16,6 +16,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = yankGroup,
 })
 
+local searchGroup = vim.api.nvim_create_augroup('ClearHlAfterSearch', { clear = true })
+local searchCmd = {
+  desc = 'Set :nohlsearch when done searching',
+  command = 'nohlsearch',
+  group = searchGroup,
+}
+-- vim.api.nvim_create_autocmd('CursorMoved', searchCmd)
+vim.api.nvim_create_autocmd('InsertEnter', searchCmd)
+
 vim.api.nvim_create_autocmd('BufEnter', {
   desc = "Don't auto comment new lines",
   command = 'set fo-=c fo-=r fo-=o',

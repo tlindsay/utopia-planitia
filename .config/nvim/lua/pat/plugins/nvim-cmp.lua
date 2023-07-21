@@ -6,6 +6,7 @@
 -- url: https://github.com/hrsh7th/nvim-cmp
 
 local cmp = require('cmp')
+local types = require('cmp.types')
 local luasnip = require('luasnip')
 local lspkind = require('lspkind')
 local kind_icons = {
@@ -55,11 +56,7 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
 
-  view = {
-    entries = {
-      ghost_text = true,
-    },
-  },
+  view = { entries = {} },
 
   -- Key mapping
   mapping = cmp.mapping.preset.insert({
@@ -132,7 +129,6 @@ cmp.setup({
 
   -- Here there be dragons
   experimental = {
-    native_menu = false,
     ghost_text = true,
   },
 })
@@ -158,7 +154,7 @@ cmp.setup.cmdline('/', {
 -- Use cmdline & path source for ':'.
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
-  completion = { autocomplete = true },
+  completion = { autocomplete = { types.cmp.TriggerEvent.TextChanged } },
   sources = cmp.config.sources({
     { name = 'path' },
   }, {

@@ -25,6 +25,7 @@ local servers = {
 local border = 'rounded'
 local nvim_lsp = require('lspconfig')
 local lines = require('lsp_lines')
+local navic = require('nvim-navic')
 local wk = require('which-key')
 require('mason').setup({
   ui = {
@@ -42,6 +43,7 @@ vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 capabilities.textDocument.completion.completionItem = vim.tbl_extend(
   'force',
   capabilities.textDocument.completion.completionItem,
@@ -69,6 +71,11 @@ capabilities.textDocument.completion.completionItem = vim.tbl_extend(
 local on_attach = function(client, bufnr)
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
+  end
+
+  -- Attach Navic for breadcrumbs
+  if client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
   end
 
   -- Highlighting references
@@ -125,7 +132,20 @@ local on_attach = function(client, bufnr)
       rn = { vim.lsp.buf.rename, 'Rename Symbol' },
       k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
       f = { vim.lsp.buf.code_action, 'Fix Diagnostic' },
-      F = { vim.lsp.buf.format, 'Autoformat' },
+      F = {
+        function()
+          vim.lsp.buf.format({
+            filter = function(client)
+              if client.name == 'jsonls' then
+                return false
+              else
+                return true
+              end
+            end,
+          })
+        end,
+        'Autoformat',
+      },
       l = {
         function()
           local vtext = vim.diagnostic.config().virtual_text
@@ -324,7 +344,7 @@ require('mason-lspconfig').setup_handlers({
           diagnostics = {
             disable = true,
             -- Get the language server to recognize the `vim` global
-            globals = { 'vim', 'use', 'lvim', 'use_rocks' },
+            globals = { 'hs', 'vim', 'use', 'lvim', 'use_rocks' },
           },
           semantic = {
             enable = true,
@@ -340,22 +360,6 @@ require('mason-lspconfig').setup_handlers({
             enable = false,
           },
         },
-      },
-    })
-  end,
-  ['emmet_ls'] = function()
-    require('lspconfig').emmet_ls.setup({
-      capabilities = capabilities,
-      filetypes = {
-        'html',
-        'typescriptreact',
-        'javascriptreact',
-        'css',
-        'sass',
-        'scss',
-        'less',
-        'hbs',
-        'gohtmltmpl',
       },
     })
   end,

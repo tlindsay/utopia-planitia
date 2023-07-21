@@ -1,6 +1,7 @@
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 local builtins = require('telescope.builtin')
+local trouble = require('trouble.providers.telescope')
 local themes = require('telescope.themes')
 local wk = require('which-key')
 
@@ -30,6 +31,7 @@ require('telescope').setup({
         ['<C-p>'] = actions.cycle_history_prev,
         ['<C-n>'] = actions.cycle_history_next,
         ['<C-u>'] = false, -- Enable C-u to clear
+        ['<C-l>'] = trouble.open_with_trouble,
       },
       n = {
         ['<C-p>'] = actions.cycle_history_prev,
@@ -114,6 +116,7 @@ wk.register({
   ['<leader>'] = {
     g = { builtins.live_grep, 'Open LiveGrep' },
     n = { telescope.extensions.node_modules.list, 'List Node Modules' },
+    N = { telescope.extensions.neorg.find_norg_files, 'List Neorg Entries' },
     p = { ':Telescope command_palette<CR>', 'Show Command Palette' },
     ['?'] = { builtins.help_tags, 'Search vim-help' },
     ['<leader>'] = {

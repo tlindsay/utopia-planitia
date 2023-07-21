@@ -40,6 +40,8 @@ wk.register({
         function()
           local curr = vim.api.nvim_get_var('PAT_format_on_save')
           vim.api.nvim_set_var('PAT_format_on_save', not curr)
+          local statusline_str = vim.api.nvim_get_option('statusline')
+          vim.api.nvim_eval_statusline(statusline_str, {})
         end,
         'Toggle format-on-save',
       },

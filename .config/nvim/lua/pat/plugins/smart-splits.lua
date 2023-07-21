@@ -2,7 +2,8 @@ local wk = require('which-key')
 local splits = require('smart-splits')
 
 splits.setup({
-  disable_tmux_nav_when_zoomed = false,
+  disable_multiplexer_nav_when_zoomed = false,
+  at_edge = 'stop',
 })
 
 wk.register({
