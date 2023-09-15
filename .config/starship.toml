@@ -71,6 +71,7 @@ symbol = " "
 symbol = " "
 
 [python]
+disabled = true
 symbol = " "
 
 [ruby]

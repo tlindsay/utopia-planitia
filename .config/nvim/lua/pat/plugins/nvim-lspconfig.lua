@@ -13,6 +13,7 @@ local servers = {
   'pyright',
   'clangd',
   'cssls',
+  'efm',
   'html',
   'gopls',
   'rust_analyzer',
@@ -36,6 +37,7 @@ require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
 require('go').setup()
+require('neodev').setup({}) -- LuaLS/Neovim integration from @folke
 
 lines.setup()
 vim.diagnostic.config({ virtual_text = false })
@@ -66,11 +68,26 @@ capabilities.textDocument.completion.completionItem = vim.tbl_extend(
   }
 )
 
+-- Autoformat on save
+require('format-on-save').setup({
+  error_notifier = require('format-on-save.error-notifiers.message-buffer'),
+  fallback_formatter = {
+    function()
+      if vim.api.nvim_get_var('PAT_format_on_save') then
+        return require('format-on-save.formatters').lsp()
+      end
+    end,
+  },
+})
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
+  end
+
+  if client.server_capabilities.codeLensProvider then
+    vim.lsp.codelens.refresh()
   end
 
   -- Attach Navic for breadcrumbs
@@ -92,21 +109,6 @@ local on_attach = function(client, bufnr)
     )
   end
 
-  -- Autoformat on save
-  if client.server_capabilities.document_formatting then
-    local group = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
-    local buffer = vim.api.nvim_get_current_buf()
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      callback = function()
-        if vim.api.nvim_get_var('PAT_format_on_save') then
-          -- vim.lsp.buf.formatting_sync({}, 5000)
-          vim.lsp.buf.format({ timeout_ms = 5000 })
-        end
-      end,
-      group = group,
-      buffer = buffer,
-    })
-  end
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -136,11 +138,7 @@ local on_attach = function(client, bufnr)
         function()
           vim.lsp.buf.format({
             filter = function(client)
-              if client.name == 'jsonls' then
-                return false
-              else
-                return true
-              end
+              return client.name ~= 'jsonls'
             end,
           })
         end,
@@ -197,6 +195,14 @@ require('mason-lspconfig').setup_handlers({
         debounce_text_changes = 150,
       },
     })
+  end,
+  ['efm'] = function()
+    local efmls_config = require('pat.plugins/efm-ls')
+    require('lspconfig').efm.setup(vim.tbl_extend('force', efmls_config, {
+      on_attach = on_attach,
+      handlers = handlers,
+      capabilities = capabilities,
+    }))
   end,
   ['rust_analyzer'] = function()
     -- local tools = {
@@ -319,48 +325,27 @@ require('mason-lspconfig').setup_handlers({
     })
   end,
   ['lua_ls'] = function()
-    local runtime_path = vim.split(package.path, ';')
-    table.insert(runtime_path, 'lua/?.lua')
-    table.insert(runtime_path, 'lua/?/init.lua')
+    -- https://github.com/neovim/nvim-lspconfig/issues/2791
     require('lspconfig').lua_ls.setup({
-      handlers = handlers,
-      on_attach = function(client, bufnr)
-        -- Use null-ls for formatting instead of builtin
-        client.server_capabilities.diagnostics = false
-        client.server_capabilities.document_formatting = false
-        client.server_capabilities.document_range_formatting = false
-
-        on_attach(client, bufnr)
+      on_init = function(client)
+        local path = client.workspace_folders[1].name
+        vim.print('Setting up lua_ls ' .. path)
+        if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+          vim.print('No luarc found, using custom config')
+          client.config.settings = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            diagnostics = {
+              globals = { 'vim' },
+            },
+            runtime = {
+              version = 'LuaJIT',
+            },
+            workspace = {
+              library = { vim.env.VIMRUNTIME },
+              checkThirdParty = false,
+            },
+          })
+        end
       end,
-      settings = {
-        editor = { semanticHighlighting = { enabled = true } },
-        Lua = {
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = 'LuaJIT',
-            -- Setup your lua path
-            path = runtime_path,
-          },
-          diagnostics = {
-            disable = true,
-            -- Get the language server to recognize the `vim` global
-            globals = { 'hs', 'vim', 'use', 'lvim', 'use_rocks' },
-          },
-          semantic = {
-            enable = true,
-          },
-          signatureHelp = { enable = true },
-          workspace = {
-            checkThirdParty = false,
-            -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file('', true),
-          },
-          -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
-          },
-        },
-      },
     })
   end,
   ['gopls'] = function()

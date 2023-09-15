@@ -31,17 +31,14 @@ wk.register({
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
     ['rv'] = { _G.reload_config, 'Reload Vim config' },
     ['<space>'] = { ':set wrap!<CR>', 'Toggle line wrapping' },
-    ['<Del>'] = { ':bufdo bwipeout! | Alpha<CR>', 'Close all buffers' },
+    ['<Del>'] = { ':%bd | Alpha<CR>', 'Close all buffers' },
     x = { ':tabclose<CR>', 'Close window' },
     S = { ':mksession!<CR>', 'Save session' },
     ['<leader>'] = {
       ['.'] = { ':tabdo windo set relativenumber!<CR>', 'Toggle Relative Line Numbers (all buffers)' },
       f = {
         function()
-          local curr = vim.api.nvim_get_var('PAT_format_on_save')
-          vim.api.nvim_set_var('PAT_format_on_save', not curr)
-          local statusline_str = vim.api.nvim_get_option('statusline')
-          vim.api.nvim_eval_statusline(statusline_str, {})
+          vim.cmd('doautocmd User ToggleFormatOnSave')
         end,
         'Toggle format-on-save',
       },
@@ -117,4 +114,4 @@ map('n', '&', ':Telescope grep_string<CR>')
 
 -- Terminal mappings
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>') -- exit
+map('t', '<Esc>', '<C-\\><C-n>')                   -- exit

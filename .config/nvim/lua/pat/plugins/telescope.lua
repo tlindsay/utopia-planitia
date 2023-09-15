@@ -43,6 +43,12 @@ require('telescope').setup({
     ['ui-select'] = {
       themes.get_cursor(),
     },
+    ['emoji'] = {
+      action = function(emoji)
+        vim.fn.setreg('*', emoji.value)
+        vim.api.nvim_put({ emoji.value }, 'c', false, true)
+      end,
+    },
     ['file_browser'] = {
       theme = 'ivy',
     },
@@ -57,31 +63,31 @@ require('telescope').setup({
     ['command_palette'] = {
       {
         'Help',
-        { 'tips', ':help tips' },
-        { 'cheatsheet', ':help index' },
-        { 'tutorial', ':help tutor' },
-        { 'summary', ':help summary' },
+        { 'tips',            ':help tips' },
+        { 'cheatsheet',      ':help index' },
+        { 'tutorial',        ':help tutor' },
+        { 'summary',         ':help summary' },
         { 'quick reference', ':help quickref' },
         { 'search help(F1)', ":lua require('telescope.builtin').help_tags()", 1 },
       },
       {
         'Vim',
-        { 'reload vimrc', ':source $MYVIMRC' },
-        { 'check health', ':checkhealth' },
-        { 'jumps (Alt-j)', ":lua require('telescope.builtin').jumplist()" },
-        { 'commands', ":lua require('telescope.builtin').commands()" },
-        { 'command history', ":lua require('telescope.builtin').command_history()" },
-        { 'registers (A-e)', ":lua require('telescope.builtin').registers()" },
-        { 'colorshceme', ":lua require('telescope.builtin').colorscheme()", 1 },
-        { 'vim options', ":lua require('telescope.builtin').vim_options()" },
-        { 'keymaps', ":lua require('telescope.builtin').keymaps()" },
-        { 'buffers', ':Telescope buffers' },
-        { 'search history (C-h)', ":lua require('telescope.builtin').search_history()" },
-        { 'paste mode', ':set paste!' },
-        { 'cursor line', ':set cursorline!' },
-        { 'cursor column', ':set cursorcolumn!' },
-        { 'spell checker', ':set spell!' },
-        { 'relative number', ':set relativenumber!' },
+        { 'reload vimrc',              ':source $MYVIMRC' },
+        { 'check health',              ':checkhealth' },
+        { 'jumps (Alt-j)',             ":lua require('telescope.builtin').jumplist()" },
+        { 'commands',                  ":lua require('telescope.builtin').commands()" },
+        { 'command history',           ":lua require('telescope.builtin').command_history()" },
+        { 'registers (A-e)',           ":lua require('telescope.builtin').registers()" },
+        { 'colorshceme',               ":lua require('telescope.builtin').colorscheme()",    1 },
+        { 'vim options',               ":lua require('telescope.builtin').vim_options()" },
+        { 'keymaps',                   ":lua require('telescope.builtin').keymaps()" },
+        { 'buffers',                   ':Telescope buffers' },
+        { 'search history (C-h)',      ":lua require('telescope.builtin').search_history()" },
+        { 'paste mode',                ':set paste!' },
+        { 'cursor line',               ':set cursorline!' },
+        { 'cursor column',             ':set cursorcolumn!' },
+        { 'spell checker',             ':set spell!' },
+        { 'relative number',           ':set relativenumber!' },
         { 'search highlighting (F12)', ':set hlsearch!' },
       },
     },
@@ -100,13 +106,15 @@ end
 telescope.load_extension('fzf')
 telescope.load_extension('ui-select')
 telescope.load_extension('file_browser')
-telescope.load_extension('node_modules')
 telescope.load_extension('notify')
 -- telescope.load_extension('noice')
 telescope.load_extension('gh')
 telescope.load_extension('command_palette')
 telescope.load_extension('lsp_handlers')
 telescope.load_extension('emoji')
+wk.register({
+  ['<C-b>'] = { '<C-o>:Telescope emoji<CR>', 'Open emoji picker' },
+}, { mode = 'i' })
 wk.register({
   ['<C-p>'] = { get_files, 'Open file picker' },
   -- ['<C-n>'] = {
@@ -115,13 +123,12 @@ wk.register({
   -- },
   ['<leader>'] = {
     g = { builtins.live_grep, 'Open LiveGrep' },
-    n = { telescope.extensions.node_modules.list, 'List Node Modules' },
-    N = { telescope.extensions.neorg.find_norg_files, 'List Neorg Entries' },
+    -- N = { telescope.extensions.neorg.find_norg_files, 'List Neorg Entries' },
     p = { ':Telescope command_palette<CR>', 'Show Command Palette' },
     ['?'] = { builtins.help_tags, 'Search vim-help' },
     ['<leader>'] = {
       ['.'] = { M.edit_neovim, 'Dotfiles' },
-      ['j'] = { ':Telescope neorg find_linkable<CR>', 'Neorg' },
+      -- ['j'] = { ':Telescope neorg find_linkable<CR>', 'Neorg' },
     },
   },
 })

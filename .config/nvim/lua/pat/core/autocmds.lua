@@ -7,6 +7,13 @@ local cmd = vim.cmd
 -- Remove whitespace on save
 cmd([[au BufWritePre * :%s/\s\+$//e]])
 
+local autoFormatGroup = vim.api.nvim_create_augroup('ToggleFormatOnSaveGroup', { clear = false })
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'ToggleFormatOnSave',
+  command = 'let g:PAT_format_on_save=!g:PAT_format_on_save',
+  group = autoFormatGroup,
+})
+
 local yankGroup = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight on yank',
@@ -81,7 +88,7 @@ vim.api.nvim_create_autocmd(
 -- easy exits
 vim.api.nvim_create_autocmd('FileType', {
   desc = 'Easy exits',
-  pattern = 'help,list,fugitiveblame,tsplayground',
+  pattern = 'help,list,fugitiveblame,tsplayground,option-window',
   command = 'nmap <buffer> q :q<CR>',
 })
 

@@ -38,13 +38,8 @@ local navic = require('nvim-navic')
 -- My components
 local component = {}
 component.format_on_save = {
-  provider = function()
-    local label = ''
-    if vim.api.nvim_get_var('PAT_format_on_save') then
-      label = '  '
-    end
-    return label
-  end,
+  provider = 'format_on_save',
+  update = { 'User ToggleFormatOnSave' },
   hl = { fg = colors.bg, bg = colors.pink },
 }
 -- vi_mode -> NORMAL, INSERT..
@@ -258,6 +253,14 @@ local custom_providers = {
     else
       return scroll_wheel_slices[math.floor(curr_line / lines * mod) + 1]
     end
+  end,
+  format_on_save = function()
+    local var = vim.api.nvim_get_var('PAT_format_on_save')
+    local label = ''
+    if var == 1 or var == true then
+      label = '  '
+    end
+    return label
   end,
 }
 

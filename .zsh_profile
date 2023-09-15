@@ -7,6 +7,7 @@ export EDITOR="$VISUAL"
 export HOMEBREW_NO_ANALYTICS=1
 
 export BAT_THEME="ansi"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 export FZF_DEFAULT_COMMAND="fd --type f --exclude '**/node_modules/*' --exclude '**/.git/*'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -30,8 +31,8 @@ bindkey '^B' emoji-fzf-zle
 
 # alias sed="echo 'Did you mean to use sad?\r\n'; sed"
 
-alias l="exa -1 -F -@ --git --group-directories-first --icons"
-alias ll="exa -l -F -@ --git --group-directories-first --icons"
+alias l="eza -1 -F --git --group-directories-first --icons"
+alias ll="eza -l -F --git --group-directories-first --icons"
 alias lll="ll --git -g --header -a"
 alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
 alias root='cd $(npm root)/..'

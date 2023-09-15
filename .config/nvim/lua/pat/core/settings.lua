@@ -16,7 +16,7 @@ local opt = vim.opt -- Set options (global/buffer/windows-scoped)
 -----------------------------------------------------------
 -- Custom
 -----------------------------------------------------------
-g.PAT_format_on_save = true
+g.PAT_format_on_save = 1
 g.tmux_navigator_no_mappings = 1
 g.tmux_navigator_no_wrap = 1
 g.sleuth_go_tabstop = 2

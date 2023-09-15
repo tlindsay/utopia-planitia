@@ -22,7 +22,7 @@ return {
   },
 
   -- Pane Management
-  'mrjones2014/smart-splits.nvim',
+  { 'mrjones2014/smart-splits.nvim',            dir = '~/Code/make/smart-splits/' },
 
   -- File explorer
   {
@@ -35,11 +35,9 @@ return {
     },
   },
   'nvim-telescope/telescope-file-browser.nvim',
-
   -- { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'arch -arm64 make' },
   'nvim-telescope/telescope-github.nvim',
-  'nvim-telescope/telescope-node-modules.nvim',
   'nvim-telescope/telescope-ui-select.nvim',
   'LinArcX/telescope-command-palette.nvim',
   'gbrlsnchs/telescope-lsp-handlers.nvim',
@@ -62,13 +60,15 @@ return {
   'simrat39/symbols-outline.nvim',
 
   -- Indentation Guides
-  'lukas-reineke/indent-blankline.nvim',
+  -- 'lukas-reineke/indent-blankline.nvim',
+  'shellRaining/hlchunk.nvim',
 
   -- Which Key
   'folke/which-key.nvim',
 
   -- Autopair
   'windwp/nvim-autopairs',
+  'windwp/nvim-ts-autotag',
 
   -- Token Highlight
   'tzachar/local-highlight.nvim',
@@ -91,15 +91,16 @@ return {
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
+  'haringsrob/nvim_context_vt',
   -- { 'https://git.sr.ht/~p00f/nvim-ts-rainbow', dependencies = { 'nvim-treesitter/nvim-treesitter' } }
   { 'HiPhish/nvim-ts-rainbow2', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
-  { 'Wansmer/treesj', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj',           dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
 
   -- Color schemes
-  { 'folke/tokyonight.nvim', lazy = false, priority = 1000 },
+  { 'folke/tokyonight.nvim', lazy = false,  priority = 1000 },
   'nvchad/nvim-colorizer.lua',
 
   -- LSP
@@ -107,17 +108,25 @@ return {
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
-  'Maan2003/lsp_lines.nvim',
+  -- 'Maan2003/lsp_lines.nvim',
+  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  'folke/neodev.nvim',
   -- '~/code/make/lsp_lines.nvim'
   {
     'folke/trouble.nvim',
     dependencies = 'kyazdani42/nvim-web-devicons',
   },
-  'jose-elias-alvarez/null-ls.nvim',
+  -- 'jose-elias-alvarez/null-ls.nvim',
+  {
+    'creativenull/efmls-configs-nvim',
+    version = 'v1.x.x',
+    dependencies = { 'neovim/nvim-lspconfig' },
+  },
+  'elentok/format-on-save.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
   'LuaLS/lua-language-server',
-  'j-hui/fidget.nvim',
+  { 'j-hui/fidget.nvim',     tag = 'legacy' },
   'simrat39/rust-tools.nvim',
   {
     'ray-x/go.nvim',
@@ -152,6 +161,16 @@ return {
     },
   },
   'rafamadriz/friendly-snippets',
+
+  -- Docs Browser
+  {
+    'luckasRanarison/nvim-devdocs',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
 
   -- Interactive Swap
   'mizlan/iswap.nvim',
@@ -205,7 +224,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },
@@ -249,4 +268,10 @@ return {
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
   'tommcdo/vim-fugitive-blame-ext',
+  {
+    '9seconds/repolink.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opt = true,
+    cmd = { 'RepoLink' },
+  },
 }
