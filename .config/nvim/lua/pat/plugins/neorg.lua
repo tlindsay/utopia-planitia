@@ -28,11 +28,11 @@ require('neorg').setup({
   },
 })
 
-require('neorg.callbacks').on_event('core.keybinds.events.enable_keybinds', function(_, keybinds)
-  keybinds.map_event_to_mode('norg', {
-    i = {
-      { '<C-l>', 'core.integrations.telescope.insert_link' },
-      { '<C-f>', 'core.integrations.telescope.insert_file_link' },
-    },
-  }, { silent = true, noremap = true })
-end)
+-- require('neorg.callbacks').on_event('core.keybinds.events.enable_keybinds', function(_, keybinds)
+--   keybinds.map_event_to_mode('norg', {
+--     i = {
+--       { '<C-l>', 'core.integrations.telescope.insert_link' },
+--       { '<C-f>', 'core.integrations.telescope.insert_file_link' },
+--     },
+--   }, { silent = true, noremap = true })
+-- end)

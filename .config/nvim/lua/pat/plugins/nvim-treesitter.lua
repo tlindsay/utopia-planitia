@@ -25,6 +25,7 @@ require('treesj').setup()
 ts.setup({
   auto_install = true,
   autopairs = { enable = true },
+  autotag = { enable = true },
   context_commentstring = {
     enable = true,
     enable_autocmd = false, -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
@@ -41,7 +42,7 @@ ts.setup({
     additional_vim_regex_highlighting = false,
   },
   indent = {
-    enable = true,
+    enable = false,
   },
   playground = {
     enable = true,

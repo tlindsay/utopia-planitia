@@ -12,8 +12,9 @@ require('indent_blankline').setup({
   use_treesitter = true,
   filetype_exclude = {
     'dashboard',
-    'help',
+    'glow',
     'git',
+    'help',
     'markdown',
     'text',
     'terminal',
