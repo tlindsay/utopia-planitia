@@ -22,7 +22,10 @@ return {
   },
 
   -- Pane Management
-  { 'mrjones2014/smart-splits.nvim',            dir = '~/Code/make/smart-splits/' },
+  {
+    'mrjones2014/smart-splits.nvim',
+    -- dir = '~/Code/make/smart-splits/',
+  },
 
   -- File explorer
   {
@@ -57,7 +60,7 @@ return {
   },
 
   -- Symbol Outline
-  'simrat39/symbols-outline.nvim',
+  'hedyhli/outline.nvim',
 
   -- Indentation Guides
   -- 'lukas-reineke/indent-blankline.nvim',
@@ -86,21 +89,26 @@ return {
   'kyazdani42/nvim-web-devicons',
 
   -- Treesitter interface
-  'nvim-treesitter/nvim-treesitter',
+  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
   'haringsrob/nvim_context_vt',
-  -- { 'https://git.sr.ht/~p00f/nvim-ts-rainbow', dependencies = { 'nvim-treesitter/nvim-treesitter' } }
-  { 'HiPhish/nvim-ts-rainbow2', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
-  { 'Wansmer/treesj',           dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  -- { 'HiPhish/nvim-ts-rainbow2', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  'HiPhish/rainbow-delimiters.nvim',
+  { 'Wansmer/treesj', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
 
   -- Color schemes
-  { 'folke/tokyonight.nvim', lazy = false,  priority = 1000 },
+  {
+    'folke/tokyonight.nvim',
+    dir = '~/Code/make/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+  },
   'nvchad/nvim-colorizer.lua',
 
   -- LSP
@@ -118,6 +126,12 @@ return {
   },
   -- 'jose-elias-alvarez/null-ls.nvim',
   {
+    'mangelozzi/nvim-rgflow.lua',
+    cond = function()
+      return vim.fn.executable('rg') and 1
+    end,
+  },
+  {
     'creativenull/efmls-configs-nvim',
     version = 'v1.x.x',
     dependencies = { 'neovim/nvim-lspconfig' },
@@ -125,8 +139,8 @@ return {
   'elentok/format-on-save.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
-  'LuaLS/lua-language-server',
-  { 'j-hui/fidget.nvim',     tag = 'legacy' },
+  { 'LuaLS/lua-language-server', submodules = false },
+  { 'j-hui/fidget.nvim', tag = 'legacy' },
   'simrat39/rust-tools.nvim',
   {
     'ray-x/go.nvim',
@@ -138,15 +152,20 @@ return {
     ft = { 'go', 'gomod' },
     build = ':lua require("go.install").update_all_sync()',
   },
+  {
+    'ray-x/navigator.lua',
+    dependencies = {
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+    },
+  },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
 
   -- Autocomplete
   {
-    -- 'hrsh7th/nvim-cmp',
-    'soifou/nvim-cmp',
-    branch = 'ghost-text-fix',
+    'hrsh7th/nvim-cmp',
     dependencies = {
       'L3MON4D3/LuaSnip',
       'hrsh7th/cmp-nvim-lsp',
@@ -224,7 +243,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },
@@ -236,6 +255,7 @@ return {
   {
     'goolord/alpha-nvim',
     dependencies = { 'kyazdani42/nvim-web-devicons' },
+    lazy = true,
   },
 
   -- Luapad
@@ -268,10 +288,13 @@ return {
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
   'tommcdo/vim-fugitive-blame-ext',
+  { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
   {
-    '9seconds/repolink.nvim',
+    -- '9seconds/repolink.nvim',
+    'tlindsay/repolink.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    opt = true,
     cmd = { 'RepoLink' },
   },
+
+  'chrisbra/unicode.vim',
 }

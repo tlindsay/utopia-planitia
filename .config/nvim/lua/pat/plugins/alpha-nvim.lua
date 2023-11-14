@@ -31,13 +31,23 @@ local function footer()
   local lazy_stats = require('lazy').stats()
   local datetime = os.date('%m/%d/%y %H:%M')
 
+  -- count = 104,
+  -- loaded = 103,
+  -- real_cputime = true,
+  -- startuptime = 247.541,
+  -- times = {
+  --   LazyDone = 109.059,
+  --   LazyStart = 6.633,
+  --   UIEnter = 247.541
+  -- }
+
   local text = fortune()
   table.insert(text, '')
   table.insert(text, '')
   table.insert(text, ' ' .. datetime)
   table.insert(text, ' Neovim ' .. print_version)
-  table.insert(text, '  ' .. lazy_stats.loaded .. ' plugins')
-  table.insert(text, ' 󰔛 ' .. math.floor(lazy_stats.startuptime) .. 'ms')
+  table.insert(text, '  ' .. lazy_stats.loaded .. '/' .. lazy_stats.count .. ' plugins')
+  table.insert(text, ' 󰔛 ' .. lazy_stats.times.LazyDone .. 'ms')
   return text
 end
 

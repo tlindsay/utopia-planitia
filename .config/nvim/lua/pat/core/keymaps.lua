@@ -29,9 +29,10 @@ wk.register({
 wk.register({
   ['<leader>'] = {
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
+    ['='] = { ':windo set cursorbind!<CR>', 'Sync cursor line for open panes' },
     ['rv'] = { _G.reload_config, 'Reload Vim config' },
     ['<space>'] = { ':set wrap!<CR>', 'Toggle line wrapping' },
-    ['<Del>'] = { ':%bd | Alpha<CR>', 'Close all buffers' },
+    ['<Del>'] = { ':silent %bdelete | Alpha<CR>', 'Close all buffers' },
     x = { ':tabclose<CR>', 'Close window' },
     S = { ':mksession!<CR>', 'Save session' },
     ['<leader>'] = {
@@ -42,6 +43,7 @@ wk.register({
         end,
         'Toggle format-on-save',
       },
+      Q = { ':qall!<CR>', 'Force quit' },
     },
   },
 })
@@ -96,7 +98,9 @@ map('n', 'J', ':m .+1<CR>')
 map('n', '<C-w>-', ':new<CR>')
 map('n', '<C-w>\\', ':vnew<CR>')
 map('n', '<C-w>,', function()
-  local input = vim.fn.input('Tab name? ')
+  local success, name = pcall(vim.api.nvim_tabpage_get_var, 0, 'custom_tab_name')
+  local var = success and name or ''
+  local input = vim.fn.input('Tab name? ', var)
 
   vim.api.nvim_tabpage_set_var(0, 'custom_tab_name', input)
 end)

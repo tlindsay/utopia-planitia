@@ -95,9 +95,15 @@ require('telescope').setup({
 })
 
 local function get_files()
+  local dotfiles_repo = vim.fn.glob('$HOME/.config')
+  local cwd = vim.fn.getcwd()
+  local in_dotfiles_repo = cwd == dotfiles_repo
+  local in_dotfiles_subdir = vim.tbl_contains(vim.fn.globpath(dotfiles_repo, '*', false, true), cwd)
   local in_git_repo = vim.fn.systemlist('git rev-parse --is-inside-work-tree')[1] == 'true'
   if in_git_repo then
     builtins.git_files({ show_untracked = true })
+  elseif in_dotfiles_repo or in_dotfiles_subdir then
+    M.edit_neovim()
   else
     builtins.find_files()
   end

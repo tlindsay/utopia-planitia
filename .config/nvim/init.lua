@@ -23,6 +23,10 @@ local plugins = require('pat.plugins')
 require('lazy').setup(plugins, {
   ui = { border = 'rounded' },
   dev = { path = '~/Code/make' },
+  profiling = {
+    loader = true,
+    require = true,
+  },
 })
 
 -- Import Lua modules
@@ -65,7 +69,8 @@ R('pat.plugins/nvim-scrollbar')
 R('pat.plugins/nvim-treesitter')
 R('pat.plugins/nvim-ufo')
 R('pat.plugins/repolink')
-R('pat.plugins/symbols-outline')
+R('pat.plugins/rgflow')
+R('pat.plugins/outline')
 R('pat.plugins/smart-splits')
 R('pat.plugins/telescope')
 R('pat.plugins/textobjs')

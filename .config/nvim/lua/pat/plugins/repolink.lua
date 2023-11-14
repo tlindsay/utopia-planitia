@@ -7,9 +7,7 @@ require('which-key').register({
 })
 
 vim.api.nvim_create_user_command('LinkTest', function(args)
-  vim.print('Line 1: ' .. args.line1)
-  vim.print('Line 2: ' .. args.line2)
-  vim.print('Range: ' .. args.range)
+  vim.print(args)
 end, {
   bang = true,
   nargs = '*',

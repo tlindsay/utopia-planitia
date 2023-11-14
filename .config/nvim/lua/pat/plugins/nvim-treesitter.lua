@@ -6,11 +6,27 @@
 -- url: https://github.com/nvim-treesitter/nvim-treesitter
 
 local ts = require('nvim-treesitter.configs')
+local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 local ctx = require('treesitter-context')
 local wk = require('which-key')
 
--- Apply "Various TextObjects"
-require('various-textobjs').setup({ useDefaultKeymaps = true })
+parser_config.nu = {
+  install_info = {
+    url = 'https://github.com/nushell/tree-sitter-nu',
+    files = { 'src/parser.c' },
+    branch = 'main',
+  },
+  filetype = 'nu',
+}
+
+parser_config.vcl = {
+  install_info = {
+    url = 'https://github.com/isudzumi/tree-sitter-vcl',
+    files = { 'src/parser.c' },
+    branch = 'main',
+  },
+  filetype = 'vcl',
+}
 
 -- Fix compiler issue on MacOS
 -- (Prerequisite is $ brew install gcc)
@@ -46,28 +62,17 @@ ts.setup({
   },
   playground = {
     enable = true,
-  },
-  rainbow = {
-    enable = true,
-    query = {
-      'rainbow-parens',
-      html = 'rainbow-tags',
-      javascript = 'rainbow-parens',
-      typescript = 'rainbow-parens',
-      jsx = 'rainbow-parens',
-      tsx = 'rainbow-parens-react',
-    },
-    strategy = require('ts-rainbow.strategy.local'),
-    max_file_lines = 3000,
-    extended_mode = true,
-    hlgroups = {
-      'TSRainbowCyan',
-      'TSRainbowViolet',
-      'TSRainbowGreen',
-      'TSRainbowOrange',
-      'TSRainbowBlue',
-      'TSRainbowYellow',
-      'TSRainbowRed',
+    keybindings = {
+      toggle_query_editor = 'o',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_anonymous_nodes = 'a',
+      toggle_language_display = 'I',
+      focus_language = 'f',
+      unfocus_language = 'F',
+      update = 'R',
+      goto_node = '<cr>',
+      show_help = '?',
     },
   },
   textobjects = {
@@ -100,10 +105,35 @@ ctx.setup({
   max_lines = 0,
 })
 local colors = require('pat.core/colors')
+require('rainbow-delimiters.setup').setup({
+  enable = true,
+  query = {
+    [''] = 'rainbow-delimiters',
+    lua = 'rainbow-blocks',
+    html = 'rainbow-tags',
+    javascript = 'rainbow-parens',
+    typescript = 'rainbow-parens',
+    jsx = 'rainbow-parens',
+    tsx = 'rainbow-parens-react',
+  },
+  strategy = { [''] = require('rainbow-delimiters.strategy.local') },
+  max_file_lines = 3000,
+  extended_mode = true,
+  hlgroups = {
+    'RainbowDelimiterCyan',
+    'RainbowDelimiterViolet',
+    'RainbowDelimiterGreen',
+    'RainbowDelimiterOrange',
+    'RainbowDelimiterBlue',
+    'RainbowDelimiterYellow',
+    'RainbowDelimiterRed',
+  },
+})
+
 vim.api.nvim_set_hl(
   0,
   'TreesitterContext',
   { italic = true, fg = colors.tokyonight.magenta, bg = colors.tokyonight.bg_highlight, blend = 50 }
 )
 vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
-vim.api.nvim_set_hl(0, 'TSRainbowGreen', { fg = colors.tokyonight.blue6 })
+vim.api.nvim_set_hl(0, 'RainbowDelimiterGreen', { fg = colors.tokyonight.blue6 })
