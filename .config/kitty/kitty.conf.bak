@@ -10,10 +10,14 @@
 # bold_font        auto
 # italic_font      auto
 # bold_italic_font auto
-font_family      "FantasqueSansMono Nerd Font Complete-Regular"
-bold_font        "FantasqueSansMono Nerd Font Complete-Bold"
-italic_font      "FantasqueSansMono Nerd Font Complete-Italic"
-bold_italic_font "FantasqueSansMono Nerd Font Complete-Bold-Italic"
+# font_family      FantasqueSansMono Nerd Font Regular
+# bold_font        FantasqueSansMono Nerd Font Bold
+# italic_font      FantasqueSansMono Nerd Font Italic
+# bold_italic_font FantasqueSansMono Nerd Font Bold-Italic
+font_family      FantasqueSansMono Nerd Font
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
 
 #: You can specify different fonts for the bold/italic/bold-italic
 #: variants. To get a full list of supported fonts use the `kitty
@@ -28,7 +32,7 @@ bold_italic_font "FantasqueSansMono Nerd Font Complete-Bold-Italic"
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size 19.0
+font_size 20.0
 
 #: Font size (in pts)
 
@@ -79,7 +83,7 @@ font_size 19.0
 
 #:     narrow_symbols codepoints [optionally the number of cells]
 
-# disable_ligatures never
+disable_ligatures cursor
 
 #: Choose how you want to handle multi-character ligatures. The
 #: default is to always render them. You can tell kitty to not render
@@ -149,6 +153,7 @@ font_size 19.0
 #: this font) breaks up monotony::
 
 #:     font_features TT2020StyleB-Regular -liga +calt
+font_features FantasqueSansMonoNerdFontComplete-Regular -liga +calt
 
 #: In conjunction with force_ltr, you may want to disable Arabic
 #: shaping entirely, and only look at their isolated forms if they
@@ -163,6 +168,8 @@ font_size 19.0
 #: suffix px for pixels or % for percentage of original value. No
 #: suffix means use pts. For example::
 
+     modify_font underline_position 0
+     modify_font underline_thickness 100%
 #:     modify_font underline_position -2
 #:     modify_font underline_thickness 150%
 #:     modify_font strikethrough_position 2px
@@ -172,8 +179,10 @@ font_size 19.0
 #: placed in the cell. For example::
 
 #:     modify_font cell_width 80%
-#:     modify_font cell_height -2px
-#:     modify_font baseline 3
+modify_font cell_height -2px
+modify_font baseline 2
+# modify_font cell_height 0px
+# modify_font baseline 0
 
 #: Note that modifying the baseline will automatically adjust the
 #: underline and strikethrough positions by the same amount.
@@ -191,8 +200,7 @@ font_size 19.0
 #: }}}
 
 #: Cursor customization {{{
-
-# cursor #cccccc
+# cursor #fca7ea
 
 #: Default cursor color. If set to the special value none the cursor
 #: will be rendered with a "reverse video" effect. It's color will be
@@ -478,7 +486,7 @@ detect_urls yes
 
 #: Click the link under the mouse or move the cursor
 
-# mouse_map left click ungrabbed mouse_handle_click selection link prompt
+mouse_map left click grabbed,ungrabbed mouse_handle_click selection link prompt
 
 #::  First check for a selection and if one exists do nothing. Then
 #::  check for a link under the mouse cursor and if one exists, click
@@ -619,12 +627,12 @@ detect_urls yes
 
 #: Terminal bell {{{
 
-# enable_audio_bell yes
+enable_audio_bell no
 
 #: The audio bell. Useful to disable it in environments that require
 #: silence.
 
-# visual_bell_duration 0.0
+visual_bell_duration 0.25
 
 #: The visual bell duration (in seconds). Flash the screen when a bell
 #: occurs for the specified number of seconds. Set to zero to disable.
@@ -761,6 +769,7 @@ detect_urls yes
 #: between zero and one, with zero being fully faded).
 
 # hide_window_decorations no
+hide_window_decorations titlebar-only
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only can be used to only hide the titlebar.
@@ -1390,7 +1399,7 @@ detect_urls yes
 #: This option must be a comma separated list of the above values.
 #: This only source the first valid one in the above order.
 
-# term xterm-kitty
+term xterm-kitty
 
 #: The value of the TERM environment variable to set. Changing this
 #: can break many terminal programs, only change it if you know what
@@ -1414,8 +1423,7 @@ detect_urls yes
 #: means to use the default system color, a value of background means
 #: to use the background color of the currently active window and
 #: finally you can use an arbitrary color, such as #12af59 or red.
-
-# macos_titlebar_color system
+# macos_titlebar_color #222337
 
 #: The color of the kitty window's titlebar on macOS. A value of
 #: system means to use the default system color, light or dark can
@@ -1429,7 +1437,7 @@ detect_urls yes
 #: background_opacity. If you want to use both, you are probably
 #: better off just hiding the titlebar with hide_window_decorations.
 
-# macos_option_as_alt no
+macos_option_as_alt yes
 
 #: Use the Option key as an Alt key on macOS. With this set to no,
 #: kitty will use the macOS native Option+Key to enter Unicode
@@ -1462,14 +1470,14 @@ detect_urls yes
 #: resizable on macOS. Changing this option by reloading the config
 #: will only affect newly created OS windows.
 
-# macos_thicken_font 0
+macos_thicken_font 0.25
 
 #: Draw an extra border around the font with the given width, to
 #: increase legibility at small font sizes on macOS. For example, a
 #: value of 0.75 will result in rendering that looks similar to sub-
 #: pixel antialiasing at common font sizes.
 
-# macos_traditional_fullscreen no
+macos_traditional_fullscreen yes
 
 #: Use the macOS traditional full-screen transition, that is faster,
 #: but less pretty.
@@ -1491,7 +1499,7 @@ detect_urls yes
 #: the macOS global menu bar. Values less than one means that there is
 #: no maximum limit.
 
-# macos_custom_beam_cursor no
+macos_custom_beam_cursor yes
 
 #: Use a custom mouse cursor for macOS that is easier to see on both
 #: light and dark backgrounds. Nowadays, the default macOS cursor
@@ -2096,6 +2104,7 @@ detect_urls yes
 
 # map kitty_mod+f11 toggle_fullscreen
 # map ctrl+cmd+f    toggle_fullscreen
+map cmd+enter    toggle_fullscreen
 
 #: Toggle maximized
 
@@ -2245,6 +2254,6 @@ detect_urls yes
 
 
 # BEGIN_KITTY_THEME
-# Tokyo Night Day
+# Tokyo Night Moon
 include current-theme.conf
 # END_KITTY_THEME
