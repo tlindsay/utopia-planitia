@@ -75,8 +75,18 @@ bind-key -T copy-mode-vi Enter send-keys -X copy-pipe "reattach-to-user-namespac
 #############################
 
 # Switch Sessions
-bind C-s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
-bind C-m split-window -v "spt"
+# bind C-s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+set -g @session-wizard 'C-s'
 
+# Jumps
 set -g @resurrect-save 'S'
 set -g @resurrect-restore 'R'
+
+# jaclu/tmux-menus
+unbind-key -n MouseDown3Pane
+unbind-key -n M-MouseDown3Pane
+unbind-key -n MouseDown3Status
+unbind-key -n MouseDown3StatusLeft
+unbind-key <
+unbind-key >
+set -g @menus_trigger 'C-m'

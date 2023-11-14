@@ -7,6 +7,7 @@ set -g status-left "#[fg=black,bg=blue,bold] #S "
 set -g status-left-length 100
 set -g status-right-length 140
 set -g status-right ""
+set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
 set -ag status-right "#[bold]#{prefix_highlight}"
 set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
 set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
