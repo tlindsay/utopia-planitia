@@ -55,13 +55,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     secrets = {
-      url = "git+ssh://git@github.com/%GITHUB_USER%/%GITHUB_SECRETS_REPO%.git";
+      url = "git+ssh://git@github.com/tlindsay/daystrom-station.git";
       flake = false;
     };
   };
   outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix, secrets } @inputs:
     let
-      user = "%USER%";
+      user = "plindsay";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" ];
       forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
@@ -81,7 +81,7 @@
     in
     {
       devShells = forAllSystems devShell;
-      darwinConfigurations = let user = "%USER%"; in {
+      darwinConfigurations = let user = "plindsay"; in {
         macos = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = inputs;
