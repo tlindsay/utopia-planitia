@@ -271,7 +271,6 @@ let user = "plindsay";
 
   fonts.packages = with pkgs; [
     dejavu_fonts
-    feather-font # dustinlyons/nixpkgs
     jetbrains-mono
     font-awesome
     noto-fonts
