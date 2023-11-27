@@ -3,6 +3,7 @@
   description = "Starter Configuration for NixOS and MacOS";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
     home-manager.url = "github:nix-community/home-manager";
     darwin = {
@@ -32,8 +33,9 @@
     #   url = "git+ssh://git@github.com/tlindsay/daystrom-station.git";
     #   flake = false;
     # };
+    # Add `secrets` to outputs when ready
   };
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix/* , secrets */ } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix } @inputs:
     let
       user = "plindsay";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
