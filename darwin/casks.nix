@@ -2,35 +2,35 @@
 
 [
   # Development Tools
-  "homebrew/cask/docker"
-  "insomnia"
-  "ngrok"
-  "postico"
-  "visual-studio-code"
+  "1password"
+  "bruno"
+  "scroll-reverser"
+  "trailer"
+
+  # Fonts
+  "homebrew/cask-fonts/font-commit-mono-nerd-font"
+  "homebrew/cask-fonts/font-fantasque-sans-mono"
+  "homebrew/cask-fonts/font-fantasque-sans-mono-nerd-font"
+  "homebrew/cask-fonts/font-monaspace-nerd-font"
+  "homebrew/cask-fonts/font-symbols-only-nerd-font"
 
   # Communication Tools
-  "discord"
-  "loom"
-  "notion"
   "slack"
-  "telegram"
   "zoom"
 
   # Utility Tools
-  "appcleaner"
-  "syncthing"
+  "hammerspoon"
+  "setapp"
 
   # Entertainment Tools
-  "steam"
-  "vlc"
+  "spotify"
 
   # Productivity Tools
   "raycast"
-  "asana"
 
   # Browsers
+  "arc"
   "google-chrome"
-
-  # AI
-  "diffusionbee"
+  "firefox"
+  "homebrew/cask-versions/firefox-developer-edition"
 ]

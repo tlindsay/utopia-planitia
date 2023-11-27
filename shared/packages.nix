@@ -3,13 +3,20 @@
 with pkgs; [
   # General packages for development and system management
   act
-  alacritty
+  antibody
   aspell
   aspellDicts.en
   bash-completion
   bat
-  btop
+  bat-extras.batdiff
+  bat-extras.batgrep
+  bat-extras.batman
+  bat-extras.batpipe
+  bat-extras.batwatch
+  bat-extras.prettybat
+  bottom
   coreutils
+  "github:eza-community/eza"
   killall
   neofetch
   openssh
@@ -34,18 +41,17 @@ with pkgs; [
   # docker
   # docker-compose
   #
-  awscli2
-  flyctl
-  ngrok
-  tflint
+  k9s
+  kubectl
+  lazydocker
 
   # Media-related packages
-  emacs-all-the-icons-fonts
   dejavu_fonts
   ffmpeg
   fd
   font-awesome
   hack-font
+  harfbuzz
   noto-fonts
   noto-fonts-emoji
   meslo-lgs-nf
@@ -57,19 +63,24 @@ with pkgs; [
   nodejs
 
   # Text and terminal utilities
-  htop
+  diff-so-fancy
+  figlet
+  gh
+  git
+  gum
+  hub
   hunspell
   iftop
-  jetbrains-mono
   jq
+  lazygit
+  kitty
   ripgrep
+  starship
+  tealdeer
   tree
   tmux
   unrar
   unzip
-  zsh-powerlevel10k
-
-  # Python packages
-  python39
-  python39Packages.virtualenv # globally install virtualenv
+  yq
+  z-lua
 ]
