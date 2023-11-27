@@ -5,7 +5,7 @@ let user = "plindsay"; in
 {
 
   imports = [
-    ./secrets.nix
+    # ./secrets.nix
     ./home-manager.nix
     ../shared
     ../shared/cachix

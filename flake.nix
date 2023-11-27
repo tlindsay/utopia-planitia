@@ -11,7 +11,7 @@
     # Change the flake input
     # - Official repository
     #   nixpkgs.url = "github:NixOS/nixpkgs/master";
-    # 
+    #
     # Remove this setting and retry builds if they sometimes timeout:
     # - NixOS configuration
     #   https://github.com/dustinlyons/nixos-config/blob/8114714c10d61cd5da34df842dd5bac0301f688a/nixos/default.nix#L280
@@ -19,13 +19,13 @@
     # Replace feather-font with another font:
     # - Rofi:
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/config/rofi/launcher.rasi#L42
-    # 
+    #
     # - Polybar:
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/home-manager.nix#L21
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/config/rofi/styles.rasi#L49
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/config/rofi/powermenu.rasi#L49
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/config/rofi/networkmenu.rasi#L49
-    # 
+    #
     # - Fonts:
     #   https://github.com/dustinlyons/nixos-config/blob/1290219734b53b26d9c20d13989846788462ff26/nixos/default.nix#L286
 
@@ -49,17 +49,17 @@
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
-    }; 
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    secrets = {
-      url = "git+ssh://git@github.com/tlindsay/daystrom-station.git";
-      flake = false;
-    };
+    # secrets = {
+    #   url = "git+ssh://git@github.com/tlindsay/daystrom-station.git";
+    #   flake = false;
+    # };
   };
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix, secrets } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko, agenix/* , secrets */ } @inputs:
     let
       user = "plindsay";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -95,7 +95,7 @@
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle; 
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
