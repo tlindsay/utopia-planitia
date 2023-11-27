@@ -16,7 +16,7 @@ with pkgs; [
   bat-extras.prettybat
   bottom
   coreutils
-  "github:eza-community/eza"
+  eza
   killall
   neofetch
   openssh
