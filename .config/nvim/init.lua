@@ -38,6 +38,7 @@ require('pat.core/colors')
 require('pat.core/keymaps')
 
 -- Configure plugins
+R('pat.plugins/devicons') -- Load first for overrides
 R('pat.plugins/alpha-nvim')
 R('pat.plugins/bufferline')
 R('pat.plugins/colorizer')

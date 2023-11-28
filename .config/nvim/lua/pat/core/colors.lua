@@ -24,6 +24,11 @@ tokyonight.setup({
     -- if theme == 'day' then
     --   highlights.Cursor = { bg = colors.fg_dark }
     -- end
+
+    highlights['RainbowDelimiterGreen'] = {
+      fg = colors.blue6, --[[ , bg = 'None' ]]
+    }
+
     highlights.WinSeparator = {
       fg = colors.purple, --[[ , bg = 'None' ]]
     }

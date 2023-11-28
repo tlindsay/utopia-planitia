@@ -38,18 +38,21 @@ wk.register({
 
 require('treesj').setup()
 
+vim.g.skip_ts_context_commentstring_module = true
+require('ts_context_commentstring').setup({
+  enable = true,
+  enable_autocmd = false, -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
+  config = {
+    handlebars = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
+    glimmer = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
+  },
+})
+
 ts.setup({
   auto_install = true,
+  ignore_install = { 'tlaplus' },
   autopairs = { enable = true },
   autotag = { enable = true },
-  context_commentstring = {
-    enable = true,
-    enable_autocmd = false, -- https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
-    config = {
-      handlebars = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
-      glimmer = { __default = '{{! %s }}', __multiline = '{{!-- %s --}}' },
-    },
-  },
   endwise = {
     enable = true,
   },
@@ -100,26 +103,35 @@ ts.setup({
   },
 })
 
+local colors = require('pat.core/colors')
+
 ctx.setup({
   enable = true,
   max_lines = 0,
 })
-local colors = require('pat.core/colors')
+vim.api.nvim_set_hl(
+  0,
+  'TreesitterContext',
+  { italic = true, fg = colors.tokyonight.magenta, bg = colors.tokyonight.bg_highlight, blend = 50 }
+)
+vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
+
 require('rainbow-delimiters.setup').setup({
   enable = true,
+  blacklist = { 'help' },
   query = {
     [''] = 'rainbow-delimiters',
     lua = 'rainbow-blocks',
     html = 'rainbow-tags',
-    javascript = 'rainbow-parens',
-    typescript = 'rainbow-parens',
-    jsx = 'rainbow-parens',
-    tsx = 'rainbow-parens-react',
+    javascript = 'rainbow-delimiters-react',
+    typescript = 'rainbow-delimiters-react',
+    jsx = 'rainbow-delimiters-react',
+    tsx = 'rainbow-delimiters-react',
   },
-  strategy = { [''] = require('rainbow-delimiters.strategy.local') },
+  strategy = { [''] = require('rainbow-delimiters').strategy['local'] },
   max_file_lines = 3000,
   extended_mode = true,
-  hlgroups = {
+  highlight = {
     'RainbowDelimiterCyan',
     'RainbowDelimiterViolet',
     'RainbowDelimiterGreen',
@@ -129,11 +141,3 @@ require('rainbow-delimiters.setup').setup({
     'RainbowDelimiterRed',
   },
 })
-
-vim.api.nvim_set_hl(
-  0,
-  'TreesitterContext',
-  { italic = true, fg = colors.tokyonight.magenta, bg = colors.tokyonight.bg_highlight, blend = 50 }
-)
-vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = colors.tokyonight.magenta })
-vim.api.nvim_set_hl(0, 'RainbowDelimiterGreen', { fg = colors.tokyonight.blue6 })

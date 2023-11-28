@@ -8,6 +8,8 @@ window-decoration = false
 confirm-close-surface = false
 quit-after-last-window-closed = false
 
+window-padding-y = 4
+window-padding-balance = true
 
 ##
 # Keybinds
@@ -40,8 +42,13 @@ adjust-underline-thickness = -50%
 ##
 # Codepoint overrides
 # U+29C6 ⧆
+# U+21E0 ⇠
+# U+21E1 ⇡
+# U+21E2 ⇢
+# U+21E3 ⇣
 ##
-font-codepoint-map = U+29C6=Apple Symbols
+# font-codepoint-map = U+29C6=Apple Symbols
+font-codepoint-map = U+21E0-U+21E3,U+29C6=Menlo
 
 ##
 # Color scheme

@@ -12,7 +12,10 @@ local excluded_filetypes = {
   help = true,
   glow = true,
   git = true,
+  guihua = true,
+  lazy = true,
   markdown = true,
+  outline = true,
   text = true,
   terminal = true,
   lspinfo = true,
@@ -20,6 +23,7 @@ local excluded_filetypes = {
 }
 
 require('hlchunk').setup({
+  context = { enabled = false }, -- experimental!
   chunk = {
     exclude_filetypes = excluded_filetypes,
     style = { { fg = colors.pink } },

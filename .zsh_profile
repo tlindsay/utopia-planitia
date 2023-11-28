@@ -31,9 +31,10 @@ bindkey '^B' emoji-fzf-zle
 
 # alias sed="echo 'Did you mean to use sad?\r\n'; sed"
 
-alias l="eza -1 -F --git --group-directories-first --icons"
-alias ll="eza -l -F --git --group-directories-first --icons"
+alias l="eza -1 -F --git --group-directories-first --icons=auto"
+alias ll="eza -l -F --git --group-directories-first --icons=auto"
 alias lll="ll --git -g --header -a"
+alias tree="eza --tree"
 alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
 alias root='cd $(npm root)/..'
 alias forgit='alias | fzf -q forgit::'
@@ -67,11 +68,13 @@ function v() {
   local job=$(jobs | perl -ne 'print $1 if /\[(\d+)\].*vim/')
   if [[ -n $job ]]; then
     tmux send-keys fg Space %$job Enter
-    for f in $*; do
+    for f in $argv; do
       tmux send-keys :e Space `realpath $f` Enter
     done
+  elif [[ ( -x $(which ton) ) && ${#argv[@]} -gt 0 ]]; then
+    ton $argv
   else
-    vim $*
+    vim $argv
   fi
 }
 

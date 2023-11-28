@@ -27,6 +27,8 @@ wk.register({
   },
 }, { noremap = false, silent = false })
 wk.register({
+  ['<A-S-Left>'] = { ':tabm -1<CR>', 'Move tab left' },
+  ['<A-S-Right>'] = { ':tabm +1<CR>', 'Move tab right' },
   ['<leader>'] = {
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
     ['='] = { ':windo set cursorbind!<CR>', 'Sync cursor line for open panes' },

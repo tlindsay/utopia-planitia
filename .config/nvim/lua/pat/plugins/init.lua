@@ -86,10 +86,10 @@ return {
   },
 
   -- Icons
-  'kyazdani42/nvim-web-devicons',
+  'nvim-tree/nvim-web-devicons',
 
   -- Treesitter interface
-  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
+  { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate',       lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
@@ -97,7 +97,7 @@ return {
   'haringsrob/nvim_context_vt',
   -- { 'HiPhish/nvim-ts-rainbow2', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
   'HiPhish/rainbow-delimiters.nvim',
-  { 'Wansmer/treesj', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj',            dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
@@ -140,7 +140,7 @@ return {
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
-  { 'j-hui/fidget.nvim', tag = 'legacy' },
+  { 'j-hui/fidget.nvim',         tag = 'legacy' },
   'simrat39/rust-tools.nvim',
   {
     'ray-x/go.nvim',
@@ -243,7 +243,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },

@@ -1,3 +1,4 @@
+. "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/sbin:$PATH"
@@ -20,9 +21,15 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
-# load asdf
-. $(brew --prefix asdf)/libexec/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
+# # load asdf
+# . $(brew --prefix asdf)/libexec/asdf.sh
+#
+# # asdf plugin specific configs
+# . ~/.asdf/plugins/golang/set-env.zsh
+# export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+#
+# # asdf shell completions
+# fpath=(${ASDF_DIR}/completions $fpath)
 if type brew &>/dev/null
 then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -32,7 +39,7 @@ fi
 autoload -U compaudit compinit
 compinit -i -C -d ~/.zcompdump*
 # set up 1password completions
-eval "$(op completion zsh)"; compdef _op op
+# eval "$(op completion zsh)"; compdef _op op
 
 # Arrow key menu for completions
 zstyle ':completion:*' menu select
@@ -71,3 +78,31 @@ export PATH="$PATH:$HOME/go/bin"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if [[ -a /opt/homebrew/bin/thefuck ]]; then
+  eval $(thefuck --alias)
+fi
+
+# Load z
+# . /opt/homebrew/etc/profile.d/z.sh
+
+# Added by eng-bootstrap 2022-03-17 17:35:15
+export PATH=$PATH:/usr/local/google-cloud-sdk/bin
+
+# Added by eng-bootstrap 2022-03-17 17:40:42
+autoload -Uz compinit && compinit; eval "$(chef shell-init zsh)"
+
+# Added by eng-bootstrap 2022-03-17 17:41:32
+export PATH=$PATH:/usr/local/go/bin
+
+# Added by eng-bootstrap 2022-03-17 17:46:02
+export PATH=$PATH:/usr/local/google-cloud-sdk/bin
+
+# Added by eng-bootstrap 2023-03-23 16:23:20
+# export PATH=$PATH:/Users/plindsay/.asdf/installs/golang/1.20.2/packages/bin
+
+# pnpm
+# export PNPM_HOME="/Users/plindsay/Library/pnpm"
+# export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+# [ -f ~/.inshellisense/key-bindings.zsh ] && source ~/.inshellisense/key-bindings.zsh

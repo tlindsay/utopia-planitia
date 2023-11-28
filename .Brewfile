@@ -45,4 +45,5 @@ cask "muzzle"
 cask "scroll-reverser"
 cask "setapp"
 cask "spotify"
+cask "yubico-yubikey-manager"
 

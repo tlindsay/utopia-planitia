@@ -36,7 +36,6 @@ require('mason').setup({
 require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
-require('go').setup()
 require('neodev').setup({}) -- LuaLS/Neovim integration from @folke
 
 lines.setup()
@@ -45,7 +44,7 @@ vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 capabilities.textDocument.completion.completionItem = vim.tbl_extend(
   'force',
   capabilities.textDocument.completion.completionItem,
@@ -71,6 +70,7 @@ capabilities.textDocument.completion.completionItem = vim.tbl_extend(
 -- Autoformat on save
 require('format-on-save').setup({
   error_notifier = require('format-on-save.error-notifiers.message-buffer'),
+  experiments = { partial_update = 'diff' },
   fallback_formatter = {
     function()
       if vim.api.nvim_get_var('PAT_format_on_save') then
@@ -185,6 +185,16 @@ local handlers = {
 --[[=========================
     == CUSTOM SERVER CONFIGS
     ========================= ]]
+
+require('go').setup({
+  lsp_cfg = {
+    capabilities = capabilities,
+  },
+  lsp_on_attach = on_attach,
+  trouble = true,
+  luasnip = true,
+})
+
 require('mason-lspconfig').setup_handlers({
   function(server_name)
     nvim_lsp[server_name].setup({

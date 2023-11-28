@@ -10,6 +10,53 @@ _G.P = function(...)
   return ...
 end
 
+-- Adapted from https://stackoverflow.com/a/41943392/1915058
+_G.table_to_lines = function(tbl, indent)
+  if not indent then
+    indent = 0
+  end
+  local toprint = { string.rep(' ', indent) .. '{' }
+  indent = indent + 2
+
+  for k, v in pairs(tbl) do
+    local line = string.rep(' ', indent)
+    if type(k) == 'number' then
+      line = line .. '[' .. k .. '] = '
+    elseif type(k) == 'string' then
+      line = line .. (k == '' and '""' or k) .. ' = '
+    else
+      line = line .. '"' .. tostring(k) .. '" = '
+    end
+
+    if type(v) == 'number' then
+      table.insert(toprint, line .. v .. ',')
+      next(tbl, k)
+    elseif type(v) == 'string' then
+      table.insert(toprint, line .. '"' .. v .. '",')
+      next(tbl, k)
+    elseif type(v) == 'table' then
+      table.insert(toprint, line .. '{')
+      vim.list_extend(toprint, vim.tbl_values(table_to_lines(v, indent + 2)))
+      table.insert(toprint, string.rep(' ', indent) .. '},')
+      next(tbl, k)
+    else
+      table.insert(toprint, line .. '"' .. tostring(v) .. '",')
+      next(tbl, k)
+    end
+  end
+
+  table.insert(toprint, string.rep(' ', indent - 2) .. '}')
+  return toprint
+end
+
+_G.dump_to_buf = function(...)
+  local buf_id = 0
+  local tbl = select(1, ...) or {}
+  local should_append = select(2, ...) == nil and true or select(2, ...)
+
+  vim.api.nvim_buf_set_lines(buf_id, 0, should_append and 0 or -1, false, table_to_lines(tbl))
+end
+
 -- Plog = function(v)
 --   Vlog(vim.inspect(v))
 --   return v

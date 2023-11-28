@@ -376,6 +376,9 @@ require('feline').winbar.setup({
   disable = {
     filetypes = {
       '^alpha$',
+      '^outline$',
+      '^guihua$',
+      '^neotest.*$',
     },
   },
 })
