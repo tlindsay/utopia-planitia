@@ -6,4 +6,6 @@ shared-packages ++ [
   colima
   dockutil
   imagemagick
+  reattach-to-user-namespace
+  yadm
 ]
