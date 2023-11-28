@@ -17,6 +17,7 @@ with pkgs; [
   bottom
   coreutils
   eza
+  fzf
   killall
   neofetch
   neovim
