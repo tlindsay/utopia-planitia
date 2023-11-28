@@ -5,7 +5,7 @@ let name = "Patrick Lindsay";
     email = "pat@thatdarnpat.com"; in
 {
   # Shared shell configuration
-  zsh.enable = true;
+  zsh.enable = false;
   zsh.autocd = false;
   zsh.cdpath = [ "~/.local/share/src" ];
   zsh.plugins = [];
