@@ -69,6 +69,7 @@ with pkgs; [
   iftop
   jq
   lazygit
+  lua
   kitty
   ripgrep
   starship
