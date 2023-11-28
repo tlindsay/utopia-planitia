@@ -7,12 +7,12 @@
   "scroll-reverser"
   "trailer"
 
-  # Fonts
-  "homebrew/cask-fonts/font-commit-mono-nerd-font"
-  "homebrew/cask-fonts/font-fantasque-sans-mono"
-  "homebrew/cask-fonts/font-fantasque-sans-mono-nerd-font"
-  "homebrew/cask-fonts/font-monaspace-nerd-font"
-  "homebrew/cask-fonts/font-symbols-only-nerd-font"
+  # # Fonts
+  # "homebrew/cask-fonts/font-commit-mono-nerd-font"
+  # "homebrew/cask-fonts/font-fantasque-sans-mono"
+  # "homebrew/cask-fonts/font-fantasque-sans-mono-nerd-font"
+  # "homebrew/cask-fonts/font-monaspace-nerd-font"
+  # "homebrew/cask-fonts/font-symbols-only-nerd-font"
 
   # Communication Tools
   "slack"

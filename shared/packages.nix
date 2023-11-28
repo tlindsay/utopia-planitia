@@ -46,15 +46,9 @@ with pkgs; [
   lazydocker
 
   # Media-related packages
-  dejavu_fonts
   ffmpeg
   fd
-  font-awesome
-  hack-font
   harfbuzz
-  noto-fonts
-  noto-fonts-emoji
-  meslo-lgs-nf
 
   # Node.js development tools
   nodePackages.nodemon
