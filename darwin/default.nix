@@ -48,9 +48,9 @@ let user = "plindsay"; in
     stateVersion = 4;
 
     defaults = {
-      LaunchServices = {
-        LSQuarantine = false;
-      };
+      # LaunchServices = {
+      #   LSQuarantine = false;
+      # };
 
       NSGlobalDomain = {
         AppleShowAllExtensions = true;

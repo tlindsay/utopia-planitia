@@ -19,8 +19,8 @@ with pkgs; [
   eza
   killall
   neofetch
+  neovim
   openssh
-  pandoc
   sqlite
   wget
   zip
@@ -50,11 +50,12 @@ with pkgs; [
   fd
   harfbuzz
 
-  # Node.js development tools
-  nodePackages.nodemon
-  nodePackages.prettier
-  nodePackages.npm # globally install npm
-  nodejs
+  # # Node.js development tools
+  # nodePackages.nodemon
+  # nodePackages.prettier
+  # nodePackages.npm # globally install npm
+  # nodejs
+  asdf-vm
 
   # Text and terminal utilities
   diff-so-fancy

@@ -4,8 +4,7 @@
 #  githubPublicKey = "ssh-ed25519 AAAA...";
 # in
 {
-
-  # ".ssh/id_github.pub" = {
-  #   text = githubPublicKey;
-  # };
+  "shared.txt" = {
+    text = "this is from shared/files.nix";
+  };
 }

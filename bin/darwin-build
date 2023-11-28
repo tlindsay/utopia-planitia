@@ -15,13 +15,13 @@ export NIXPKGS_ALLOW_UNFREE=1
 cd $(dirname $(readlink -f $0))
 cd ..
 
-echo "${GREEN}Starting build...${NC}"
+echo "${GREEN}Starting build ${SYSTEM}...${NC}"
 nix --experimental-features 'nix-command flakes' build .#$SYSTEM $@
 
 echo "${GREEN}Switching to new generation...${NC}"
 ./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE $@
 
 echo "${GREEN}Cleaning up...${NC}"
-unlink ./result
+# unlink ./result
 
 echo "${GREEN}Switch to new generation complete!${NC}"

@@ -6,7 +6,7 @@ let name = "Patrick Lindsay";
 {
   # Shared shell configuration
   zsh.enable = false;
-  zsh.autocd = false;
+  zsh.autocd = true;
   zsh.cdpath = [ "~/.local/share/src" ];
   zsh.plugins = [];
   zsh.initExtraFirst = ''
@@ -15,11 +15,11 @@ let name = "Patrick Lindsay";
       . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
     fi
 
-    # Define variables for directories
-    export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
-    export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
+    # # Define variables for directories
+    # export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
+    # export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
     export PATH=$HOME/.local/share/bin:$PATH
-    export PNPM_HOME=~/.pnpm-packages
+    # export PNPM_HOME=~/.pnpm-packages
 
     # Remove history data we don't want to see
     export HISTIGNORE="pwd:ls:cd"
@@ -41,7 +41,7 @@ let name = "Patrick Lindsay";
     extraConfig = {
       init.defaultBranch = "main";
       core = {
-	    editor = "vim";
+        editor = "vim";
         autocrlf = "input";
       };
       commit.gpgsign = true;
@@ -51,7 +51,7 @@ let name = "Patrick Lindsay";
   };
 
   ssh = {
-    enable = true;
+    enable = false;
 
     extraConfig = lib.mkMerge [
       ''
