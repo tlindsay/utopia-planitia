@@ -22,6 +22,6 @@ echo "${GREEN}Switching to new generation...${NC}"
 ./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE $@
 
 echo "${GREEN}Cleaning up...${NC}"
-# unlink ./result
+unlink ./result
 
 echo "${GREEN}Switch to new generation complete!${NC}"
