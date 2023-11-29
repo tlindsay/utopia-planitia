@@ -48,10 +48,6 @@ let user = "plindsay"; in
     stateVersion = 4;
 
     defaults = {
-      # LaunchServices = {
-      #   LSQuarantine = false;
-      # };
-
       NSGlobalDomain = {
         AppleShowAllExtensions = true;
         ApplePressAndHoldEnabled = false;
@@ -72,7 +68,7 @@ let user = "plindsay"; in
         show-recents = false;
         launchanim = true;
         orientation = "bottom";
-        tilesize = 48;
+        tilesize = 72;
       };
 
       finder = {

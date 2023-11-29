@@ -48,10 +48,6 @@ in
 
       home.stateVersion = "23.11";
       programs = { home-manager = { enable = true; }; } // import ../shared/home-manager.nix { inherit config pkgs lib; };
-
-      # Marked broken Oct 20, 2022 check later to remove this
-      # https://github.com/nix-community/home-manager/issues/3344
-      manual.manpages.enable = false;
     };
   };
 
@@ -65,7 +61,7 @@ in
     { path = "${pkgs.kitty}/Applications/kitty.app/"; }
     { path = "/Applications/Spotify.app/"; }
     {
-      path = "${config.users.users.${user}.home}/Screenshots";
+      path = "${config.users.users.${user}.home}/Pictures/Screenshots";
       section = "others";
       options = "--sort dateadded --view grid --display stack";
     }

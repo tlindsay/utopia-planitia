@@ -51,11 +51,7 @@ with pkgs; [
   fd
   harfbuzz
 
-  # # Node.js development tools
-  # nodePackages.nodemon
-  # nodePackages.prettier
-  # nodePackages.npm # globally install npm
-  # nodejs
+  # Still using asdf for tool versioning
   asdf-vm
 
   # Text and terminal utilities
