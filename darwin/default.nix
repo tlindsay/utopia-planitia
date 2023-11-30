@@ -1,9 +1,8 @@
 { agenix, config, pkgs, ... }:
 
-# fart
-
-let user = "plindsay"; in
-
+let
+  user = "plindsay";
+in
 {
 
   imports = [

@@ -59,6 +59,7 @@ with pkgs; [
   figlet
   gh
   git
+  glow
   gum
   hub
   hunspell
