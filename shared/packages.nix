@@ -76,5 +76,5 @@ with pkgs; [
   unrar
   unzip
   yq
-  z-lua
+  zoxide
 ]
