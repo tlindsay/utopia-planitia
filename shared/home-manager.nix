@@ -30,7 +30,7 @@ let name = "Patrick Lindsay";
   '';
 
   git = {
-    enable = true;
+    enable = false;
     ignores = [ "*.swp" ];
     userName = name;
     userEmail = email;
