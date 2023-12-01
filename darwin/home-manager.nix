@@ -1,7 +1,6 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ config, pkgs, lib, user, home-manager, ... }:
 
 let
-  user = "plindsay";
   # Define the content of your file as a derivation
   sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { inherit user config pkgs; };
@@ -47,7 +46,7 @@ in
       ];
 
       home.stateVersion = "23.11";
-      programs = { home-manager = { enable = true; }; } // import ../shared/home-manager.nix { inherit config pkgs lib; };
+      programs = { home-manager = { enable = true; }; } // import ../shared/home-manager.nix { inherit config pkgs lib user; };
     };
   };
 

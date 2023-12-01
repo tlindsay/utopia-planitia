@@ -6,7 +6,8 @@ GREEN='\033[1;32m'
 RED='\033[1;31m'
 NC='\033[0m'
 
-FLAKE="macos"
+HOSTNAME=$(uname -n)
+FLAKE=${HOSTNAME:-"macos"}
 SYSTEM="darwinConfigurations.$FLAKE.system"
 
 export NIXPKGS_ALLOW_UNFREE=1

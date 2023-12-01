@@ -50,7 +50,16 @@
   , agenix
   } @inputs:
     let
-      user = "plindsay";
+      hostmap = {
+        "fastbook" = {
+          system = "aarch64-darwin";
+          user = "plindsay";
+        };
+        "delta-flyer" = {
+          system = "aarch64-darwin";
+          user = "pat";
+        };
+      };
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" ];
       forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
@@ -69,43 +78,34 @@
       };
     in
     {
-      devShells = (forAllSystems) devShell;
-      darwinConfigurations = {
-        macos = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          specialArgs = inputs;
-          modules = [
-            nix-homebrew.darwinModules.nix-homebrew
-            home-manager.darwinModules.home-manager
-            {
-              nix-homebrew = {
-                enable = true;
-                user = "${user}";
-                taps = {
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
-                };
-                mutableTaps = false;
-                autoMigrate = true;
-              };
-            }
-            ./darwin
-          ];
-        };
-      };
-     #  nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
-     #    system = system;
-     #    specialArgs = inputs;
-     #    modules = [
-     #      disko.nixosModules.disko
-     #      home-manager.nixosModules.home-manager {
-     #        home-manager.useGlobalPkgs = true;
-     #        home-manager.useUserPackages = true;
-     #        home-manager.users.${user} = import ./nixos/home-manager.nix;
-     #      }
-     #      ./nixos
-     #    ];
-     # });
-  };
+      devShells = (forAllDarwinSystems) devShell;
+      darwinConfigurations = builtins.mapAttrs
+        (hn: conf: darwin.lib.darwinSystem {
+         system = conf.system;
+         specialArgs = {
+           inherit inputs;
+           user = conf.user;
+         };
+         modules = [
+           nix-homebrew.darwinModules.nix-homebrew
+           home-manager.darwinModules.home-manager
+           {
+             home-manager.extraSpecialArgs = { user = conf.user; };
+             nix-homebrew = {
+               enable = true;
+               user = "${conf.user}";
+               taps = {
+                 "homebrew/homebrew-core" = homebrew-core;
+                 "homebrew/homebrew-cask" = homebrew-cask;
+                 "homebrew/homebrew-bundle" = homebrew-bundle;
+               };
+               mutableTaps = false;
+               autoMigrate = true;
+             };
+           }
+           ./darwin
+         ];
+        }
+      ) hostmap;
+    };
 }

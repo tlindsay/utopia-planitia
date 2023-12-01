@@ -6,6 +6,6 @@ let
   xdg_stateHome  = "${config.users.users.${user}.home}/.local/state"; in
 {
   "darwin.txt" = {
-    text = "this is from darwin/files.nix";
+    text = "hi, ${user}! this is from darwin/files.nix";
   };
 }

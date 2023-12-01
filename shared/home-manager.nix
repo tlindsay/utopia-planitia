@@ -1,7 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, user, ... }:
 
 let name = "Patrick Lindsay";
-    user = "plindsay";
     email = "pat@thatdarnpat.com"; in
 {
   # Shared shell configuration
