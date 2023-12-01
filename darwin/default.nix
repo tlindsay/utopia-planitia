@@ -1,5 +1,8 @@
-{ agenix, config, pkgs, user, ... }:
+{ inputs, config, pkgs, user, ... }:
 
+let
+  agenix = inputs.agenix;
+in
 {
 
   imports = [
