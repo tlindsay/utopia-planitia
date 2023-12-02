@@ -1,6 +1,10 @@
 . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+fi
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/sbin:$PATH"
 if [ -d "/opt/homebrew/bin" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -21,25 +25,27 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
-# # load asdf
-# . $(brew --prefix asdf)/libexec/asdf.sh
-#
-# # asdf plugin specific configs
-# . ~/.asdf/plugins/golang/set-env.zsh
-# export ASDF_GOLANG_MOD_VERSION_ENABLED=true
-#
-# # asdf shell completions
-# fpath=(${ASDF_DIR}/completions $fpath)
-if type brew &>/dev/null
-then
+# load asdf
+. $HOME/.nix-profile/share/asdf-vm/asdf.sh
+
+# asdf plugin specific configs
+. ~/.asdf/plugins/golang/set-env.zsh
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+
+# asdf shell completions
+fpath=(${ASDF_DIR}/completions $fpath)
+if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+if [[ -e $HOME/.nix-profile ]]; then
+  FPATH="$HOME/.nix-profile/share/zsh/site-functions:${FPATH}"
 fi
 
 # Set up tab-completions
 autoload -U compaudit compinit
 compinit -i -C -d ~/.zcompdump*
 # set up 1password completions
-# eval "$(op completion zsh)"; compdef _op op
+eval "$(op completion zsh)"; compdef _op op
 
 # Arrow key menu for completions
 zstyle ':completion:*' menu select
@@ -84,7 +90,7 @@ if [[ -a /opt/homebrew/bin/thefuck ]]; then
 fi
 
 # Load z
-# . /opt/homebrew/etc/profile.d/z.sh
+eval "$(zoxide init zsh)"
 
 # Added by eng-bootstrap 2022-03-17 17:35:15
 export PATH=$PATH:/usr/local/google-cloud-sdk/bin
@@ -102,7 +108,7 @@ export PATH=$PATH:/usr/local/google-cloud-sdk/bin
 # export PATH=$PATH:/Users/plindsay/.asdf/installs/golang/1.20.2/packages/bin
 
 # pnpm
-# export PNPM_HOME="/Users/plindsay/Library/pnpm"
-# export PATH="$PNPM_HOME:$PATH"
+export PNPM_HOME="/Users/plindsay/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 # [ -f ~/.inshellisense/key-bindings.zsh ] && source ~/.inshellisense/key-bindings.zsh
