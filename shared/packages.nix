@@ -18,6 +18,7 @@ with pkgs; [
   coreutils
   eza
   fzf
+  gcc12
   killall
   neofetch
   neovim
