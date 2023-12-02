@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, user, ... }:
+{ inputs, config, pkgs, hostpkgs, user, ... }:
 
 let
   agenix = inputs.agenix;
@@ -40,7 +40,7 @@ in
   # Load configuration that is shared across systems
   environment.systemPackages = with pkgs; [
     agenix.packages."${pkgs.system}".default
-  ] ++ (import ../shared/packages.nix { inherit pkgs; });
+  ] ++ hostpkgs ++ (import ../shared/packages.nix { inherit pkgs; });
 
   # Enable fonts dir
   fonts.fontDir.enable = true;
