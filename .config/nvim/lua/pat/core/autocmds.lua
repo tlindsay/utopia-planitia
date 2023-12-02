@@ -1,4 +1,7 @@
 local cmd = vim.cmd
+local Job = require('plenary.job')
+local Popup = require('nui.popup')
+local event = require('nui.utils.autocmd').event
 
 -----------------------------------------------------------
 -- Autocommands
@@ -6,6 +9,86 @@ local cmd = vim.cmd
 
 -- Remove whitespace on save
 cmd([[au BufWritePre * :%s/\s\+$//e]])
+
+local fugitiveCommitMsgPopupLayoutProps = {
+  relative = 'win',
+  anchor = 'NE',
+  position = {
+    row = '3%',
+    col = '100%',
+  },
+  size = {
+    width = 40,
+    height = 8,
+  },
+}
+
+local fugitiveCommitMsgPopup = Popup(vim.tbl_extend('keep', fugitiveCommitMsgPopupLayoutProps, {
+  enter = false,
+  focusable = false,
+  border = { style = 'rounded', text = {} },
+  win_options = {
+    winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
+  },
+}))
+local function updateFugitiveCommitMsgPopup()
+  local fugitiveLine = vim.api.nvim_get_current_line()
+  local hiGroup = vim.inspect_pos().syntax[2].hl_group
+  local commitHash = string.match(fugitiveLine, '[%x]+')
+  if commitHash ~= '' then
+    Job
+        :new({
+          command = 'git',
+          args = { 'log', '-1', '--pretty=format:%H%n%an %ar%n%n%B', commitHash },
+          cwd = vim.fn.getcwd(),
+          on_exit = function(j, return_val)
+            if return_val == 0 then
+              vim.schedule(function()
+                fugitiveCommitMsgPopup.border:set_text('bottom', '[Commit ' .. commitHash .. ']', 'center')
+                fugitiveCommitMsgPopup.border:set_highlight(hiGroup or 'FloatBorder')
+                vim.api.nvim_buf_set_lines(fugitiveCommitMsgPopup.bufnr, 0, -1, false, j:result())
+              end)
+            end
+          end,
+        })
+        :sync()
+  end
+end
+local fugitiveCommitMsg = vim.api.nvim_create_augroup('PAT_FugitiveCommitMsg', { clear = true })
+vim.api.nvim_create_autocmd('BufAdd', {
+  group = fugitiveCommitMsg,
+  pattern = '*.fugitiveblame',
+  callback = function()
+    fugitiveCommitMsgPopup:mount()
+  end,
+})
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = fugitiveCommitMsg,
+  pattern = '*.fugitiveblame',
+  callback = function()
+    fugitiveCommitMsgPopup:show()
+    updateFugitiveCommitMsgPopup()
+  end,
+})
+vim.api.nvim_create_autocmd('BufLeave', {
+  group = fugitiveCommitMsg,
+  pattern = '*.fugitiveblame',
+  callback = function()
+    fugitiveCommitMsgPopup:hide()
+  end,
+})
+vim.api.nvim_create_autocmd('BufDelete', {
+  group = fugitiveCommitMsg,
+  pattern = '*.fugitiveblame',
+  callback = function()
+    fugitiveCommitMsgPopup:unmount()
+  end,
+})
+vim.api.nvim_create_autocmd('CursorMoved', {
+  group = fugitiveCommitMsg,
+  pattern = '*.fugitiveblame',
+  callback = updateFugitiveCommitMsgPopup,
+})
 
 local autoFormatGroup = vim.api.nvim_create_augroup('ToggleFormatOnSaveGroup', { clear = false })
 vim.api.nvim_create_autocmd('User', {

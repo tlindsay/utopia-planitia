@@ -105,7 +105,7 @@ return {
   -- Color schemes
   {
     'folke/tokyonight.nvim',
-    dir = '~/Code/make/tokyonight.nvim',
+    -- dir = '~/Code/make/tokyonight.nvim',
     lazy = false,
     priority = 1000,
   },
@@ -287,7 +287,7 @@ return {
 
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
-  'tommcdo/vim-fugitive-blame-ext',
+  -- 'tommcdo/vim-fugitive-blame-ext',
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
   {
     -- '9seconds/repolink.nvim',
