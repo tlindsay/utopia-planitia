@@ -1,4 +1,4 @@
-{ config, pkgs, lib, user, home-manager, ... }:
+{ config, pkgs, inputs, lib, user, home-manager, ... }:
 
 let
   # Define the content of your file as a derivation
@@ -44,11 +44,11 @@ in
         sharedFiles
         additionalFiles
       ];
-			fonts.fontconfig.enable = true;
+      fonts.fontconfig.enable = true;
 
       home.stateVersion = "23.11";
-      programs = { home-manager = { enable = true; }; } // import ../shared/home-manager.nix { inherit config pkgs lib user; };
-    };
+      programs = { home-manager = { enable = true; }; };
+    } // import ../shared/home-manager/default.nix { inherit config inputs pkgs lib user; };
   };
 
   # Fully declarative dock using the latest from Nix Store

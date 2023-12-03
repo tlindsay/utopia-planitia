@@ -76,15 +76,15 @@
           '';
         };
       };
-			hostpkgs = system: let
-			  pkgs = nixpkgs.legacyPackages.${system};
-			in
-			{
-				delta-flyer = with pkgs; [
-					# super-slicer-beta
-					openscad
-				];
-			};
+      hostpkgs = system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        delta-flyer = with pkgs; [
+          # super-slicer-beta
+          openscad
+        ];
+      };
     in
     {
       devShells = (forAllDarwinSystems) devShell;
@@ -94,7 +94,7 @@
          specialArgs = {
            inherit inputs;
            user = conf.user;
-					 hostpkgs = (hostpkgs conf.system).${hn};
+           hostpkgs = (hostpkgs conf.system).${hn};
          };
          modules = [
            nix-homebrew.darwinModules.nix-homebrew

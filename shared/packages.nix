@@ -28,9 +28,9 @@ with pkgs; [
   wget
   zip
 
-	# Lang specific runtimes
-	go
-	nodePackages.nodejs
+  # Lang specific runtimes
+  go
+  nodePackages.nodejs
 
   # Encryption and security tools
   age
