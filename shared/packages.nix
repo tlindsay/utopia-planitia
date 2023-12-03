@@ -28,6 +28,10 @@ with pkgs; [
   wget
   zip
 
+	# Lang specific runtimes
+	go
+	nodePackages.nodejs
+
   # Encryption and security tools
   age
   age-plugin-yubikey
