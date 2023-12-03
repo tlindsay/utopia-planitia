@@ -52,6 +52,7 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
+	(nerdfonts.override { fonts = ["FantasqueSansMono"]; })
 
   # Still using asdf for tool versioning
   asdf-vm

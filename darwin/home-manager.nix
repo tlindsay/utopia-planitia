@@ -44,6 +44,7 @@ in
         sharedFiles
         additionalFiles
       ];
+			fonts.fontconfig.enable = true;
 
       home.stateVersion = "23.11";
       programs = { home-manager = { enable = true; }; } // import ../shared/home-manager.nix { inherit config pkgs lib user; };
