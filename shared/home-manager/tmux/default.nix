@@ -147,10 +147,10 @@ in
         '';
       }
       { plugin = plugins.better-mouse-mode; }
-      # cowboy
-      # menus
+      plugins.cowboy
+      plugins.tmux-menus
       plugins.session-wizard
-      # plugins.open-nvim
+      plugins.open-nvim
       {
         plugin = plugins.fingers;
         extraConfig = ''

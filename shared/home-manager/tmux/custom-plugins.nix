@@ -14,22 +14,38 @@ in
       sha256 = null;
     };
   };
-  # open-nvim = buildTmuxPlugin {
-  #   pluginName = "open-nvim";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "trevarj";
-  #     repo = "tmux-open-nvim";
-  #     rev = "fbbe55bf49cbbbc497b8c044957f9b7bfeb0a93c";
-  #     sha256 = null;
-  #   };
-  # };
-  # nord = buildTmuxPlugin {
-  #   pluginName = "nord";
-  #   version = "v0.3.0";
-  #   src = lib.fetchTarball {
-  #     name = "Nord-Tmux-2020-08-25";
-  #     url = "https://github.com/arcticicestudio/nord-tmux/archive/4e2dc2a5065f5e8e67366700f803c733682e8f8c.tar.gz";
-  #     sha256 = "0l97cqbnq31f769jak31ffb7bkf8rrg72w3vd0g3fjpq0717864a";
-  #   };
-  # };
+
+  open-nvim = buildTmuxPlugin {
+    pluginName = "open-nvim";
+    version = "unstable-2023-11-15";
+    src = pkgs.fetchFromGitHub {
+      owner = "trevarj";
+      repo = "tmux-open-nvim";
+      rev = "fbbe55bf49cbbbc497b8c044957f9b7bfeb0a93c";
+      sha256 = null;
+    };
+  };
+
+  cowboy = buildTmuxPlugin {
+    pluginName = "cowboy";
+    version = "unstable-2021-05-11";
+    src = pkgs.fetchFromGitHub {
+      owner = "tmux-plugins";
+      repo = "tmux-cowboy";
+      rev = "75702b6d0a866769dd14f3896e9d19f7e0acd4f2";
+      sha256 = null;
+    };
+  };
+
+  tmux-menus = buildTmuxPlugin {
+    pluginName = "tmux-menus";
+    version = "unstable-2023-10-09";
+    src = pkgs.fetchFromGitHub {
+      owner = "jaclu";
+      repo = "tmux-menus";
+      rev = "764ac9cd6bbad199e042419b8074eda18e9d8b2d";
+      sha256 = null;
+    };
+  };
+
 }
