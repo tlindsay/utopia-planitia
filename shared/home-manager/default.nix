@@ -4,11 +4,11 @@ let name = "Patrick Lindsay";
 email = "pat@thatdarnpat.com"; in
 {
   imports = [
-    # ./zsh
-      # ./git
-      # ./ssh
-      # ./nvim
-      ./tmux
+    ./zsh
+  #   # ./git
+  #   # ./ssh
+  #   # ./nvim
+    ./tmux
   ];
 
   # git = {

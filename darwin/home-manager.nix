@@ -47,7 +47,13 @@ in
       fonts.fontconfig.enable = true;
 
       home.stateVersion = "23.11";
-      programs = { home-manager = { enable = true; }; };
+      programs = {
+        home-manager = { enable = true; };
+        tmux = { enable = true; };
+        zsh = {
+          enable = true;
+        };
+      };
     } // import ../shared/home-manager/default.nix { inherit config inputs pkgs lib user; };
   };
 
