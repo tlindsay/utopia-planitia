@@ -55,10 +55,11 @@
 			if [[ -e $HOME/.nix-profile ]]; then
 			  FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
 			fi
+			autoload -Uz compinit && compinit
+			autoload -Uz compaudit && compaudit
 		'';
 		completionInit = ''
 			# Set up tab-completions
-			autoload -U compaudit compinit
 			compinit -i -C -d ~/.zcompdump*
 			# set up 1password completions
 			eval "$(op completion zsh)"; compdef _op op
@@ -89,13 +90,6 @@
 
 			# Set Cache Dir for dotenv plugin
 			export ZSH_CACHE_DIR="$HOME/.local/cache"
-			# Load antibody plugins
-			if [[ -a ~/.zsh_bundle ]]; then
-			  source ~/.zsh_bundle
-			else
-			  antibody bundle < ~/.zsh_plugins > .zsh_bundle
-			  source ~/.zsh_bundle
-			fi
 
 			eval "$(starship init zsh)"
 
