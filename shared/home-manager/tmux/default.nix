@@ -2,14 +2,12 @@
 
 let
   plugins = pkgs.tmuxPlugins // pkgs.callPackage ./custom-plugins.nix { inherit lib pkgs inputs; };
-  tmuxConf = lib.readFile ./default.conf;
 in
 {
   programs.tmux = {
     enable = true;
     sensibleOnTop = false;
 
-    # shell = "reattach-to-user-namespace -l zsh";
     terminal = "tmux-256color";
     prefix = "C-s";
     keyMode = "vi";
@@ -30,16 +28,16 @@ in
       set-option -g status-position top
       set -g status-fg black
       set -g status-bg brightmagenta
-      set -g status-left "#[fg=black,bg=blue,bold] #S "
+      set -g status-left "#[fg=black,bg=green,bold] #S "
       set -g status-left-length 100
       set -g status-right-length 140
       set -g status-right ""
-      set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
+      # set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
       set -ag status-right "#[bold]#{prefix_highlight}"
-      set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
-      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
-      set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo "" || echo "") #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
-      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
+      # set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
+      # set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
+      # set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo "" || echo "") #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
+      # set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
       set -ag status-right "#[fg=black]%a %m/%d %l:%M %p "
 
       setw -g window-status-format "#[fg=black,bg=brightmagenta] #I: #W "
@@ -131,38 +129,43 @@ in
     '';
 
     plugins = [
-      {
-        plugin = plugins.resurrect;
-        extraConfig = ''
-          set -g @resurrect-strategy-nvim 'session'
-          set -g @resurrect-save 'S'
-          set -g @resurrect-restore 'R'
-        '';
-      }
+      # {
+      #   plugin = plugins.resurrect;
+      #   extraConfig = ''
+      #     set -g @resurrect-strategy-nvim 'session'
+      #     set -g @resurrect-save 'S'
+      #     set -g @resurrect-restore 'R'
+      #   '';
+      # }
       {
         plugin = plugins.prefix-highlight;
         extraConfig = ''
           set -g @prefix_highlight_fg 'pink'
           set -g @prefix_highlight_bg 'black'
+          set -g @prefix_highlight_sync_prompt '󱍸 '
+          set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
-      { plugin = plugins.better-mouse-mode; }
-      plugins.cowboy
-      plugins.tmux-menus
-      plugins.session-wizard
-      plugins.open-nvim
-      {
-        plugin = plugins.fingers;
-        extraConfig = ''
-          # Overrides matching file paths with :[line]:[col] at the end
-          set -g @fingers-pattern-0 "((^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]+)(:[[:digit:]]*:[[:digit:]]*)?"
-
-          # Launches helper script on Ctrl+[key] in fingers mode
-          set -g @fingers-ctrl-action "xargs -I {} tmux run-shell 'cd #{pane_current_path}; ~/.tmux/plugins/tmux-open-nvim/scripts/ton {} > ~/.tmux/plugins/tmux-open-nvim/ton.log'"s
-
-          set -g @session-wizard 'C-s'
-        '';
-      }
+      # { plugin = plugins.better-mouse-mode; }
+      # plugins.cowboy
+      # plugins.tmux-menus
+      # {
+      #   plugin = plugins.session-wizard;
+      #   extraConfig = ''
+      #     set -g @session-wizard 'C-s'
+      #   '';
+      # }
+      # plugins.open-nvim
+      # {
+      #   plugin = plugins.fingers;
+      #   extraConfig = ''
+      #     # Overrides matching file paths with :[line]:[col] at the end
+      #     set -g @fingers-pattern-0 "((^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]+)(:[[:digit:]]*:[[:digit:]]*)?"
+      #
+      #     # Launches helper script on Ctrl+[key] in fingers mode
+      #     set -g @fingers-ctrl-action "xargs -I {} tmux run-shell 'cd #{pane_current_path}; ~/.tmux/plugins/tmux-open-nvim/scripts/ton {} > ~/.tmux/plugins/tmux-open-nvim/ton.log'"s
+      #   '';
+      # }
     ];
   };
 }
