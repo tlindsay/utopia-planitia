@@ -1,11 +1,19 @@
 { config, pkgs, lib, user, ... }:
 {
+	programs.starship = {
+		enable = true;
+		enableZshIntegration = true;
+		settings = builtins.fromTOML (lib.readFile ./starship.toml);
+	};
+	programs.zoxide = {
+		enable = true;
+		enableZshIntegration = true;
+	};
 	# Shared shell configuration
 	programs.zsh = {
 		enable = true;
-		# autocd = true;
-		# cdpath = [ "~/.local/share/src" ];
-		# plugins = [];
+		autocd = true;
+		cdpath = [ "~/.local/share/src" ];
 		initExtraFirst = ''
 			if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
 				. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -91,8 +99,6 @@
 			# Set Cache Dir for dotenv plugin
 			export ZSH_CACHE_DIR="$HOME/.local/cache"
 
-			eval "$(starship init zsh)"
-
 			# source ~/.zsh_profile # Load personal configs
 
 			# # Load machine specific configs, if available
@@ -100,21 +106,18 @@
 			#   source ~/.zsh_profile.local
 			# fi
 
-			if [[ -a ~/.bin/tmuxinator.zsh ]]; then
-			  source ~/.bin/tmuxinator.zsh
-			fi
+			# if [[ -a ~/.bin/tmuxinator.zsh ]]; then
+			#   source ~/.bin/tmuxinator.zsh
+			# fi
 
 			# Add go binaries to PATH
 			export PATH="$PATH:$HOME/go/bin"
 
-			[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+			# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-			if [[ -a /opt/homebrew/bin/thefuck ]]; then
-			  eval $(thefuck --alias)
-			fi
-
-			# Load z
-			eval "$(zoxide init zsh)"
+			# if [[ -a /opt/homebrew/bin/thefuck ]]; then
+			#   eval $(thefuck --alias)
+			# fi
 		'';
 
 		profileExtra = ''

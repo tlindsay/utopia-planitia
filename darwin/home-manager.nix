@@ -37,6 +37,7 @@ in
   # Enable home-manager
   home-manager = {
     useGlobalPkgs = true;
+    verbose = true;
     users.${user} = { pkgs, config, lib, ... }:{
       home.enableNixpkgsReleaseCheck = false;
       home.packages = pkgs.callPackage ./packages.nix {};
@@ -49,10 +50,6 @@ in
       home.stateVersion = "23.11";
       programs = {
         home-manager = { enable = true; };
-        tmux = { enable = true; };
-        zsh = {
-          enable = true;
-        };
       };
     } // import ../shared/home-manager/default.nix { inherit config inputs pkgs lib user; };
   };
