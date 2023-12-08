@@ -61,17 +61,16 @@
         system = "aarch64-darwin";
         user = "pat";
       };
-    };
-    linuxSystems = ["x86_64-linux" "aarch64-linux"];
-    darwinSystems = ["aarch64-darwin"];
-    forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
-    forAllDarwinSystems = f: nixpkgs.lib.genAttrs darwinSystems (system: f system);
-    forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
-    devShell = system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      default = with pkgs;
-        mkShell {
+      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
+      darwinSystems = [ "aarch64-darwin" ];
+      forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
+      forAllDarwinSystems = f: nixpkgs.lib.genAttrs darwinSystems (system: f system);
+      forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
+      devShell = system: let
+        pkgs = import nixpkgs { system = "${system}"; config.allowUnfree = true; };
+      in
+      {
+        default = with pkgs; mkShell {
           nativeBuildInputs = with pkgs; [bashInteractive neovim git age age-plugin-yubikey];
           shellHook = with pkgs; ''
             export EDITOR=nvim
