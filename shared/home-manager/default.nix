@@ -5,6 +5,7 @@ email = "pat@thatdarnpat.com"; in
 {
   imports = [
     ./zsh
+    ./kitty.nix
   #   # ./git
   #   # ./ssh
   #   # ./nvim

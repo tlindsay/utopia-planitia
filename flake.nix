@@ -77,7 +77,8 @@
         };
       };
       hostpkgs = system: let
-        pkgs = nixpkgs.legacyPackages.${system};
+        # pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs { system = system; config.allowUnfree = true; };
       in
       {
         delta-flyer = with pkgs; [
@@ -86,7 +87,6 @@
           avrdude
           esptool
           openscad
-          steam
         ];
       };
     in
