@@ -21,6 +21,14 @@ in
 
     extraConfig = ''
       #############################
+      ### CUSTOM KEYMAPS
+      #############################
+
+      bind r source-file ~/.tmux.conf \; display-message "~/.config/tmux/tmux.conf reloaded"
+      # bind C-s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+      bind C-s display-popup -E  "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+
+      #############################
       ### STYLING, PROFILING
       #############################
 
@@ -32,12 +40,12 @@ in
       set -g status-left-length 100
       set -g status-right-length 140
       set -g status-right ""
-      # set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
+      set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
       set -ag status-right "#[bold]#{prefix_highlight}"
-      # set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
-      # set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
-      # set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo "" || echo "") #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
-      # set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
+      set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
+      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
+      set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo "" || echo "") #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
+      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
       set -ag status-right "#[fg=black]%a %m/%d %l:%M %p "
 
       setw -g window-status-format "#[fg=black,bg=brightmagenta] #I: #W "
@@ -129,14 +137,14 @@ in
     '';
 
     plugins = [
-      # {
-      #   plugin = plugins.resurrect;
-      #   extraConfig = ''
-      #     set -g @resurrect-strategy-nvim 'session'
-      #     set -g @resurrect-save 'S'
-      #     set -g @resurrect-restore 'R'
-      #   '';
-      # }
+      {
+        plugin = plugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim 'session'
+          set -g @resurrect-save 'S'
+          set -g @resurrect-restore 'R'
+        '';
+      }
       {
         plugin = plugins.prefix-highlight;
         extraConfig = ''
@@ -146,26 +154,36 @@ in
           set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
-      # { plugin = plugins.better-mouse-mode; }
-      # plugins.cowboy
-      # plugins.tmux-menus
-      # {
-      #   plugin = plugins.session-wizard;
-      #   extraConfig = ''
-      #     set -g @session-wizard 'C-s'
-      #   '';
-      # }
-      # plugins.open-nvim
-      # {
-      #   plugin = plugins.fingers;
-      #   extraConfig = ''
-      #     # Overrides matching file paths with :[line]:[col] at the end
-      #     set -g @fingers-pattern-0 "((^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]+)(:[[:digit:]]*:[[:digit:]]*)?"
-      #
-      #     # Launches helper script on Ctrl+[key] in fingers mode
-      #     set -g @fingers-ctrl-action "xargs -I {} tmux run-shell 'cd #{pane_current_path}; ~/.tmux/plugins/tmux-open-nvim/scripts/ton {} > ~/.tmux/plugins/tmux-open-nvim/ton.log'"s
-      #   '';
-      # }
+      { plugin = plugins.better-mouse-mode; }
+      plugins.cowboy
+      { plugin = plugins.tmux-menus;
+        extraConfig = ''
+          unbind-key -n MouseDown3Pane
+          unbind-key -n M-MouseDown3Pane
+          unbind-key -n MouseDown3Status
+          unbind-key -n MouseDown3StatusLeft
+          unbind-key <
+          unbind-key >
+          set -g @menus_trigger 'C-m'
+        '';
+      }
+      {
+        plugin = plugins.session-wizard;
+        extraConfig = ''
+          set -g @session-wizard 'C-s'
+        '';
+      }
+      plugins.open-nvim
+      {
+        plugin = plugins.fingers;
+        extraConfig = ''
+          # Overrides matching file paths with :[line]:[col] at the end
+          set -g @fingers-pattern-0 "((^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]+)(:[[:digit:]]*:[[:digit:]]*)?"
+
+          # Launches helper script on Ctrl+[key] in fingers mode
+          set -g @fingers-ctrl-action "xargs -I {} tmux run-shell 'cd #{pane_current_path}; ~/.tmux/plugins/tmux-open-nvim/scripts/ton {} > ~/.tmux/plugins/tmux-open-nvim/ton.log'"s
+        '';
+      }
     ];
   };
 }

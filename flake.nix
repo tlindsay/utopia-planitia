@@ -82,7 +82,11 @@
       {
         delta-flyer = with pkgs; [
           # super-slicer-beta
+          arduino-cli
+          avrdude
+          esptool
           openscad
+          steam
         ];
       };
     in

@@ -2,9 +2,8 @@
 
 with pkgs; [
   # General packages for development and system management
-	_1password
+  _1password
   act
-  antibody
   aspell
   aspellDicts.en
   bash-completion
@@ -19,7 +18,8 @@ with pkgs; [
   coreutils
   eza
   fzf
-  gcc12
+  home-manager
+  llvmPackages_latest.llvm
   killall
   neofetch
   neovim
@@ -30,6 +30,7 @@ with pkgs; [
 
   # Lang specific runtimes
   go
+  tinygo
   nodePackages.nodejs
 
   # Encryption and security tools
@@ -56,7 +57,7 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
-	(nerdfonts.override { fonts = ["FantasqueSansMono"]; })
+  (nerdfonts.override { fonts = ["FantasqueSansMono"]; })
 
   # Still using asdf for tool versioning
   asdf-vm

@@ -120,7 +120,7 @@
 			# fi
 		'';
 
-		profileExtra = ''
+		loginExtra = ''
 			export VISUAL=nvim
 			export EDITOR="$VISUAL"
 

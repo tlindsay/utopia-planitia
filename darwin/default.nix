@@ -16,6 +16,15 @@ in
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  # programs = {
+  #   zsh = {
+  #     enable = true;
+  #     enableBashCompletion = false;
+  #     enableCompletion = false;
+  #     promptInit = "";
+  #   };
+  # };
+
   # Setup user, packages, programs
   nix = {
     package = pkgs.nixUnstable;
@@ -45,6 +54,7 @@ in
   # Enable fonts dir
   fonts.fontDir.enable = true;
 
+  security.pam.enableSudoTouchIdAuth = true;
   system = {
     stateVersion = 4;
 
