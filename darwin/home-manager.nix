@@ -8,6 +8,7 @@ in
 {
   imports = [
    ./dock
+   ./homebrew.nix
   ];
 
   # It me
@@ -17,9 +18,6 @@ in
     isHidden = false;
     shell = pkgs.zsh;
   };
-
-  homebrew.enable = true;
-  homebrew.casks = pkgs.callPackage ./casks.nix {};
 
   # These app IDs are from using the mas CLI app
   # mas = mac app store
