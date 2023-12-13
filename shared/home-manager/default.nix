@@ -1,14 +1,19 @@
-{ config, pkgs, lib, user, ... }:
-
-let name = "Patrick Lindsay";
-email = "pat@thatdarnpat.com"; in
 {
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: let
+  name = "Patrick Lindsay";
+  email = "pat@thatdarnpat.com";
+in {
   imports = [
     ./zsh
     ./kitty.nix
-  #   # ./git
-  #   # ./ssh
-  #   # ./nvim
+    #   # ./git
+    #   # ./ssh
+    #   # ./nvim
     ./tmux
   ];
 

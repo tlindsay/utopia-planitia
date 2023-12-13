@@ -1,75 +1,75 @@
-{ pkgs }:
+{pkgs}:
+with pkgs; let
+  shared-packages = import ../shared/packages.nix {inherit pkgs;};
+in
+  shared-packages
+  ++ [
+    # Security and authentication
+    yubikey-manager-qt
+    yubikey-agent
+    keepassxc
 
-with pkgs;
-let shared-packages = import ../shared/packages.nix { inherit pkgs; }; in
-shared-packages ++ [
+    # App and package management
+    appimage-run
+    gnumake
+    cmake
+    home-manager
 
-  # Security and authentication
-  yubikey-manager-qt
-  yubikey-agent
-  keepassxc
+    # Media and design tools
+    vlc
+    fontconfig
+    font-manager
 
-  # App and package management
-  appimage-run
-  gnumake
-  cmake
-  home-manager
+    # Calculators
+    bc # old school calculator
+    galculator
 
-  # Media and design tools
-  vlc
-  fontconfig
-  font-manager
+    # Audio tools
+    cava # Terminal audio visualizer
+    pavucontrol # Pulse audio controls
 
-  # Calculators
-  bc # old school calculator
-  galculator
+    # Messaging and chat applications
+    cider # Apple Music on Linux
+    # tdesktop # telegram desktop
 
-  # Audio tools
-  cava # Terminal audio visualizer
-  pavucontrol # Pulse audio controls
+    # Testing and development tools
+    direnv
+    rofi
+    rofi-calc
+    rnix-lsp # lsp-mode for nix
+    postgresql
 
-  # Messaging and chat applications
-  cider # Apple Music on Linux
-  # tdesktop # telegram desktop
+    # Screenshot and recording tools
+    flameshot
+    simplescreenrecorder
 
-  # Testing and development tools
-  direnv
-  rofi
-  rofi-calc
-  rnix-lsp # lsp-mode for nix
-  postgresql
+    # Text and terminal utilities
+    feh # Manage wallpapers
+    screenkey
+    tree
+    unixtools.ifconfig
+    unixtools.netstat
+    xorg.xwininfo # Provides a cursor to click and learn about windows
+    xorg.xrandr
 
-  # Screenshot and recording tools
-  flameshot
-  simplescreenrecorder
+    # File and system utilities
+    inotify-tools # inotifywait, inotifywatch - For file system events
+    i3lock-fancy-rapid
+    libnotify
+    playerctl # Control media players from command line
+    pinentry-curses
+    pcmanfm # Our file browser
+    sqlite
+    xdg-utils
 
-  # Text and terminal utilities
-  feh # Manage wallpapers
-  screenkey
-  tree
-  unixtools.ifconfig
-  unixtools.netstat
-  xorg.xwininfo # Provides a cursor to click and learn about windows
-  xorg.xrandr
+    # Other utilities
+    yad # I use yad-calendar with polybar
+    xdotool
+    google-chrome
 
-  # File and system utilities
-  inotify-tools # inotifywait, inotifywatch - For file system events
-  i3lock-fancy-rapid
-  libnotify
-  playerctl # Control media players from command line
-  pinentry-curses
-  pcmanfm # Our file browser
-  sqlite
-  xdg-utils
+    # PDF viewer
+    zathura
 
-  # Other utilities
-  yad # I use yad-calendar with polybar
-  xdotool
-  google-chrome
-
-  # PDF viewer
-  zathura
-
-  # Music and entertainment
-  spotify
-]
+    # Music and entertainment
+    spotify
+  ]

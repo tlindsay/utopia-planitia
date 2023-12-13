@@ -1,11 +1,16 @@
-{ config, pkgs, lib, user, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: {
   programs.kitty = {
     enable = true;
     theme = "Tokyo Night Moon";
     shellIntegration.enableZshIntegration = true;
     font = {
-      package = (pkgs.nerdfonts.override { fonts = ["FantasqueSansMono"]; });
+      package = pkgs.nerdfonts.override {fonts = ["FantasqueSansMono"];};
       name = "FantasqueSansM Nerd Font";
       size = 20.0;
     };
