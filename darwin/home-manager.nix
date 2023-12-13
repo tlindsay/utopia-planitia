@@ -58,10 +58,11 @@ in
   local.dock.entries = [
     { path = "/Applications/Arc.app/"; }
     { path = "/System/Applications/Messages.app/"; }
-    { path = "/Applications/Slack.app/"; }
-    { path = "/Applications/Setapp/Canary Mail.app/"; }
+    ( lib.mkIf (config.networking.hostName == "fastbook") { path = "/Applications/Slack.app/"; } )
+    { path = "/Applications/Setapp/Canary Mail.app/";  }
     { path = "${pkgs.kitty}/Applications/kitty.app/"; }
     { path = "/Applications/Spotify.app/"; }
+    ( lib.mkIf (config.networking.hostName == "delta-flyer") { path = "/Applications/Steam.app/"; } )
     {
       path = "${config.users.users.${user}.home}/Pictures/Screenshots";
       section = "others";
