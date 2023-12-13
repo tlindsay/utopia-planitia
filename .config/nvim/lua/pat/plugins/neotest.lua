@@ -10,11 +10,11 @@ neotest.setup({
     require('neotest-go'),
   },
   icons = {
-    passed = '﫟',
-    running = '喇',
-    skipped = 'ﭠ',
-    failed = '',
-    unknown = '',
+    passed = '󰗠 ',
+    running = '󰐌 ',
+    skipped = '󰙡 ',
+    failed = '󰅙 ',
+    unknown = '󰋗 ',
   },
   -- summary = {
   --   mappings = {
@@ -31,10 +31,10 @@ neotest.setup({
 --   let test#javascript#jest#options = "--color=always"
 -- ]])
 
-vim.g.ultest_running_sign = ''
-vim.g.ultest_not_run_sign = ''
-vim.g.ultest_pass_sign = ''
-vim.g.ultest_fail_sign = ''
+vim.g.ultest_running_sign = ' '
+vim.g.ultest_not_run_sign = ' '
+vim.g.ultest_pass_sign = ' '
+vim.g.ultest_fail_sign = ' '
 
 wk.register({
   T = {

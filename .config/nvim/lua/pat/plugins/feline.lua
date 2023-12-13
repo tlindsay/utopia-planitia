@@ -258,7 +258,7 @@ local custom_providers = {
     local var = vim.api.nvim_get_var('PAT_format_on_save')
     local label = ''
     if var == 1 or var == true then
-      label = '  '
+      label = ' 󰉼 '
     end
     return label
   end,
