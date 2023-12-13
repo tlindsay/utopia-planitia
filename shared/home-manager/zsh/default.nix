@@ -24,7 +24,7 @@
 			export PATH=$HOME/.local/share/bin:$PATH
 			export PATH=$HOME/bin:/usr/local/bin:$PATH
 			export PATH="/usr/local/sbin:$PATH"
-			export PATH="$HOME/.nix-profile/sw/bin"
+			export PATH="$HOME/.nix-profile/sw/bin:$PATH"
 			if [ -d "/opt/homebrew/bin" ]; then
 				eval "$(/opt/homebrew/bin/brew shellenv)"
 			elif [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
