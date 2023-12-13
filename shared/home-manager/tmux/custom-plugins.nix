@@ -7,6 +7,7 @@ in
   session-wizard = buildTmuxPlugin {
     pluginName = "session-wizard";
     version = "1.1.0";
+    rtpFilePath = "session-wizard.tmux";
     src = pkgs.fetchFromGitHub {
       owner = "27medkamal";
       repo = "tmux-session-wizard";
@@ -18,6 +19,7 @@ in
   open-nvim = buildTmuxPlugin {
     pluginName = "open-nvim";
     version = "unstable-2023-11-15";
+    rtpFilePath = "tmux_open_nvim.tmux";
     src = pkgs.fetchFromGitHub {
       owner = "trevarj";
       repo = "tmux-open-nvim";
@@ -40,6 +42,7 @@ in
   tmux-menus = buildTmuxPlugin {
     pluginName = "tmux-menus";
     version = "unstable-2023-10-09";
+    rtpFilePath = "menus.tmux";
     src = pkgs.fetchFromGitHub {
       owner = "jaclu";
       repo = "tmux-menus";
