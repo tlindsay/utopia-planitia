@@ -31,7 +31,17 @@ with pkgs; [
   # Lang specific runtimes
   go
   tinygo
+  lua
   nodePackages.nodejs
+  python3
+  rustc
+
+  # Language Servers and other tools
+  luarocks
+  cargo
+  python311Packages.pip
+  nixd
+  alejandra
 
   # Encryption and security tools
   age
@@ -74,7 +84,6 @@ with pkgs; [
   iftop
   jq
   lazygit
-  lua
   kitty
   ripgrep
   starship
