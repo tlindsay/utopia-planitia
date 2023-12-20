@@ -1,9 +1,7 @@
-{...}: {
+{ ... }: {
   homebrew = {
     enable = true;
-    brews = [
-      "fileicon"
-    ];
+    brews = [ "fileicon" ];
     casks = [
       # # Development Tools
       # "1password"

@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  user,
-  inputs,
-  ...
-}: let
-  plugins = pkgs.tmuxPlugins // pkgs.callPackage ./custom-plugins.nix {inherit lib pkgs inputs;};
+{ config, pkgs, lib, user, inputs, ... }:
+let
+  plugins = pkgs.tmuxPlugins
+    // pkgs.callPackage ./custom-plugins.nix { inherit lib pkgs inputs; };
 in {
   programs.tmux = {
     enable = true;
@@ -160,7 +155,7 @@ in {
           set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
-      {plugin = plugins.better-mouse-mode;}
+      { plugin = plugins.better-mouse-mode; }
       plugins.cowboy
       {
         plugin = plugins.tmux-menus;

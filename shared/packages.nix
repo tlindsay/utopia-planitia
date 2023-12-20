@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 with pkgs; [
   # General packages for development and system management
   _1password
@@ -69,7 +69,7 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
-  (nerdfonts.override {fonts = ["FantasqueSansMono"];})
+  (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
   # Still using asdf for tool versioning
   asdf-vm

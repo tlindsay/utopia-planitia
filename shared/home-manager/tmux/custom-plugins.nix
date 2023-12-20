@@ -1,9 +1,5 @@
-{
-  lib,
-  pkgs,
-  ...
-}: let
-  buildTmuxPlugin = pkgs.tmuxPlugins.mkTmuxPlugin;
+{ lib, pkgs, ... }:
+let buildTmuxPlugin = pkgs.tmuxPlugins.mkTmuxPlugin;
 in {
   session-wizard = buildTmuxPlugin {
     pluginName = "session-wizard";

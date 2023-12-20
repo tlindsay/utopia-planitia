@@ -1,13 +1,10 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   user = "plindsay";
   xdg_configHome = "/home/${user}/.config";
-  shared-programs = import ../shared/home-manager.nix {inherit config pkgs lib;};
-  shared-files = import ../shared/files.nix {inherit config pkgs;};
+  shared-programs =
+    import ../shared/home-manager.nix { inherit config pkgs lib; };
+  shared-files = import ../shared/files.nix { inherit config pkgs; };
 
   polybar-user_modules = builtins.readFile (pkgs.substituteAll {
     src = ./config/polybar/user_modules.ini;
@@ -31,8 +28,8 @@ in {
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = pkgs.callPackage ./packages.nix {};
-    file = shared-files // import ./files.nix {inherit user;};
+    packages = pkgs.callPackage ./packages.nix { };
+    file = shared-files // import ./files.nix { inherit user; };
     stateVersion = "21.05";
   };
 
@@ -62,7 +59,8 @@ in {
   services.polybar = {
     enable = true;
     config = polybar-config;
-    extraConfig = polybar-bars + polybar-colors + polybar-modules + polybar-user_modules;
+    extraConfig = polybar-bars + polybar-colors + polybar-modules
+      + polybar-user_modules;
     package = pkgs.polybarFull;
     script = "polybar main &";
   };
@@ -89,7 +87,9 @@ in {
         font = "Noto Sans";
         line_height = 4;
         markup = "full";
-        format = "<b>%s</b>\n%b";
+        format = ''
+          <b>%s</b>
+          %b'';
         alignment = "left";
         transparency = 10;
         show_age_threshold = 60;
@@ -112,5 +112,5 @@ in {
     };
   };
 
-  programs = shared-programs // {gpg.enable = true;};
+  programs = shared-programs // { gpg.enable = true; };
 }

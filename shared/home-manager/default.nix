@@ -1,10 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  user,
-  ...
-}: let
+{ config, pkgs, lib, user, ... }:
+let
   name = "Patrick Lindsay";
   email = "pat@thatdarnpat.com";
 in {

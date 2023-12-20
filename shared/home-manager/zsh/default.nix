@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  user,
-  ...
-}: {
+{ config, pkgs, lib, user, ... }: {
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -18,7 +12,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    cdpath = ["~/.local/share/src"];
+    cdpath = [ "~/.local/share/src" ];
     initExtraFirst = ''
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
       	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh

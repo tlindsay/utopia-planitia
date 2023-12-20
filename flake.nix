@@ -12,9 +12,7 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
+    nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; };
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
       flake = false;
@@ -40,100 +38,95 @@
     # };
     # Add `secrets` to outputs when ready
   };
-  outputs = {
-    self,
-    darwin,
-    nix-homebrew,
-    homebrew-bundle,
-    homebrew-core,
-    homebrew-cask,
-    home-manager,
-    nixpkgs,
-    disko,
-    agenix,
-  } @ inputs: let
-    hostmap = {
-      "fastbook" = {
-        system = "aarch64-darwin";
-        user = "plindsay";
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core
+    , homebrew-cask, home-manager, nixpkgs, disko, agenix, }@inputs:
+    let
+      hostmap = {
+        "fastbook" = {
+          system = "aarch64-darwin";
+          user = "plindsay";
+        };
+        "delta-flyer" = {
+          system = "aarch64-darwin";
+          user = "pat";
+        };
       };
-      "delta-flyer" = {
-        system = "aarch64-darwin";
-        user = "pat";
-      };
-    };
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" ];
-      forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
-      forAllDarwinSystems = f: nixpkgs.lib.genAttrs darwinSystems (system: f system);
-      forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
-      devShell = system: let
-        pkgs = import nixpkgs { system = "${system}"; config.allowUnfree = true; };
-        # pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        default = with pkgs; mkShell {
-          nativeBuildInputs = with pkgs; [bashInteractive neovim git age age-plugin-yubikey];
-          shellHook = with pkgs; ''
-            export EDITOR=nvim
-          '';
-        };
-    };
-    hostpkgs = system: let
-      # pkgs = nixpkgs.legacyPackages.${system};
-      pkgs = import nixpkgs {
-        system = system;
-        config.allowUnfree = true;
-      };
-    in {
-      delta-flyer = with pkgs; [
-# super-slicer-beta
-        arduino-cli
-          avrdude
-          discord
-          esptool
-          openscad
-      ];
-      fastbook = with pkgs; [
-        infra
-          spotify
-      ];
-    };
-  in {
-    devShells = forAllDarwinSystems devShell;
-    darwinConfigurations =
-      builtins.mapAttrs
-      (
-        hn: conf:
-          darwin.lib.darwinSystem {
-            system = conf.system;
-            specialArgs = {
-              inherit inputs;
-              user = conf.user;
-              hostpkgs = (hostpkgs conf.system).${hn};
-              hostname = hn;
+      forAllLinuxSystems = f:
+        nixpkgs.lib.genAttrs linuxSystems (system: f system);
+      forAllDarwinSystems = f:
+        nixpkgs.lib.genAttrs darwinSystems (system: f system);
+      forAllSystems = f:
+        nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
+      devShell = system:
+        let
+          pkgs = import nixpkgs {
+            system = "${system}";
+            config.allowUnfree = true;
+          };
+          # pkgs = nixpkgs.legacyPackages.${system};
+        in {
+          default = with pkgs;
+            mkShell {
+              nativeBuildInputs = with pkgs; [
+                bashInteractive
+                neovim
+                git
+                age
+                age-plugin-yubikey
+              ];
+              shellHook = with pkgs; ''
+                export EDITOR=nvim
+              '';
             };
-            modules = [
-              nix-homebrew.darwinModules.nix-homebrew
-              home-manager.darwinModules.home-manager
-              {
-                home-manager.extraSpecialArgs = {user = conf.user;};
-                nix-homebrew = {
-                  enable = true;
-                  user = "${conf.user}";
-                  taps = {
-                    "homebrew/homebrew-core" = homebrew-core;
-                    "homebrew/homebrew-cask" = homebrew-cask;
-                    "homebrew/homebrew-bundle" = homebrew-bundle;
-                  };
-                  mutableTaps = false;
-                  autoMigrate = true;
+        };
+      hostpkgs = system:
+        let
+          # pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs {
+            system = system;
+            config.allowUnfree = true;
+          };
+        in {
+          delta-flyer = with pkgs; [
+            # super-slicer-beta
+            arduino-cli
+            avrdude
+            esptool
+            openscad
+          ];
+          fastbook = with pkgs; [ infra spotify ];
+        };
+    in {
+      devShells = forAllDarwinSystems devShell;
+      darwinConfigurations = builtins.mapAttrs (hn: conf:
+        darwin.lib.darwinSystem {
+          system = conf.system;
+          specialArgs = {
+            inherit inputs;
+            user = conf.user;
+            hostpkgs = (hostpkgs conf.system).${hn};
+          };
+          modules = [
+            nix-homebrew.darwinModules.nix-homebrew
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.extraSpecialArgs = { user = conf.user; };
+              nix-homebrew = {
+                enable = true;
+                user = "${conf.user}";
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
                 };
-              }
-              ./darwin
-            ];
-          }
-      )
-      hostmap;
-  };
+                mutableTaps = false;
+                autoMigrate = true;
+              };
+            }
+            ./darwin
+          ];
+        }) hostmap;
+    };
 }
