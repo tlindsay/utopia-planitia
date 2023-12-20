@@ -17,6 +17,12 @@ in {
     ./tmux
   ];
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   # git = {
   #   enable = false;
   #   ignores = [ "*.swp" ];

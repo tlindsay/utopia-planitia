@@ -17,6 +17,7 @@ in {
     keyMode = "vi";
     escapeTime = 10;
     historyLimit = 5000;
+    secureSocket = true;
 
     baseIndex = 0;
     # renumberWindows = "on"; # no HM option for this...
@@ -24,6 +25,7 @@ in {
     mouse = true;
 
     extraConfig = ''
+
       #############################
       ### CUSTOM KEYMAPS
       #############################

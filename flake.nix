@@ -61,6 +61,7 @@
         system = "aarch64-darwin";
         user = "pat";
       };
+    };
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" ];
       forAllLinuxSystems = f: nixpkgs.lib.genAttrs linuxSystems (system: f system);
@@ -68,6 +69,7 @@
       forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
       devShell = system: let
         pkgs = import nixpkgs { system = "${system}"; config.allowUnfree = true; };
+        # pkgs = nixpkgs.legacyPackages.${system};
       in
       {
         default = with pkgs; mkShell {
@@ -85,12 +87,16 @@
       };
     in {
       delta-flyer = with pkgs; [
-        # super-slicer-beta
+# super-slicer-beta
         arduino-cli
-        avrdude
-        discord
-        esptool
-        openscad
+          avrdude
+          discord
+          esptool
+          openscad
+      ];
+      fastbook = with pkgs; [
+        infra
+          spotify
       ];
     };
   in {

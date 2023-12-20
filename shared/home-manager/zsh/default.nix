@@ -26,10 +26,10 @@
       fi
 
       # Define variables for directories
-      export PATH=$HOME/.local/share/bin:$PATH
-      export PATH=$HOME/bin:/usr/local/bin:$PATH
-      export PATH="/usr/local/sbin:$PATH"
-      export PATH="$HOME/.nix-profile/sw/bin:$PATH"
+      export PATH=$PATH:$HOME/.local/share/bin
+      export PATH=$PATH:$HOME/bin:/usr/local/bin
+      export PATH="$PATH:/usr/local/sbin"
+      export PATH="$PATH:$HOME/.nix-profile/sw/bin"
       if [ -d "/opt/homebrew/bin" ]; then
       	eval "$(/opt/homebrew/bin/brew shellenv)"
       elif [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
@@ -54,7 +54,7 @@
       setopt share_history          # share command history data
 
       # load asdf
-      . $HOME/.nix-profile/share/asdf-vm/asdf.sh
+      # . $HOME/.nix-profile/share/asdf-vm/asdf.sh
 
       # asdf plugin specific configs
       . ~/.asdf/plugins/golang/set-env.zsh
@@ -97,7 +97,7 @@
       "zsh-users/zsh-completions"
       "junegunn/fzf path:shell/key-bindings.zsh"
       "pschmitt/emoji-fzf.zsh"
-      "ohmyzsh/ohmyzsh path:plugins/dotenv"
+      # "ohmyzsh/ohmyzsh path:plugins/dotenv"
     ];
     initExtra = ''
       forgit_checkout_commit='gcco'

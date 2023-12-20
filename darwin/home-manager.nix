@@ -57,12 +57,30 @@ in {
         ];
         fonts.fontconfig.enable = true;
 
-        home.stateVersion = "23.11";
-        programs = {
-          home-manager = {enable = true;};
-        };
-      }
-      // import ../shared/home-manager/default.nix {inherit config inputs pkgs lib user;};
+      home.stateVersion = "23.11";
+      programs = {
+        home-manager = { enable = true; };
+        # bat = {};
+        # bottom = {};
+        # direnv = {};
+        # eza = {};
+        # fzf = {};
+        # gh = {};
+        # go = {};
+        # gpg = {};
+        # kitty = {};
+        # k9s = {};
+        # lazygit = {};
+        # neovim = {};
+        # ripgrep = {};
+        # starship = {};
+        # tealdeer = {};
+        # tmux = {};
+        # zoxide = {};
+        #
+        # # sqls = {}; # INVESTIGATE!!!
+      };
+    } // import ../shared/home-manager/default.nix { inherit config inputs pkgs lib user; };
   };
 
   # Fully declarative dock using the latest from Nix Store

@@ -32,6 +32,7 @@ with pkgs; [
   tinygo
   lua
   nodePackages.nodejs
+  nodePackages.yarn
   python3
   rustc
 
@@ -40,6 +41,7 @@ with pkgs; [
   cargo
   python311Packages.pip
   nixd
+  nixfmt
   alejandra
 
   # Encryption and security tools
@@ -85,6 +87,7 @@ with pkgs; [
   jq
   lazygit
   kitty
+  ncurses
   ripgrep
   starship
   tealdeer
