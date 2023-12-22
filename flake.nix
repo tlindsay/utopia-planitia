@@ -31,6 +31,9 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # ghostty = {
+    #   url = "git+ssh://git@github.com/mitchellh/ghostty";
+    # };
     # secrets = {
     #   url = "git+ssh://git@github.com/tlindsay/daystrom-station.git";
     #   flake = false;
@@ -86,6 +89,7 @@
         # super-slicer-beta
         arduino-cli
         avrdude
+        discord
         esptool
         openscad
       ];
@@ -102,6 +106,7 @@
               inherit inputs;
               user = conf.user;
               hostpkgs = (hostpkgs conf.system).${hn};
+              hostname = hn;
             };
             modules = [
               nix-homebrew.darwinModules.nix-homebrew

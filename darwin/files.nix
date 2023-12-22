@@ -13,7 +13,7 @@
   };
 in {
   "darwin.txt" = {
-    text = "hi, ${user}! this is from darwin/files.nix";
+    text = "hi, ${user}! this is from darwin/files.nix\n your hostname is ${config.networking.hostName}";
   };
   "${xdg_configHome}/kitty/kitty.app.icns".source = kitty_icon;
 }

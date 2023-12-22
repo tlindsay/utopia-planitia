@@ -3,10 +3,12 @@
   config,
   pkgs,
   hostpkgs,
+  hostname,
   user,
   ...
 }: let
   agenix = inputs.agenix;
+  # ghostty = inputs.ghostty;
 in {
   imports = [
     # ./secrets.nix
@@ -19,14 +21,7 @@ in {
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
-  # programs = {
-  #   zsh = {
-  #     enable = true;
-  #     enableBashCompletion = false;
-  #     enableCompletion = false;
-  #     promptInit = "";
-  #   };
-  # };
+  networking.hostName = hostname;
 
   # Setup user, packages, programs
   nix = {
@@ -57,6 +52,7 @@ in {
   environment.systemPackages = with pkgs;
     [
       agenix.packages."${pkgs.system}".default
+      # ghostty.packages."${pkgs.system}".default
     ]
     ++ hostpkgs
     ++ (import ../shared/packages.nix {inherit pkgs;});

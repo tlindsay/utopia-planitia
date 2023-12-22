@@ -71,6 +71,7 @@ in {
     {path = "/Applications/Arc.app/";}
     {path = "/System/Applications/Messages.app/";}
     (lib.mkIf (config.networking.hostName == "fastbook") {path = "/Applications/Slack.app/";})
+    (lib.mkIf (config.networking.hostName == "delta-flyer") {path = "${pkgs.discord}/Applications/Discord.app/";})
     {path = "/Applications/Setapp/Canary Mail.app/";}
     {path = "${pkgs.kitty}/Applications/kitty.app/";}
     {path = "/Applications/Spotify.app/";}
