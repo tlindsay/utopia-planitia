@@ -33,7 +33,7 @@ return {
     branch = 'v3.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
       'MunifTanjim/nui.nvim',
     },
   },
@@ -122,7 +122,7 @@ return {
   -- '~/code/make/lsp_lines.nvim'
   {
     'folke/trouble.nvim',
-    dependencies = 'kyazdani42/nvim-web-devicons',
+    dependencies = 'nvim-tree/nvim-web-devicons',
   },
   -- 'jose-elias-alvarez/null-ls.nvim',
   {
@@ -198,17 +198,17 @@ return {
   {
     'akinsho/bufferline.nvim',
     version = '*',
-    dependencies = 'kyazdani42/nvim-web-devicons',
+    dependencies = 'nvim-tree/nvim-web-devicons',
   },
 
   -- Statusline
   {
     'freddiehaddad/feline.nvim',
-    dependencies = { 'kyazdani42/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'kyazdani42/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   -- {
   --   'SmiteshP/nvim-gps',
@@ -254,7 +254,7 @@ return {
   -- Dashboard start screen
   {
     'goolord/alpha-nvim',
-    dependencies = { 'kyazdani42/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     lazy = true,
   },
 
