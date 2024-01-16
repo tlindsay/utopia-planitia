@@ -195,6 +195,15 @@ require('go').setup({
   luasnip = true,
 })
 
+nvim_lsp.nixd.setup({
+  handlers = handlers,
+  on_attach = on_attach,
+  capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 150,
+  },
+})
+
 require('mason-lspconfig').setup_handlers({
   function(server_name)
     nvim_lsp[server_name].setup({
