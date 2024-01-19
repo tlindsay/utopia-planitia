@@ -84,10 +84,20 @@
 
       # Case-insensitive (all),partial-word and then substring completion
       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+      # fzf-tab configs
+      # disable sort when completing `git checkout`
+      zstyle ':completion:*:git-checkout:*' sort false
+      # set descriptions format to enable group support
+      zstyle ':completion:*:descriptions' format '[%d]'
+      # preview directory's content with exa when completing cd
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+      # switch group using `,` and `.`
+      zstyle ':fzf-tab:*' switch-group ',' '.'
     '';
     antidote.enable = true;
     antidote.plugins = [
-      "laurenkt/zsh-vimto"
+      "jeffreytse/zsh-vi-mode"
 
       "mdumitru/git-aliases"
       "wfxr/forgit"
@@ -114,18 +124,8 @@
         source ~/.zprofile.local
       fi
 
-      # if [[ -a ~/.bin/tmuxinator.zsh ]]; then
-      #   source ~/.bin/tmuxinator.zsh
-      # fi
-
       # Add go binaries to PATH
       export PATH="$PATH:$HOME/go/bin"
-
-      [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-      # if [[ -a /opt/homebrew/bin/thefuck ]]; then
-      #   eval $(thefuck --alias)
-      # fi
     '';
 
     loginExtra = ''
@@ -157,6 +157,15 @@
       bindkey '^N' down-line-or-search
       bindkey '^X' clear-screen
       bindkey '^B' emoji-fzf-zle
+
+      function zvm_after_init() {
+        [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+        bindkey -M main '^R' fzf-history-widget
+      }
+      function zvm_after_lazy_keybindings() {
+        bindkey -M visual '^R' fzf-history-widget
+        bindkey -M vicmd '^R' fzf-history-widget
+      }
 
       # alias sed="echo 'Did you mean to use sad?\r\n'; sed"
 
