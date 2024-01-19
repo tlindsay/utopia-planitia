@@ -21,6 +21,15 @@ in {
     enable = true;
   };
 
+  programs.k9s = {
+    enable = true;
+    settings = {
+      k9s = {
+        liveViewAutoRefresh = true;
+      };
+    };
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;

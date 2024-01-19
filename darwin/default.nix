@@ -1,5 +1,12 @@
-{ inputs, config, pkgs, hostpkgs, hostname, user, ... }:
-let
+{
+  inputs,
+  config,
+  pkgs,
+  hostpkgs,
+  hostname,
+  user,
+  ...
+}: let
   agenix = inputs.agenix;
   # ghostty = inputs.ghostty;
 in {
@@ -19,7 +26,7 @@ in {
   # Setup user, packages, programs
   nix = {
     package = pkgs.nixUnstable;
-    settings.trusted-users = [ "@admin" "${user}" ];
+    settings.trusted-users = ["@admin" "${user}"];
 
     gc = {
       user = "root";
@@ -46,7 +53,9 @@ in {
     [
       agenix.packages."${pkgs.system}".default
       # ghostty.packages."${pkgs.system}".ghostty
-    ] ++ hostpkgs ++ (import ./packages.nix { inherit pkgs; });
+    ]
+    ++ hostpkgs
+    ++ (import ./packages.nix {inherit pkgs;});
 
   # Enable fonts dir
   fonts.fontDir.enable = true;
@@ -79,7 +88,7 @@ in {
         tilesize = 72;
       };
 
-      finder = { _FXShowPosixPathInTitle = false; };
+      finder = {_FXShowPosixPathInTitle = false;};
 
       trackpad = {
         Clicking = true;
