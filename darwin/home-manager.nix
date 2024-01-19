@@ -1,10 +1,17 @@
-{ config, pkgs, inputs, lib, user, home-manager, ... }:
-let
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  user,
+  home-manager,
+  ...
+}: let
   # Define the content of your file as a derivation
-  sharedFiles = import ../shared/files.nix { inherit config pkgs; };
-  additionalFiles = import ./files.nix { inherit user config pkgs; };
+  sharedFiles = import ../shared/files.nix {inherit config pkgs;};
+  additionalFiles = import ./files.nix {inherit user config pkgs;};
 in {
-  imports = [ ./dock ./homebrew.nix ];
+  imports = [./dock ./homebrew.nix];
 
   # It me
   users.users.${user} = {
@@ -32,16 +39,22 @@ in {
     useGlobalPkgs = true;
     useUserPackages = true;
     verbose = true;
-    users.${user} = { pkgs, config, lib, ... }:
+    users.${user} = {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
       {
         home.enableNixpkgsReleaseCheck = false;
-        home.packages = pkgs.callPackage ./packages.nix { };
-        home.file = lib.mkMerge [ sharedFiles additionalFiles ];
+        home.packages = pkgs.callPackage ./packages.nix {};
+        home.file = lib.mkMerge [sharedFiles additionalFiles];
         fonts.fontconfig.enable = true;
 
         home.stateVersion = "23.11";
+        # services.ssh-agent.enable = true;
         programs = {
-          home-manager = { enable = true; };
+          home-manager = {enable = true;};
           # bat = {};
           # bottom = {};
           # direnv = {};
@@ -62,7 +75,8 @@ in {
           #
           # # sqls = {}; # INVESTIGATE!!!
         };
-      } // import ../shared/home-manager/default.nix {
+      }
+      // import ../shared/home-manager/default.nix {
         inherit config inputs pkgs lib user;
       };
   };
@@ -70,17 +84,17 @@ in {
   # Fully declarative dock using the latest from Nix Store
   local.dock.enable = true;
   local.dock.entries = [
-    { path = "/Applications/Arc.app/"; }
-    { path = "/System/Applications/Messages.app/"; }
+    {path = "/Applications/Arc.app/";}
+    {path = "/System/Applications/Messages.app/";}
     (lib.mkIf (config.networking.hostName == "fastbook") {
       path = "/Applications/Slack.app/";
     })
     (lib.mkIf (config.networking.hostName == "delta-flyer") {
       path = "${pkgs.discord}/Applications/Discord.app/";
     })
-    { path = "/Applications/Setapp/Canary Mail.app/"; }
-    { path = "${pkgs.kitty}/Applications/kitty.app/"; }
-    { path = "/Applications/Spotify.app/"; }
+    {path = "/Applications/Setapp/Canary Mail.app/";}
+    {path = "/Applications/Ghostty.app/";}
+    {path = "/Applications/Spotify.app/";}
     (lib.mkIf (config.networking.hostName == "delta-flyer") {
       path = "/Applications/Steam.app/";
     })

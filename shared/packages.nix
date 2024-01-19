@@ -1,4 +1,4 @@
-{ pkgs }:
+{pkgs}:
 with pkgs; [
   # General packages for development and system management
   _1password
@@ -20,6 +20,7 @@ with pkgs; [
   home-manager
   llvmPackages_latest.llvm
   killall
+  mprocs
   neofetch
   neovim
   openssh
@@ -69,13 +70,14 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
-  (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+  (nerdfonts.override {fonts = ["FantasqueSansMono"];})
 
   # Still using asdf for tool versioning
   asdf-vm
 
   # Text and terminal utilities
   diff-so-fancy
+  direnv
   figlet
   gh
   git
@@ -88,6 +90,9 @@ with pkgs; [
   lazygit
   kitty
   ncurses
+  nix-index
+  nix-output-monitor
+  nushell
   ripgrep
   starship
   tealdeer

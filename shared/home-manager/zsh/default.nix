@@ -1,4 +1,10 @@
-{ config, pkgs, lib, user, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: {
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -12,7 +18,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    cdpath = [ "~/.local/share/src" ];
+    cdpath = ["~/.local/share/src"];
     initExtraFirst = ''
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
       	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -20,10 +26,10 @@
       fi
 
       # Define variables for directories
-      export PATH=$PATH:$HOME/.local/share/bin
-      export PATH=$PATH:$HOME/bin:/usr/local/bin
-      export PATH="$PATH:/usr/local/sbin"
-      export PATH="$PATH:$HOME/.nix-profile/sw/bin"
+      export PATH=$HOME/.local/share/bin:$PATH
+      export PATH=$HOME/bin:/usr/local/bin:$PATH
+      export PATH="/usr/local/sbin:$PATH"
+      export PATH="$HOME/.nix-profile/sw/bin:$PATH"
       if [ -d "/opt/homebrew/bin" ]; then
       	eval "$(/opt/homebrew/bin/brew shellenv)"
       elif [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
@@ -48,7 +54,7 @@
       setopt share_history          # share command history data
 
       # load asdf
-      # . $HOME/.nix-profile/share/asdf-vm/asdf.sh
+      . ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh
 
       # asdf plugin specific configs
       . ~/.asdf/plugins/golang/set-env.zsh
@@ -57,9 +63,9 @@
     initExtraBeforeCompInit = ''
       # asdf shell completions
       fpath=($ASDF_DIR/completions $fpath)
-      # if type brew &>/dev/null; then
-      #   FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
-      # fi
+      if type brew &>/dev/null && [[ -e $(brew --prefix)/share/zsh/site-functions ]]; then
+        FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+      fi
       if [[ -e $HOME/.nix-profile ]]; then
         FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
       fi
@@ -69,8 +75,9 @@
     completionInit = ''
       # Set up tab-completions
       compinit -i -C -d ~/.zcompdump*
-      # set up 1password completions
+      # set up app-specific completions
       eval "$(op completion zsh)"; compdef _op op
+      eval "$(kubectl completion zsh)"; compdef _kubectl kubectl
 
       # Arrow key menu for completions
       zstyle ':completion:*' menu select
@@ -94,17 +101,18 @@
       # "ohmyzsh/ohmyzsh path:plugins/dotenv"
     ];
     initExtra = ''
+      # Use nix-index for command-not-found
+      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+
       forgit_checkout_commit='gcco'
 
       # Set Cache Dir for dotenv plugin
       export ZSH_CACHE_DIR="$HOME/.local/cache"
 
-      # source ~/.zsh_profile # Load personal configs
-
-      # # Load machine specific configs, if available
-      # if [[ -a ~/.zsh_profile.local ]]; then
-      #   source ~/.zsh_profile.local
-      # fi
+      # Load machine specific configs, if available
+      if [[ -a ~/.zprofile.local ]]; then
+        source ~/.zprofile.local
+      fi
 
       # if [[ -a ~/.bin/tmuxinator.zsh ]]; then
       #   source ~/.bin/tmuxinator.zsh
@@ -113,7 +121,7 @@
       # Add go binaries to PATH
       export PATH="$PATH:$HOME/go/bin"
 
-      # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+      [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
       # if [[ -a /opt/homebrew/bin/thefuck ]]; then
       #   eval $(thefuck --alias)

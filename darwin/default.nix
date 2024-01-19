@@ -45,8 +45,8 @@ in {
   environment.systemPackages = with pkgs;
     [
       agenix.packages."${pkgs.system}".default
-      # ghostty.packages."${pkgs.system}".default
-    ] ++ hostpkgs ++ (import ../shared/packages.nix { inherit pkgs; });
+      # ghostty.packages."${pkgs.system}".ghostty
+    ] ++ hostpkgs ++ (import ./packages.nix { inherit pkgs; });
 
   # Enable fonts dir
   fonts.fontDir.enable = true;

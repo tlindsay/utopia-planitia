@@ -2,7 +2,8 @@
   description = "Starter Configuration for NixOS and MacOS";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
@@ -25,6 +26,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-infra = {
+      url = "github:infrahq/homebrew-tap";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,7 +44,7 @@
     # Add `secrets` to outputs when ready
   };
   outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core
-    , homebrew-cask, home-manager, nixpkgs, disko, agenix, }@inputs:
+    , homebrew-cask, homebrew-infra, home-manager, nixpkgs, disko, agenix, }@inputs:
     let
       hostmap = {
         "fastbook" = {
@@ -96,7 +101,7 @@
             esptool
             openscad
           ];
-          fastbook = with pkgs; [ infra spotify ];
+          fastbook = with pkgs; [ ];
         };
     in {
       devShells = forAllDarwinSystems devShell;
@@ -107,6 +112,7 @@
             inherit inputs;
             user = conf.user;
             hostpkgs = (hostpkgs conf.system).${hn};
+            hostname = hn;
           };
           modules = [
             nix-homebrew.darwinModules.nix-homebrew
@@ -120,8 +126,9 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "infrahq/tap" = homebrew-infra;
                 };
-                mutableTaps = false;
+                mutableTaps = true;
                 autoMigrate = true;
               };
             }

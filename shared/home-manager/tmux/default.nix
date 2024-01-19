@@ -1,13 +1,19 @@
-{ config, pkgs, lib, user, inputs, ... }:
-let
-  plugins = pkgs.tmuxPlugins
-    // pkgs.callPackage ./custom-plugins.nix { inherit lib pkgs inputs; };
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  inputs,
+  ...
+}: let
+  plugins =
+    pkgs.tmuxPlugins
+    // pkgs.callPackage ./custom-plugins.nix {inherit lib pkgs inputs;};
 in {
   programs.tmux = {
     enable = true;
     sensibleOnTop = false;
 
-    terminal = "tmux-256color";
     prefix = "C-s";
     keyMode = "vi";
     escapeTime = 10;
@@ -20,6 +26,34 @@ in {
     mouse = true;
 
     extraConfig = ''
+      # set-env -g TERMINFO_DIRS $HOME/.local/share/terminfo:${pkgs.ncurses}/share/terminfo:/Applications/Ghostty.app/Contents/Resources/terminfo:$TERMINFO_DIRS
+      if-shell 'infocmp tmux-256color' { set default-terminal tmux-256color } { set default-terminal screen-256color }
+      # if-shell 'infocmp tmux-256color' { set default-terminal xterm-ghostty } { set default-terminal screen-256color }
+
+      # Enable RGB (truecolor)
+      set -a terminal-features '*:RGB'
+
+      # Enable colored underlines (e.g. in Vim)
+      set -a terminal-features '*:usstyle'
+
+      # Use extended keys (CSI u)
+      set extended-keys on
+
+      # Enable focus events
+      set focus-events on
+
+      # Allow tmux to set the title of the terminal emulator
+      set -g set-titles on
+      set -g set-titles-string '#T #{session_alerts}'
+
+      # # Using `default-command $SHELL` with `default-shell /bin/sh` will cause new
+      # # tmux windows to be spawned using
+      # #
+      # #       /bin/sh -c $SHELL
+      # #
+      # # This ensures that new windows are created as non-login interactive shells
+      # set -g default-shell /bin/sh
+      # if-shell 'command -v zsh' { set -g default-command zsh } { set -g default-command $SHELL }
 
       #############################
       ### CUSTOM KEYMAPS
@@ -41,11 +75,12 @@ in {
       set -g status-left-length 100
       set -g status-right-length 140
       set -g status-right ""
-      set -ag status-right "#[reverse,blink]#{?pane_synchronized,*** PANES SYNCED! ***,}#[default]"
-      set -ag status-right "#[bold]#{prefix_highlight}"
+      set -ag status-right "#[reverse,blink]#{?pane_synchronized,#{@prefix_highlight_sync_prompt},}#[default]"
+      # set -ag status-right "#[bold]#{prefix_highlight}"
+      set -ag status-right "#[bold,fg=#{@prefix_highlight_fg},bg=#{@prefix_highlight_bg}]#{?client_prefix, #{@prefix_highlight_prefix_prompt},#{@prefix_highlight_empty_prompt}}"
       set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
       set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
-      set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo "" || echo "") #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
+      set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo '󰌘 ' || echo '󰌙 ') #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
       set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
       set -ag status-right "#[fg=black]%a %m/%d %l:%M %p "
 
@@ -75,7 +110,7 @@ in {
       # Smart pane switching with awareness of Vim splits.
       # See: https://github.com/christoomey/vim-tmux-navigator
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf)(diff)?$'"
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf|gum)(diff)?$'"
       bind-key -n C-h if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
       bind-key -n C-j if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
       bind-key -n C-k if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
@@ -141,6 +176,7 @@ in {
       {
         plugin = plugins.resurrect;
         extraConfig = ''
+          set -g @resurrect-strategy-vim 'session'
           set -g @resurrect-strategy-nvim 'session'
           set -g @resurrect-save 'S'
           set -g @resurrect-restore 'R'
@@ -151,11 +187,14 @@ in {
         extraConfig = ''
           set -g @prefix_highlight_fg 'pink'
           set -g @prefix_highlight_bg 'black'
-          set -g @prefix_highlight_sync_prompt '󱍸 '
+          # set -g @prefix_highlight_empty_prompt '󰵟 '
+          set -g @prefix_highlight_prefix_prompt '󰽀 '
+          # set -g @prefix_highlight_sync_prompt '󱍸 '
+          set -g @prefix_highlight_sync_prompt '󱎡 '
           set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
-      { plugin = plugins.better-mouse-mode; }
+      {plugin = plugins.better-mouse-mode;}
       plugins.cowboy
       {
         plugin = plugins.tmux-menus;

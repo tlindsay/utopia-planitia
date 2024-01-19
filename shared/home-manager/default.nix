@@ -1,5 +1,10 @@
-{ config, pkgs, lib, user, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: let
   name = "Patrick Lindsay";
   email = "pat@thatdarnpat.com";
 in {
@@ -12,11 +17,28 @@ in {
     ./tmux
   ];
 
+  programs.nushell = {
+    enable = true;
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
+    config = {
+      global = {
+        load_dotenv = true;
+      };
+      whitelist = {
+        prefix = ["~/Code/"];
+      };
+    };
   };
+
+  programs.nix-index = {
+    enable = true;
+  };
+  programs.command-not-found.enable = false;
 
   # git = {
   #   enable = false;
