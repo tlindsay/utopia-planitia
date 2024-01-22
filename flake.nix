@@ -13,7 +13,7 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; };
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
       flake = false;
@@ -43,9 +43,8 @@
     # };
     # Add `secrets` to outputs when ready
   };
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core
-    , homebrew-cask, homebrew-infra, home-manager, nixpkgs, disko, agenix, }@inputs:
-    let
+  outputs = inputs:
+    with inputs; let
       hostmap = {
         "fastbook" = {
           system = "aarch64-darwin";
@@ -56,53 +55,51 @@
           user = "pat";
         };
       };
-      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
-      darwinSystems = [ "aarch64-darwin" ];
+      linuxSystems = ["x86_64-linux" "aarch64-linux"];
+      darwinSystems = ["aarch64-darwin"];
       forAllLinuxSystems = f:
         nixpkgs.lib.genAttrs linuxSystems (system: f system);
       forAllDarwinSystems = f:
         nixpkgs.lib.genAttrs darwinSystems (system: f system);
       forAllSystems = f:
         nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
-      devShell = system:
-        let
-          pkgs = import nixpkgs {
-            system = "${system}";
-            config.allowUnfree = true;
-          };
-          # pkgs = nixpkgs.legacyPackages.${system};
-        in {
-          default = with pkgs;
-            mkShell {
-              nativeBuildInputs = with pkgs; [
-                bashInteractive
-                neovim
-                git
-                age
-                age-plugin-yubikey
-              ];
-              shellHook = with pkgs; ''
-                export EDITOR=nvim
-              '';
-            };
+      devShell = system: let
+        pkgs = import nixpkgs {
+          system = "${system}";
+          config.allowUnfree = true;
         };
-      hostpkgs = system:
-        let
-          # pkgs = nixpkgs.legacyPackages.${system};
-          pkgs = import nixpkgs {
-            system = system;
-            config.allowUnfree = true;
+        # pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        default = with pkgs;
+          mkShell {
+            nativeBuildInputs = with pkgs; [
+              bashInteractive
+              neovim
+              git
+              age
+              age-plugin-yubikey
+            ];
+            shellHook = with pkgs; ''
+              export EDITOR=nvim
+            '';
           };
-        in {
-          delta-flyer = with pkgs; [
-            # super-slicer-beta
-            arduino-cli
-            avrdude
-            esptool
-            openscad
-          ];
-          fastbook = with pkgs; [ ];
+      };
+      hostpkgs = system: let
+        # pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          system = system;
+          config.allowUnfree = true;
         };
+      in {
+        delta-flyer = with pkgs; [
+          # super-slicer-beta
+          arduino-cli
+          avrdude
+          esptool
+          openscad
+        ];
+        fastbook = with pkgs; [];
+      };
     in {
       devShells = forAllDarwinSystems devShell;
       darwinConfigurations = builtins.mapAttrs (hn: conf:
@@ -118,7 +115,7 @@
             nix-homebrew.darwinModules.nix-homebrew
             home-manager.darwinModules.home-manager
             {
-              home-manager.extraSpecialArgs = { user = conf.user; };
+              home-manager.extraSpecialArgs = {user = conf.user;};
               nix-homebrew = {
                 enable = true;
                 user = "${conf.user}";
@@ -134,6 +131,7 @@
             }
             ./darwin
           ];
-        }) hostmap;
+        })
+      hostmap;
     };
 }
