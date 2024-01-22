@@ -20,10 +20,10 @@ with pkgs; [
   home-manager
   llvmPackages_latest.llvm
   killall
+  mosh
   mprocs
   neofetch
   neovim
-  openssh
   sqlite
   wget
   zip
@@ -78,7 +78,9 @@ with pkgs; [
   # Text and terminal utilities
   diff-so-fancy
   direnv
+  du-dust
   figlet
+  fx
   gh
   git
   glow
@@ -93,6 +95,7 @@ with pkgs; [
   nix-index
   nix-output-monitor
   nushell
+  procs
   ripgrep
   starship
   tealdeer
