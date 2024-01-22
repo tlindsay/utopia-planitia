@@ -25,6 +25,18 @@ in {
 
   # Setup user, packages, programs
   nix = {
+    registry = {
+      nixpkgs = {
+        flake = inputs.nixpkgs;
+      };
+    };
+
+    nixPath = [
+      "nixpkgs=${inputs.nixpkgs.outPath}"
+      "nixos-config=/etc/nixos/configuration.nix"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
+
     package = pkgs.nixUnstable;
     settings.trusted-users = ["@admin" "${user}"];
 
