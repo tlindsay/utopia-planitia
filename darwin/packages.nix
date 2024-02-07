@@ -5,6 +5,7 @@ in
   shared-packages
   ++ [
     colima
+    lima-bin
     dockutil
     imagemagick
     qemu
@@ -12,4 +13,3 @@ in
     spotify
     yadm
   ]
-

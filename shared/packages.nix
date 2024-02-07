@@ -43,6 +43,7 @@ with pkgs; [
   python311Packages.pip
   nixd
   nixfmt
+  statix
   alejandra
 
   # Encryption and security tools
@@ -54,13 +55,10 @@ with pkgs; [
   yubikey-manager
 
   # Cloud-related tools and SDKs
-  #
-  # docker marked broken as of Nov 15, 2023
-  # https://github.com/NixOS/nixpkgs/issues/267685
-  #
-  # docker
-  # docker-compose
-  #
+  (docker.override (args: {buildxSupport = true;}))
+  docker-buildx
+  docker-credential-helpers
+  docker-compose
   k9s
   kubectl
   kubernetes-helm

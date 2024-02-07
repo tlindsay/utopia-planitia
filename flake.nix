@@ -98,7 +98,9 @@
           esptool
           openscad
         ];
-        fastbook = with pkgs; [];
+        fastbook = with pkgs; [
+          google-cloud-sdk
+        ];
       };
     in {
       devShells = forAllDarwinSystems devShell;
