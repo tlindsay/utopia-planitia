@@ -116,6 +116,12 @@
 
       forgit_checkout_commit='gcco'
 
+      bindkey '^ ' autosuggest-accept
+      bindkey '^P' up-line-or-search
+      bindkey '^N' down-line-or-search
+      bindkey '^X' clear-screen
+      bindkey '^B' emoji-fzf-zle
+
       # Set Cache Dir for dotenv plugin
       export ZSH_CACHE_DIR="$HOME/.local/cache"
 
@@ -151,12 +157,6 @@
       "
 
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-
-      bindkey '^ ' autosuggest-accept
-      bindkey '^P' up-line-or-search
-      bindkey '^N' down-line-or-search
-      bindkey '^X' clear-screen
-      bindkey '^B' emoji-fzf-zle
 
       function zvm_after_init() {
         [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -25,6 +25,7 @@ with pkgs; [
   neofetch
   neovim
   sqlite
+  usql
   wget
   zip
 
