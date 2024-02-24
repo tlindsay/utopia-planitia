@@ -31,6 +31,7 @@ in {
   homebrew.masApps = {
     "wireguard" = 1451685025;
     "easyres" = 688211836;
+    "sequel-ace" = 1518036000;
     "yamacast-musiccast-remote" = 1415107621;
   };
 

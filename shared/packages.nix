@@ -27,6 +27,7 @@ with pkgs; [
   sqlite
   usql
   wget
+  xh # better curl https://github.com/ducaale/xh
   zip
 
   # Lang specific runtimes

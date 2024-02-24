@@ -225,6 +225,22 @@
         "type": "github"
       }
     },
+    "homebrew-tako8ki": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1631705976,
+        "narHash": "sha256-ayIZoqEk0aVx9u94XFKmgnNERFgDPU40yuxigOd4c+s=",
+        "owner": "TaKO8Ki",
+        "repo": "homebrew-tap",
+        "rev": "1f26e805f39b3682c6ff3e3c778c81246638e632",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TaKO8Ki",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -335,6 +351,7 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "homebrew-infra": "homebrew-infra",
+        "homebrew-tako8ki": "homebrew-tako8ki",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_4"
       }

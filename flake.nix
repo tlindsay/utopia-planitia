@@ -30,6 +30,10 @@
       url = "github:infrahq/homebrew-tap";
       flake = false;
     };
+    homebrew-tako8ki = {
+      url = "github:TaKO8Ki/homebrew-tap";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -126,6 +130,7 @@
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "infrahq/tap" = homebrew-infra;
+                  "tako8ki/tap" = homebrew-tako8ki;
                 };
                 mutableTaps = true;
                 autoMigrate = true;

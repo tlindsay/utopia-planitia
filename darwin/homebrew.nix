@@ -1,7 +1,12 @@
-{ ... }: {
+{...}: {
   homebrew = {
     enable = true;
-    brews = [ "blueutil" "fileicon" "infrahq/tap/infra" ];
+    brews = [
+      "blueutil"
+      "fileicon"
+      "infrahq/tap/infra"
+      "tako8ki/tap/gobang"
+    ];
     casks = [
       # # Development Tools
       # "1password"
