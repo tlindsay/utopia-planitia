@@ -24,6 +24,7 @@ with pkgs; [
   mprocs
   neofetch
   neovim
+  qmk
   sqlite
   usql
   wget

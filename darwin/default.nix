@@ -110,7 +110,16 @@ in {
 
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToControl = true;
+      # Handled in QMK now
+      # TODO: Make this remap integrated keyboard, but leave external alone
+      # remapCapsLockToControl = true;
+      # userKeyMapping = [
+      #   {
+      #     # Remap Control To CapsLock
+      #     HIDKeyboardModifierMappingSrc = 30064771296;
+      #     HIDKeyboardModifierMappingDst = 30064771129;
+      #   }
+      # ];
     };
   };
 }

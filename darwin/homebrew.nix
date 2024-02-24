@@ -8,6 +8,7 @@
       "tako8ki/tap/gobang"
     ];
     casks = [
+      "qmk-toolbox"
       # # Development Tools
       # "1password"
       # "bruno"
