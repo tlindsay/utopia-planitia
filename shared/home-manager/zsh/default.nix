@@ -144,16 +144,31 @@
       export MANROFFOPT="-c"
       export MANPAGER="sh -c 'col -bx | bat -l man -p --color=always'"
 
+      # Prevent zoxide from storing inaccurate PWDs (i.e., wrong caps)
+      export _ZO_RESOLVE_SYMLINKS=1
+
       export FZF_DEFAULT_COMMAND="fd --type f --exclude '**/node_modules/*' --exclude '**/.git/*'"
+      export FZF_DEFAULT_OPTS="
+        --marker='󰄲 '
+        --prompt=' '
+        --pointer=' '
+        --cycle
+        --preview-window='right:60%'
+        --bind 'alt-z:change-preview-window(right:90%|right:60%)'
+        --bind='alt-k:preview-up,alt-p:preview-up'
+        --bind='alt-j:preview-down,alt-n:preview-down'
+        --bind='alt-s:toggle-sort'
+        --bind='alt-w:toggle-preview-wrap'
+      "
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
       export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always {} | head -500'"
       export EMOJI_FZF_PREPEND_EMOJIS=1
 
       export FORGIT_FZF_DEFAULT_OPTS="
-      --ansi
-      --border
-      --cycle
-      --reverse
+        --ansi
+        --border
+        --cycle
+        --reverse
       "
 
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
@@ -173,7 +188,7 @@
       alias ll="eza -l -F --git --group-directories-first --icons=auto"
       alias lll="ll --git -g --header -a"
       alias tree="eza --tree"
-      alias rz="source ~/.zshrc && source ~/.zsh_profile && rehash"
+      alias rz="source ~/.zshrc && source ~/.zlogin && rehash"
       alias root='cd $(npm root)/..'
       alias forgit='alias | fzf -q forgit::'
       alias update-neovim='asdf uninstall neovim nightly && asdf install neovim nightly'
