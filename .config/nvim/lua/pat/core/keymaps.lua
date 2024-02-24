@@ -1,4 +1,5 @@
 local wk = require('which-key')
+local utils = require('pat.utils')
 local fns = require('pat.core/functions')
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
@@ -29,9 +30,9 @@ wk.register({
 wk.register({
   ['<A-S-Left>'] = { ':tabm -1<CR>', 'Move tab left' },
   ['<A-S-Right>'] = { ':tabm +1<CR>', 'Move tab right' },
+  ['<C-w>='] = { fns.scrollbindPanes, 'Sync cursor line for open panes' },
   ['<leader>'] = {
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
-    ['='] = { ':windo set cursorbind!<CR>', 'Sync cursor line for open panes' },
     ['rv'] = { _G.reload_config, 'Reload Vim config' },
     ['<space>'] = { ':set wrap!<CR>', 'Toggle line wrapping' },
     ['<Del>'] = { ':silent %bdelete | Alpha<CR>', 'Close all buffers' },
@@ -41,7 +42,13 @@ wk.register({
       ['.'] = { ':tabdo windo set relativenumber!<CR>', 'Toggle Relative Line Numbers (all buffers)' },
       f = {
         function()
-          vim.cmd('doautocmd User ToggleFormatOnSave')
+          local fos = require('format-on-save')
+          local enabled = require('format-on-save.config').enabled
+          if enabled == true then
+            vim.schedule(fos.disable)
+          else
+            vim.schedule(fos.enable)
+          end
         end,
         'Toggle format-on-save',
       },
@@ -100,8 +107,7 @@ map('n', 'J', ':m .+1<CR>')
 map('n', '<C-w>-', ':new<CR>')
 map('n', '<C-w>\\', ':vnew<CR>')
 map('n', '<C-w>,', function()
-  local success, name = pcall(vim.api.nvim_tabpage_get_var, 0, 'custom_tab_name')
-  local var = success and name or ''
+  local var = utils.getVarWithDefault('t', 0, 'custom_tab_name', '')
   local input = vim.fn.input('Tab name? ', var)
 
   vim.api.nvim_tabpage_set_var(0, 'custom_tab_name', input)
@@ -120,4 +126,5 @@ map('n', '&', ':Telescope grep_string<CR>')
 
 -- Terminal mappings
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
+map('t', '<Esc>', '<C-\\><C-n>') -- exit
+

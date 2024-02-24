@@ -1,39 +1,15 @@
+local utils = require('pat.utils')
 local M = {}
 
--- function M.getHlGroup()
---   -- vim.cmd([[
---   --   " for i1 in synstack(line('.'), col('.'))
---   --   "   let i2 = synIDTrans(i1)
---   --   "   let n1 = synIDattr(i1, 'name')
---   --   "   let n2 = synIDattr(i2, 'name')
---   --   "   echo n1 '->' n2
---   --   " endfor
---   local call = vim.api.nvim_call_function
---
---   local line = call('line', { '.' })
---   local col = call('col', { '.' })
---   local syntaxBlob = call('synID', { line, col, 1 })
---   local trans = call('synIDtrans', { syntaxBlob })
---   P(call('synIDattr', { syntaxBlob, 'name' }) .. '->' .. call('synIDattr', { trans, 'name' }))
---   --   " let l:syntaxBlob = synID(line('.'), col('.'), 1)
---   --   " echo synIDattr(l:syntaxBlob, 'name') . ' -> ' . synIDattr(synIDtrans(l:syntaxBlob), 'name')
---   -- ]])
--- end
+function M.scrollbindPanes()
+  local isBound = utils.getVarWithDefault('tabpage', 0, 'is_scroll_bound', false)
+  vim.api.nvim_tabpage_set_var(0, 'is_scroll_bound', not isBound)
 
-vim.cmd([[
-  function! ShowCurrentHighlight()
-    echom "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
-  endfunction
-]])
-
-vim.cmd([[
-  function! SayHi()
-    echo "hello there!"
-  endfunction
-]])
-
-function M.getHlGroup()
-  vim.api.nvim_call_function('ShowCurrentHighlight', {})
+  local winIds = vim.api.nvim_tabpage_list_wins(0)
+  vim.tbl_map(function(winId)
+    vim.api.nvim_win_set_option(winId, 'scrollbind', not isBound)
+    vim.api.nvim_win_set_option(winId, 'cursorbind', not isBound)
+  end, winIds)
 end
 
 return M

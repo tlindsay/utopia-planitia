@@ -132,6 +132,61 @@ M['unload_lua_namespace'] = function(prefix)
   end
 end
 
+M.getVarWithDefault = function(scope, ...)
+  local arg = { ... }
+  if scope == nil or #arg < 2 then
+    error('insufficient arguments passed to getVarWithDefault')
+    return
+  end
+
+  local defaultVal = arg[#arg]
+  local fn
+  if scope == 'global' or scope == 'g' then
+    local varName = select(1, ...)
+    fn = function()
+      return vim.api.nvim_get_var(varName)
+    end
+  elseif scope == 'tabpage' or scope == 't' then
+    local tabpageId, varName = select(1, ...)
+    fn = function()
+      return vim.api.nvim_tabpage_get_var(tabpageId, varName)
+    end
+  elseif scope == 'win' or scope == 'w' then
+    local winId, varName = select(1, ...)
+    fn = function()
+      return vim.api.nvim_win_get_var(winId, varName)
+    end
+  elseif scope == 'buf' or scope == 'b' then
+    local bufId, varName = select(1, ...)
+    fn = function()
+      return vim.api.nvim_buf_get_var(bufId, varName)
+    end
+  else
+    error('invalid scope passed to getVarWithDefault')
+  end
+
+  local wasSet, retVal = pcall(fn)
+  if wasSet then
+    return retVal
+  else
+    return defaultVal
+  end
+end
+-- Stolen from https://stackoverflow.com/questions/32031473/lua-line-wrapping-excluding-certain-characters
+M.wrap = function(str, limit, indent, indent1)
+  indent = indent or ''
+  indent1 = indent1 or indent
+  limit = limit or 79
+  local here = 1 - #indent1
+  return indent1
+      .. str:gsub('(%s+)()(%S+)()', function(sp, st, word, fi)
+        if fi - here > limit then
+          here = st - #indent
+          return '\n' .. indent .. word
+        end
+      end)
+end
+
 function M:init()
   require('core.autocmds').load_augroups()
   require('plugins.nvim-lspconfig')
@@ -152,6 +207,11 @@ function M:get_global_theme()
   local theme_file = io.open(os.getenv('HOME') .. '.config/theme.yml', 'r')
   local theme = ryaml.decode(theme_file)
   print(theme)
+end
+
+function M:get_diagnostic_icon(level)
+  local sign = vim.fn.sign_getdefined('DiagnosticSign' .. level:lower():gsub('^%l', string.upper))
+  return sign[1].text
 end
 
 return M

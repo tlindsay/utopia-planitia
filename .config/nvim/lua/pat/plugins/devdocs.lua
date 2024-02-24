@@ -24,7 +24,9 @@ devdocs.setup({
     'typescript',
     'react',
     'react_router',
+    'lua-5.1',
     'go',
+    'nix',
     'rust',
   },
   after_open = function(bufnr)

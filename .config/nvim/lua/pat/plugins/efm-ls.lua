@@ -1,4 +1,5 @@
 local alejandra = require('efmls-configs.formatters.alejandra')
+local statix = require('efmls-configs.linters.statix')
 local eslint = require('efmls-configs.linters.eslint_d')
 local eslint_formatter = require('efmls-configs.formatters.eslint_d')
 local prettier = require('efmls-configs.formatters.prettier_d')
@@ -18,9 +19,13 @@ local languages = {
   typescriptreact = es_tools,
   javascript = es_tools,
   javascriptreact = es_tools,
-  go = { gofmt, goimports },
+  go = {
+    -- golangci_lint,
+    gofmt,
+    goimports,
+  },
   lua = { stylua },
-  nix = { alejandra },
+  nix = { alejandra, statix },
 }
 
 return {

@@ -46,7 +46,7 @@ local function footer()
   table.insert(text, '')
   table.insert(text, ' ' .. datetime)
   table.insert(text, ' Neovim ' .. print_version)
-  table.insert(text, '  ' .. lazy_stats.loaded .. '/' .. lazy_stats.count .. ' plugins')
+  table.insert(text, ' 󰚥 ' .. lazy_stats.loaded .. '/' .. lazy_stats.count .. ' plugins')
   table.insert(text, ' 󰔛 ' .. lazy_stats.times.LazyDone .. 'ms')
   return text
 end

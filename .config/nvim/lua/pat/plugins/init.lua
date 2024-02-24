@@ -1,25 +1,14 @@
 return {
   'nvim-lua/plenary.nvim',
   'smartpde/debuglog', -- Logging plugin for debugging lua configs
-  {
-    'folke/noice.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
-    },
-  },
-
-  -- Project Management
-  {
-    'Dax89/IDE.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'rcarriga/nvim-notify',
-      'stevearc/dressing.nvim',
-      'mfussenegger/nvim-dap',
-      'rcarriga/nvim-dap-ui',
-    },
-  },
+  -- {
+  --   'folke/noice.nvim',
+  --   event = 'VeryLazy',
+  --   dependencies = {
+  --     'MunifTanjim/nui.nvim',
+  --     'rcarriga/nvim-notify',
+  --   },
+  -- },
 
   -- Pane Management
   {
@@ -51,19 +40,8 @@ return {
       'nvim-lua/plenary.nvim',
     },
   },
-  {
-    'nvim-neorg/neorg',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-neorg/neorg-telescope',
-    },
-  },
-
-  -- Symbol Outline
-  'hedyhli/outline.nvim',
 
   -- Indentation Guides
-  -- 'lukas-reineke/indent-blankline.nvim',
   'shellRaining/hlchunk.nvim',
 
   -- Which Key
@@ -94,8 +72,7 @@ return {
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
-  'haringsrob/nvim_context_vt',
-  -- { 'HiPhish/nvim-ts-rainbow2', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  'andersevenrud/nvim_context_vt',
   'HiPhish/rainbow-delimiters.nvim',
   { 'Wansmer/treesj',            dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
@@ -116,15 +93,13 @@ return {
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
-  -- 'Maan2003/lsp_lines.nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+  'RaafatTurki/corn.nvim',
   'folke/neodev.nvim',
-  -- '~/code/make/lsp_lines.nvim'
   {
     'folke/trouble.nvim',
     dependencies = 'nvim-tree/nvim-web-devicons',
   },
-  -- 'jose-elias-alvarez/null-ls.nvim',
   {
     'mangelozzi/nvim-rgflow.lua',
     cond = function()
@@ -150,14 +125,7 @@ return {
       'nvim-treesitter/nvim-treesitter',
     },
     ft = { 'go', 'gomod' },
-    build = ':lua require("go.install").update_all_sync()',
-  },
-  {
-    'ray-x/navigator.lua',
-    dependencies = {
-      'ray-x/guihua.lua',
-      'neovim/nvim-lspconfig',
-    },
+    build = ':lua require("go.install").update_all()',
   },
 
   -- Syntax Definitions
@@ -207,16 +175,19 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
-  -- {
-  --   'SmiteshP/nvim-gps',
-  --   dependencies = 'nvim-treesitter/nvim-treesitter',
-  -- },
-  {
     'SmiteshP/nvim-navic',
     dependencies = 'neovim/nvim-lspconfig',
+  },
+
+  {
+    'SmiteshP/nvim-navbuddy',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'SmiteshP/nvim-navic',
+      'MunifTanjim/nui.nvim',
+      'numToStr/Comment.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
   },
 
   -- Scroll Bar
@@ -249,13 +220,14 @@ return {
   },
   'leoluz/nvim-dap-go',
   'rcarriga/nvim-dap-ui',
+  'theHamsta/nvim-dap-virtual-text',
   'nvim-telescope/telescope-dap.nvim',
 
   -- Dashboard start screen
   {
     'goolord/alpha-nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    lazy = true,
+    lazy = false,
   },
 
   -- Luapad
@@ -290,11 +262,33 @@ return {
   -- 'tommcdo/vim-fugitive-blame-ext',
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
   {
-    -- '9seconds/repolink.nvim',
-    'tlindsay/repolink.nvim',
+    '9seconds/repolink.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     cmd = { 'RepoLink' },
   },
+  {
+    'https://git.sr.ht/~thatdarnpat/nvim-culprit',
+    config = function()
+      require('culprit').setup({ popupConfig = { anchor = 'NW' } })
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+    },
+  },
 
   'chrisbra/unicode.vim',
+
+  {
+    'camspiers/luarocks',
+    lazy = true,
+    dependencies = { 'rcarriga/nvim-notify' },
+    opts = {
+      rocks = {
+        'penlight',
+      },
+    },
+  },
+
+  { 'stevearc/profile.nvim', lazy = true },
 }

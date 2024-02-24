@@ -28,10 +28,6 @@ parser_config.vcl = {
   filetype = 'vcl',
 }
 
--- Fix compiler issue on MacOS
--- (Prerequisite is $ brew install gcc)
-require('nvim-treesitter.install').compilers = { 'gcc-12' }
-
 wk.register({
   ['<leader>H'] = { ':TSHighlightCapturesUnderCursor<CR>', 'Display TS Highlight' },
 })
@@ -50,7 +46,7 @@ require('ts_context_commentstring').setup({
 
 ts.setup({
   auto_install = true,
-  ignore_install = { 'tlaplus' },
+  ignore_install = { 'norg', 'tlaplus' },
   autopairs = { enable = true },
   autotag = { enable = true },
   endwise = {
@@ -128,7 +124,9 @@ require('rainbow-delimiters.setup').setup({
     jsx = 'rainbow-delimiters-react',
     tsx = 'rainbow-delimiters-react',
   },
-  strategy = { [''] = require('rainbow-delimiters').strategy['local'] },
+  strategy = {
+    [''] = require('rainbow-delimiters').strategy['global'],
+  },
   max_file_lines = 3000,
   extended_mode = true,
   highlight = {

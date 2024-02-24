@@ -98,6 +98,7 @@ local function get_files()
   local dotfiles_repo = vim.fn.glob('$HOME/.config')
   local cwd = vim.fn.getcwd()
   local in_dotfiles_repo = cwd == dotfiles_repo
+  ---@diagnostic disable-next-line: param-type-mismatch
   local in_dotfiles_subdir = vim.tbl_contains(vim.fn.globpath(dotfiles_repo, '*', false, true), cwd)
   local in_git_repo = vim.fn.systemlist('git rev-parse --is-inside-work-tree')[1] == 'true'
   if in_git_repo then
@@ -113,7 +114,6 @@ telescope.load_extension('fzf')
 telescope.load_extension('ui-select')
 telescope.load_extension('file_browser')
 telescope.load_extension('notify')
--- telescope.load_extension('noice')
 telescope.load_extension('gh')
 telescope.load_extension('command_palette')
 telescope.load_extension('lsp_handlers')
@@ -123,18 +123,12 @@ wk.register({
 }, { mode = 'i' })
 wk.register({
   ['<C-p>'] = { get_files, 'Open file picker' },
-  -- ['<C-n>'] = {
-  --   ':Telescope file_browser<CR>',
-  --   'Open file browser',
-  -- },
   ['<leader>'] = {
     g = { builtins.live_grep, 'Open LiveGrep' },
-    -- N = { telescope.extensions.neorg.find_norg_files, 'List Neorg Entries' },
     p = { ':Telescope command_palette<CR>', 'Show Command Palette' },
     ['?'] = { builtins.help_tags, 'Search vim-help' },
     ['<leader>'] = {
       ['.'] = { M.edit_neovim, 'Dotfiles' },
-      -- ['j'] = { ':Telescope neorg find_linkable<CR>', 'Neorg' },
     },
   },
 })

@@ -1,7 +1,7 @@
 local wk = require('which-key')
 require('gitsigns').setup({
   yadm = {
-    enable = true,
+    -- enable = true,
   },
 })
 wk.register({

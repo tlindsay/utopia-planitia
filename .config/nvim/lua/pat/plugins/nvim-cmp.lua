@@ -11,30 +11,30 @@ local luasnip = require('luasnip')
 local lspkind = require('lspkind')
 local kind_icons = {
   Text = '',
-  Method = '',
-  Function = '',
+  Method = '󰆧',
+  Function = '󰊕',
   Constructor = '',
-  Field = '',
-  Variable = '',
-  Class = 'ﴯ',
+  Field = '󰇽',
+  Variable = '󰂡',
+  Class = '󰠱',
   Interface = '',
   Module = '',
-  Property = 'ﰠ',
+  Property = '󰜢',
   Unit = '',
-  Value = '',
+  Value = '󰎠',
   Enum = '',
-  Keyword = '',
+  Keyword = '󰌋',
   Snippet = '',
-  Color = '',
-  File = '',
+  Color = '󰏘',
+  File = '󰈙',
   Reference = '',
-  Folder = '',
+  Folder = '󰉋',
   EnumMember = '',
-  Constant = '',
+  Constant = '󰏿',
   Struct = '',
   Event = '',
-  Operator = '',
-  TypeParameter = '',
+  Operator = '󰆕',
+  TypeParameter = '󰅲',
 }
 
 cmp.setup({
@@ -112,19 +112,44 @@ cmp.setup({
   },
 
   -- Formatting
+  -- formatting = {
+  --   format = lspkind.cmp_format({
+  --     mode = 'symbol_text',
+  --     menu = {
+  --       buffer = '󰽘 ',
+  --       nvim_lsp = ' ',
+  --       nvim_lsp_signature_help = ' ',
+  --       luasnip = ' ',
+  --       treesitter = '󰐅 ',
+  --       nvim_lua = ' ',
+  --       spell = '󰓆 ',
+  --     },
+  --   }),
+  -- },
+
+  -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
   formatting = {
-    format = lspkind.cmp_format({
-      mode = 'symbol_text',
-      menu = {
-        buffer = ' ﬘',
-        nvim_lsp = ' ',
-        nvim_lsp_signature_help = ' ',
-        luasnip = ' 🐍',
-        treesitter = ' ',
-        nvim_lua = ' ',
-        spell = ' 暈',
-      },
-    }),
+    fields = { 'kind', 'abbr', 'menu' },
+    format = function(entry, vim_item)
+      local kind = require('lspkind').cmp_format({
+        mode = 'symbol_text',
+        maxwidth = 50,
+        menu = {
+          buffer = '󰽘 ',
+          nvim_lsp = ' ',
+          nvim_lsp_signature_help = ' ',
+          luasnip = ' ',
+          treesitter = '󰐅 ',
+          nvim_lua = ' ',
+          spell = '󰓆 ',
+        },
+      })(entry, vim_item)
+      local strings = vim.split(kind.kind, '%s', { trimempty = true })
+      kind.kind = ' ' .. (strings[1] or '') .. ' '
+      kind.menu = '    (' .. (strings[2] or '') .. ')'
+
+      return kind
+    end,
   },
 
   -- Here there be dragons

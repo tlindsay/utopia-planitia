@@ -13,6 +13,7 @@
 
 -- Set colorscheme (from core/colors.lua/colorscheme_name)
 local colors = require('pat.core/colors').tokyonight
+local utils = require('pat.utils')
 
 local vi_mode_colors = {
   NORMAL = colors.cyan,
@@ -153,25 +154,29 @@ component.file = {
 component.diagnos = {
   err = {
     provider = 'diagnostic_errors',
-    icon = ' ',
+    -- icon = ' ',
+    icon = utils:get_diagnostic_icon('error'),
     hl = { fg = colors.red },
     left_sep = '  ',
   },
   warn = {
     provider = 'diagnostic_warnings',
-    icon = ' ',
+    -- icon = ' ',
+    icon = utils:get_diagnostic_icon('warn'),
     hl = { fg = colors.yellow },
     left_sep = ' ',
   },
   info = {
     provider = 'diagnostic_info',
-    icon = ' ',
+    -- icon = ' ',
+    icon = utils:get_diagnostic_icon('info'),
     hl = { fg = colors.green },
     left_sep = ' ',
   },
   hint = {
     provider = 'diagnostic_hints',
-    icon = ' ',
+    -- icon = ' ',
+    icon = utils:get_diagnostic_icon('hint'),
     hl = { fg = colors.cyan },
     left_sep = ' ',
   },
@@ -255,7 +260,7 @@ local custom_providers = {
     end
   end,
   format_on_save = function()
-    local var = vim.api.nvim_get_var('PAT_format_on_save')
+    local var = require('format-on-save.config').enabled
     local label = ''
     if var == 1 or var == true then
       label = ' 󰉼 '
@@ -322,13 +327,20 @@ require('feline').setup({
 
 local wcomps = {
   active_file_info = {
-    provider = {
-      name = 'file_info',
-      opts = vim.tbl_extend('force', component.file.info.provider.opts, { colored_icon = true, type = 'unique-short' }),
-    },
+    provider = function(comp)
+      local opts = vim.tbl_extend(
+        'force',
+        component.file.info.provider.opts,
+        { colored_icon = true, type = 'unique-short' }
+      )
+      local isBound = require('pat.utils').getVarWithDefault('t', 0, 'is_scroll_bound', false)
+      local file_info, icon = require('feline.providers.file').file_info(comp, opts)
+      return file_info, isBound and '󱈖 ' or icon
+    end,
     hl = function()
+      local isBound = require('pat.utils').getVarWithDefault('t', 0, 'is_scroll_bound', false)
       return {
-        bg = vi_mode_utils.get_mode_color(),
+        bg = isBound and colors.red or vi_mode_utils.get_mode_color(),
         fg = colors.bg,
       }
     end,
@@ -336,14 +348,19 @@ local wcomps = {
     right_sep = '',
   },
   inactive_file_info = {
-    provider = {
-      name = 'file_info',
-      opts = vim.tbl_extend('force', component.file.info.provider.opts, { colored_icon = false }),
-    },
-    hl = {
-      fg = colors.bg,
-      bg = colors.comment,
-    },
+    provider = function(comp)
+      local opts = vim.tbl_extend('force', component.file.info.provider.opts, { colored_icon = false })
+      local isBound = require('pat.utils').getVarWithDefault('t', 0, 'is_scroll_bound', false)
+      local file_info, icon = require('feline.providers.file').file_info(comp, opts)
+      return file_info, isBound and '󱈖 ' or icon
+    end,
+    hl = function()
+      local isBound = require('pat.utils').getVarWithDefault('t', 0, 'is_scroll_bound', false)
+      return {
+        fg = isBound and colors.red or colors.bg,
+        bg = colors.comment,
+      }
+    end,
     left_sep = '',
     right_sep = '',
   },

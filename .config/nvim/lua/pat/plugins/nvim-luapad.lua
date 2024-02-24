@@ -2,6 +2,7 @@ require('luapad').setup({
   context = {
     vim = {
       api = vim.api,
+      fn = vim.fn,
       regex = vim.regex,
       print = vim.print,
       inspect = vim.inspect,

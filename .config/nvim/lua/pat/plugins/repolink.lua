@@ -1,8 +1,24 @@
+local function dbgPrint(...)
+  vim.print('dbgPrint', ...)
+end
 require('repolink').setup({})
 require('which-key').register({
-  y = { '<cmd>RepoLink!<cr>', 'Yank HTTP permalink' },
+  { y = { '<cmd>RepoLink!<cr>', 'Yank HTTP permalink', mode = 'n' } },
+  { y = { "'<,'><cmd>RepoLink!<cr>", 'Yank HTTP permalink', mode = 'v' } },
+  {
+    T = {
+      '<cmd>LinkTest!<cr>',
+      mode = { 'n', 'v' },
+    },
+  },
+  {
+    P = {
+      dbgPrint,
+      'debug',
+      mode = { 'n', 'v' },
+    },
+  },
 }, {
-  mode = { 'n', 'v' },
   prefix = '<leader>',
 })
 

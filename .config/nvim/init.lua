@@ -5,6 +5,10 @@ Maintainer: brainf+ck
 Website: https://github.com/brainfucksec/neovim-lua
 --]]
 
+vim.g.mapleader = ','
+
+require('pat.core/settings')
+
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -23,16 +27,47 @@ local plugins = require('pat.plugins')
 require('lazy').setup(plugins, {
   ui = { border = 'rounded' },
   dev = { path = '~/Code/make' },
+  -- defaults = { lazy = true },
   profiling = {
     loader = true,
     require = true,
   },
 })
 
+--------------------------------
+-- START PERF PROFILING CONFIG
+--------------------------------
+local should_profile = os.getenv('NVIM_PROFILE')
+if should_profile then
+  require('profile').instrument_autocmds()
+  if should_profile:lower():match('^start') then
+    require('profile').start('*')
+  else
+    require('profile').instrument('*')
+  end
+end
+local function toggle_profile()
+  local prof = require('profile')
+  if prof.is_recording() then
+    prof.stop()
+    vim.ui.input({ prompt = 'Save profile to:', completion = 'file', default = 'profile.json' }, function(filename)
+      if filename then
+        prof.export(filename)
+        vim.notify(string.format('Wrote %s', filename))
+      end
+    end)
+  else
+    prof.start('*')
+  end
+end
+vim.keymap.set('', '<leader><leader>P', toggle_profile)
+--------------------------------
+-- END PERF PROFILING CONFIG
+--------------------------------
+
 -- Import Lua modules
 require('pat.utils')
 
-require('pat.core/settings')
 require('pat.core/autocmds')
 require('pat.core/colors')
 require('pat.core/keymaps')
@@ -44,24 +79,17 @@ R('pat.plugins/bufferline')
 R('pat.plugins/colorizer')
 R('pat.plugins/comment-nvim')
 R('pat.plugins/devdocs')
--- R('pat.plugins/diffview')
+R('pat.plugins/diffview')
 R('pat.plugins/feline')
--- R('pat.plugins/lualine')
 R('pat.plugins/gitsigns')
--- R('pat.plugins/ide')
--- R('pat.plugins/indent-blankline')
 R('pat.plugins/hlchunk')
 R('pat.plugins/iswap')
 R('pat.plugins/luasnip')
--- R('pat.plugins/neorg')
 R('pat.plugins/neotest')
 R('pat.plugins/neotree')
--- R('pat.plugins/null-ls')
-R('pat.plugins/efm-ls')
 R('pat.plugins/nvim-autopairs')
 R('pat.plugins/nvim-cmp')
 R('pat.plugins/nvim-dap')
--- R('pat.plugins/nvim-gps')
 R('pat.plugins/nvim-navic')
 R('pat.plugins/nvim-lspconfig')
 R('pat.plugins/nvim-luapad')
@@ -71,8 +99,6 @@ R('pat.plugins/nvim-treesitter')
 R('pat.plugins/nvim-ufo')
 R('pat.plugins/repolink')
 R('pat.plugins/rgflow')
-R('pat.plugins/outline')
 R('pat.plugins/smart-splits')
 R('pat.plugins/telescope')
 R('pat.plugins/textobjs')
--- R('pat.plugins/noice')
