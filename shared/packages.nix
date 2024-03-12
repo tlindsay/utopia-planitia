@@ -24,6 +24,7 @@ with pkgs; [
   mprocs
   neofetch
   neovim
+  pet # Shell snippet mgr
   qmk
   sqlite
   usql
@@ -48,6 +49,7 @@ with pkgs; [
   nixfmt
   statix
   alejandra
+  air # live reload for go apps
 
   # Encryption and security tools
   age

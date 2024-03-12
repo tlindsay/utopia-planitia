@@ -30,6 +30,13 @@ in {
     };
   };
 
+  programs.pet = {
+    enable = true;
+    selectcmdPackage = pkgs.fzf;
+    settings = {};
+    snippets = [];
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
