@@ -13,7 +13,7 @@ local servers = {
   'pyright',
   'clangd',
   'cssls',
-  'efm',
+  -- 'efm',
   'html',
   'gopls',
   'rust_analyzer',
@@ -26,6 +26,7 @@ local servers = {
 local border = 'rounded'
 local utils = require('pat.utils')
 local nvim_lsp = require('lspconfig')
+local lsp_links = require('lsplinks')
 local corn = require('corn')
 local navic = require('nvim-navic')
 local navbuddy = require('nvim-navbuddy')
@@ -39,6 +40,7 @@ require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
 require('neodev').setup()
+lsp_links.setup()
 
 corn.setup({
   border_style = border,
@@ -55,6 +57,10 @@ corn.setup({
     end
     return item
   end,
+})
+
+vim.diagnostic.config({
+  virtual_text = false,
 })
 
 -- Add additional capabilities supported by nvim-cmp
@@ -79,13 +85,17 @@ capabilities.textDocument.completion.completionItem = vim.tbl_extend(
         'additionalTextEdits',
       },
     },
+
+    -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
+    contextSupport = true,
+    dynamicRegistration = true,
   }
 )
 
 -- Autoformat on save
 require('format-on-save').setup({
   error_notifier = require('format-on-save.error-notifiers.vim-notify'),
-  experiments = { partial_update = 'diff' },
+  experiments = { disable_restore_cursors = true, partial_update = 'diff' },
   fallback_formatter = { require('format-on-save.formatters').lsp },
 })
 -- Use an on_attach function to only map the following keys
@@ -98,6 +108,10 @@ local function on_attach(client, bufnr)
   if client.server_capabilities.codeLensProvider then
     vim.lsp.codelens.refresh()
   end
+
+  -- if client.server_capabilities.inlayHintProvider then
+  --   vim.lsp.inlay_hint(bufnr, true)
+  -- end
 
   -- Attach Navic for breadcrumbs
   if client.server_capabilities.documentSymbolProvider then
@@ -161,12 +175,39 @@ local function on_attach(client, bufnr)
       },
     },
     g = {
-      D = { vim.lsp.buf.type_definition, 'Go to Type Definition' },
+      D = {
+        function()
+          local params = vim.lsp.util.make_position_params()
+          local success, _ = pcall(
+            vim.lsp.buf_request,
+            0,
+            'textDocument/definition',
+            params,
+            function(err, result, ctx, config)
+              -- P({
+              --   err = err,
+              --   result = result,
+              --   ctx = ctx,
+              --   config = config,
+              -- })
+              if result and result[1] then
+                vim.cmd([[tabedit]])
+                local buf = vim.api.nvim_get_current_buf()
+                local offset_encoding = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
+                vim.lsp.util.jump_to_location(result[1], offset_encoding, true)
+                vim.api.nvim_command(buf .. 'bd')
+              end
+            end
+          )
+        end,
+        'Go to Definition in new tab',
+      },
       d = { vim.lsp.buf.definition, 'Go to Definition' },
       i = { vim.lsp.buf.implementation, 'Go to Implementation' },
-      I = { '<cmd>vsp | lua vim.lsp.buf.definition()<CR>', 'Split to Implementation' },
+      I = { '<cmd>vsp | lua vim.lsp.buf.implementation()<CR>', 'Split to Implementation' },
       r = { vim.lsp.buf.references, 'List References' },
       R = { '<cmd>Trouble lsp_references<cr>', 'List References in Trouble' },
+      x = { lsp_links.gx, 'Open file or documentLink' },
     },
   }, opts)
 end
@@ -178,38 +219,6 @@ local handlers = {
 --[[=========================
     == CUSTOM SERVER CONFIGS
     ========================= ]]
-
-require('go').setup({
-  lsp_cfg = {
-    handlers = handlers,
-    capabilities = capabilities,
-    cmd = { 'gopls' },
-    settings = {
-      gopls = {
-        experimentalPostfixCompletions = true,
-        analyses = {
-          unusedparams = true,
-          unusedvariable = true,
-          shadow = true,
-        },
-        staticcheck = true,
-        linksInHover = true,
-        codelenses = {
-          generate = true,
-          gc_details = false,
-          regenerate_cgo = true,
-          tidy = true,
-          upgrade_depdendency = true,
-          vendor = true,
-        },
-      },
-    },
-    -- init_options = { usePlaceholders = true },
-  },
-  lsp_on_attach = on_attach,
-  trouble = true,
-  luasnip = true,
-})
 
 nvim_lsp.nixd.setup({
   handlers = handlers,
@@ -231,6 +240,45 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
+  ['gopls'] = function()
+    require('lspconfig').gopls.setup({
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = {
+        gopls = {
+          experimentalPostfixCompletions = true,
+          analyses = {
+            useany = true,
+            unusedwrite = true,
+            unusedvariable = true,
+            -- fieldalignment = true,
+            shadow = true,
+          },
+          codelenses = {
+            generate = true,
+            gc_details = false,
+            regenerate_cgo = true,
+            tidy = true,
+            upgrade_depdendency = true,
+            vendor = true,
+          },
+          hints = {
+            assignVariableTypes = true,
+            compositeLiteralFields = true,
+            compositeLiteralTypes = true,
+            constantValues = true,
+            functionTypeParameters = true,
+            parameterNames = true,
+            rangeVariableTypes = true,
+          },
+          usePlaceholders = true,
+          completeUnimported = true,
+          linksInHover = true,
+        },
+      },
+    })
+  end,
   ['nil_ls'] = function()
     require('lspconfig').nil_ls.setup({
       handlers = handlers,
@@ -246,14 +294,6 @@ require('mason-lspconfig').setup_handlers({
         },
       },
     })
-  end,
-  ['efm'] = function()
-    local efmls_config = require('pat.plugins/efm-ls')
-    require('lspconfig').efm.setup(vim.tbl_extend('force', efmls_config, {
-      on_attach = on_attach,
-      handlers = handlers,
-      capabilities = capabilities,
-    }))
   end,
   ['rust_analyzer'] = function()
     local rustCapabilities = vim.lsp.protocol.make_client_capabilities()

@@ -9,11 +9,13 @@ return {
   --     'rcarriga/nvim-notify',
   --   },
   -- },
+  {
+    'stevearc/dressing.nvim',
+  },
 
   -- Pane Management
   {
     'mrjones2014/smart-splits.nvim',
-    -- dir = '~/Code/make/smart-splits/',
   },
 
   -- File explorer
@@ -95,6 +97,7 @@ return {
   'onsails/lspkind-nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
   'RaafatTurki/corn.nvim',
+  'icholy/lsplinks.nvim',
   'folke/neodev.nvim',
   {
     'folke/trouble.nvim',
@@ -107,9 +110,11 @@ return {
     end,
   },
   {
-    'creativenull/efmls-configs-nvim',
-    version = 'v1.x.x',
-    dependencies = { 'neovim/nvim-lspconfig' },
+    'nvimtools/none-ls.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvimtools/none-ls-extras.nvim',
+    },
   },
   'elentok/format-on-save.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
@@ -117,16 +122,6 @@ return {
   { 'LuaLS/lua-language-server', submodules = false },
   { 'j-hui/fidget.nvim',         tag = 'legacy' },
   'simrat39/rust-tools.nvim',
-  {
-    'ray-x/go.nvim',
-    dependencies = {
-      'ray-x/guihua.lua',
-      'neovim/nvim-lspconfig',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    ft = { 'go', 'gomod' },
-    build = ':lua require("go.install").update_all()',
-  },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
@@ -242,7 +237,6 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'antoinemadec/FixCursorHold.nvim',
       'haydenmeade/neotest-jest',
       'marilari88/neotest-vitest',
       'nvim-neotest/neotest-go',
@@ -259,7 +253,6 @@ return {
 
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
-  -- 'tommcdo/vim-fugitive-blame-ext',
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
   {
     '9seconds/repolink.nvim',

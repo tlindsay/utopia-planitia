@@ -59,6 +59,15 @@ ts.setup({
   indent = {
     enable = false,
   },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = '<C-Space>',
+      node_incremental = '<C-Space>',
+      scope_incremental = false,
+      node_decremental = '<bs>',
+    },
+  },
   playground = {
     enable = true,
     keybindings = {
@@ -75,9 +84,13 @@ ts.setup({
     },
   },
   textobjects = {
+    move = {
+      enable = true,
+      set_jumps = true,
+    },
     lsp_interop = {
       enable = true,
-      border = 'double',
+      border = 'rounded',
       peek_definition_code = {
         ['<leader>gF'] = '@function.outer',
         ['<leader>gC'] = '@class.outer',
@@ -87,12 +100,25 @@ ts.setup({
       enable = true,
       lookahead = true,
       keymaps = {
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ab'] = '@block.outer',
-        ['ib'] = '@block.inner',
-        ['ax'] = '@call.outer',
-        ['ix'] = '@call.inner',
+        ['a='] = { query = '@assignment.outer', desc = 'Select outer part of an assignment' },
+        ['i='] = { query = '@assignment.inner', desc = 'Select inner part of an assignment' },
+        ['l='] = { query = '@assignment.lhs', desc = 'Select left hand side of an assignment' },
+        ['r='] = { query = '@assignment.rhs', desc = 'Select right hand side of an assignment' },
+
+        ['af'] = { query = '@function.outer', desc = 'Select outer part of a function/method definition' },
+        ['if'] = { query = '@function.inner', desc = 'Select outer part of a function/method definition' },
+
+        ['ab'] = { query = '@block.outer', desc = 'Select outer part of a block' },
+        ['ib'] = { query = '@block.inner', desc = 'Select outer part of a block' },
+
+        ['ai'] = { query = '@conditional.outer', desc = 'Select outer part of a conditional' },
+        ['ii'] = { query = '@conditional.inner', desc = 'Select outer part of a conditional' },
+
+        ['ac'] = { query = '@call.outer', desc = 'Select outer part of a function call' },
+        ['ic'] = { query = '@call.inner', desc = 'Select outer part of a function call' },
+
+        ['ax'] = { query = '@statement.outer', desc = 'Select outer part of a statement' },
+        ['ix'] = { query = '@statement.inner', desc = 'Select outer part of a statement' },
       },
       include_surrounding_whitespace = false,
     },

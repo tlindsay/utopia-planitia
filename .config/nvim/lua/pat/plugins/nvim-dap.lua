@@ -72,12 +72,11 @@ end
 require('nvim-dap-virtual-text').setup()
 
 local dapgo = require('dap-go')
-dapgo.setup( --[[ {
-  delve = {
-    args = { '--log' },
-  },
-} ]]
-)
+dapgo.setup({
+  -- delve = {
+  --   -- args = { '--log' },
+  -- },
+})
 
 dap.adapters.chrome = {
   type = 'executable',

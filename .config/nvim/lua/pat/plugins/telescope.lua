@@ -32,6 +32,8 @@ require('telescope').setup({
         ['<C-n>'] = actions.cycle_history_next,
         ['<C-u>'] = false, -- Enable C-u to clear
         ['<C-l>'] = trouble.open_with_trouble,
+        ['<M-k>'] = actions.preview_scrolling_up,
+        ['<M-j>'] = actions.preview_scrolling_down,
       },
       n = {
         ['<C-p>'] = actions.cycle_history_prev,
@@ -40,9 +42,9 @@ require('telescope').setup({
     },
   },
   extensions = {
-    ['ui-select'] = {
-      themes.get_cursor(),
-    },
+    -- ['ui-select'] = {
+    --   themes.get_cursor(),
+    -- },
     ['emoji'] = {
       action = function(emoji)
         vim.fn.setreg('*', emoji.value)
@@ -111,7 +113,7 @@ local function get_files()
 end
 
 telescope.load_extension('fzf')
-telescope.load_extension('ui-select')
+-- telescope.load_extension('ui-select')
 telescope.load_extension('file_browser')
 telescope.load_extension('notify')
 telescope.load_extension('gh')

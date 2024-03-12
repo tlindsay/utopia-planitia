@@ -3,7 +3,7 @@
 -----------------------------------------------------------
 
 local tokyonight = require('tokyonight')
-local hl = R('local-highlight')
+local hl = require('local-highlight')
 
 local M = {}
 

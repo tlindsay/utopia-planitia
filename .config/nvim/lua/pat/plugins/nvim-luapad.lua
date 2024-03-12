@@ -1,5 +1,6 @@
 require('luapad').setup({
   context = {
+    P = P,
     vim = {
       api = vim.api,
       fn = vim.fn,
