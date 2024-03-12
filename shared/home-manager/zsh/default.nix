@@ -72,6 +72,21 @@
       autoload -Uz compinit && compinit
       autoload -Uz compaudit && compaudit
     '';
+    antidote.enable = true;
+    antidote.plugins = [
+      "jeffreytse/zsh-vi-mode"
+
+      "mdumitru/git-aliases"
+      "wfxr/forgit"
+
+      "Aloxaf/fzf-tab"
+      "zdharma/fast-syntax-highlighting"
+      "zsh-users/zsh-autosuggestions"
+      "zsh-users/zsh-completions"
+      "junegunn/fzf path:shell/key-bindings.zsh"
+      "pschmitt/emoji-fzf.zsh"
+      # "ohmyzsh/ohmyzsh path:plugins/dotenv"
+    ];
     completionInit = ''
       # Set up tab-completions
       compinit -i -C -d ~/.zcompdump*
@@ -95,21 +110,6 @@
       # switch group using `,` and `.`
       zstyle ':fzf-tab:*' switch-group ',' '.'
     '';
-    antidote.enable = true;
-    antidote.plugins = [
-      "jeffreytse/zsh-vi-mode"
-
-      "mdumitru/git-aliases"
-      "wfxr/forgit"
-
-      "Aloxaf/fzf-tab"
-      "zdharma/fast-syntax-highlighting"
-      "zsh-users/zsh-autosuggestions"
-      "zsh-users/zsh-completions"
-      "junegunn/fzf path:shell/key-bindings.zsh"
-      "pschmitt/emoji-fzf.zsh"
-      # "ohmyzsh/ohmyzsh path:plugins/dotenv"
-    ];
     initExtra = ''
       # Use nix-index for command-not-found
       source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
