@@ -21,7 +21,6 @@ in {
     secureSocket = true;
 
     baseIndex = 0;
-    # renumberWindows = "on"; # no HM option for this...
 
     mouse = true;
 
@@ -45,6 +44,9 @@ in {
       # Allow tmux to set the title of the terminal emulator
       set -g set-titles on
       set -g set-titles-string '#T #{session_alerts}'
+
+      # Automatically update tab numbers when re-arranging
+      set -g renumber-windows on
 
       # # Using `default-command $SHELL` with `default-shell /bin/sh` will cause new
       # # tmux windows to be spawned using
@@ -126,6 +128,9 @@ in {
       bind-key -n M-K if-shell "$is_vim" 'send-keys M-K' 'resize-pane -U 2'
       bind-key -n M-L if-shell "$is_vim" 'send-keys M-L' 'resize-pane -R 2'
 
+      bind-key -n PgUp if-shell "$is_vim" 'send-keys PgUp' 'copy-mode; send-keys -X halfpage-up'
+      bind-key -n PgDn if-shell "$is_vim" 'send-keys PgDn' 'copy-mode; send-keys -X halfpage-down'
+
       tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
       if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
           "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
@@ -148,7 +153,7 @@ in {
       bind b break-pane -d
 
       bind d kill-pane
-      bind x kill-window
+      bind X kill-window
       bind = setw synchronize-panes
 
       ### MOUSE/COPY MODE
