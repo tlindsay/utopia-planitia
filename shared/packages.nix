@@ -50,6 +50,12 @@ with pkgs; [
   statix
   alejandra
   air # live reload for go apps
+  ## TS/JS:
+  nodePackages_latest.typescript-language-server
+  nodePackages_latest.eslint
+  typescript
+  eslint_d
+  prettierd
 
   # Encryption and security tools
   age
@@ -83,6 +89,7 @@ with pkgs; [
   direnv
   du-dust
   figlet
+  nodePackages_latest.fkill-cli
   fx
   gh
   git
