@@ -21,7 +21,7 @@ continuation_prompt = "[ ](bold bright-black)"
 [character]
 success_symbol = "[](bold green)"
 error_symbol = "[](bold red)"
-vicmd_symbol = ""
+vimcmd_symbol = ""
 
 [directory]
 format = "[$path](bold cyan) "
@@ -42,9 +42,9 @@ disabled = true
 symbol = " "
 
 [battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
+full_symbol = "󰁹"
+charging_symbol = "󰂄"
+discharging_symbol = "󰂃"
 
 [conda]
 symbol = " "

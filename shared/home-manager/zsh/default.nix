@@ -84,8 +84,6 @@
       "zsh-users/zsh-autosuggestions"
       "zsh-users/zsh-completions"
       "junegunn/fzf path:shell/key-bindings.zsh"
-      "pschmitt/emoji-fzf.zsh"
-      # "ohmyzsh/ohmyzsh path:plugins/dotenv"
     ];
     completionInit = ''
       # Set up tab-completions
@@ -120,7 +118,6 @@
       bindkey '^P' up-line-or-search
       bindkey '^N' down-line-or-search
       bindkey '^X' clear-screen
-      bindkey '^B' emoji-fzf-zle
 
       # Set Cache Dir for dotenv plugin
       export ZSH_CACHE_DIR="$HOME/.local/cache"
@@ -162,7 +159,6 @@
       "
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
       export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always {} | head -500'"
-      export EMOJI_FZF_PREPEND_EMOJIS=1
 
       export FORGIT_FZF_DEFAULT_OPTS="
         --ansi
