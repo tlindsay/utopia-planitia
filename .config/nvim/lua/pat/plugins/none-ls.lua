@@ -3,7 +3,9 @@ local null = require('null-ls')
 null.setup({
   debug = true,
   sources = {
-    null.builtins.diagnostics.editorconfig_checker,
+    -- null.builtins.diagnostics.editorconfig_checker,
+
+    null.builtins.diagnostics.vacuum, -- OpenAPI linter
 
     -- Golang
     -- extra_args doesn't work with staticcheck
@@ -18,7 +20,10 @@ null.setup({
       },
     }),
     null.builtins.formatting.gofmt,
+    null.builtins.formatting.goimports,
     null.builtins.formatting.goimports_reviser,
+    null.builtins.code_actions.gomodifytags,
+    null.builtins.code_actions.impl,
 
     -- Nix
     null.builtins.formatting.alejandra,

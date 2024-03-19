@@ -10,13 +10,14 @@
 -- Add your language server below:
 local servers = {
   'bashls',
-  'pyright',
   'clangd',
   'cssls',
-  -- 'efm',
+  'gopls',
   'html',
+  'lua_ls',
   'gopls',
   'rust_analyzer',
+  'tsserver',
 }
 
 -- Define border chars for hover window
@@ -27,6 +28,7 @@ local border = 'rounded'
 local utils = require('pat.utils')
 local nvim_lsp = require('lspconfig')
 local lsp_links = require('lsplinks')
+local inlay_hints = require('inlay-hints')
 local corn = require('corn')
 local navic = require('nvim-navic')
 local navbuddy = require('nvim-navbuddy')
@@ -39,8 +41,14 @@ require('mason').setup({
 require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
-require('neodev').setup()
+require('neodev').setup({})
+require('neoconf').setup({})
 lsp_links.setup()
+inlay_hints.setup({
+  -- possible options are dynamic, eol, virtline and custom
+  renderer = 'inlay-hints/render/eol',
+  only_current_line = true,
+})
 
 corn.setup({
   border_style = border,
@@ -112,6 +120,9 @@ local function on_attach(client, bufnr)
   -- if client.server_capabilities.inlayHintProvider then
   --   vim.lsp.inlay_hint(bufnr, true)
   -- end
+  if vim.tbl_contains({ 'gopls', 'tsserver', 'lua_ls' }, client.name) then
+    inlay_hints.on_attach(client, bufnr)
+  end
 
   -- Attach Navic for breadcrumbs
   if client.server_capabilities.documentSymbolProvider then
@@ -363,23 +374,12 @@ require('mason-lspconfig').setup_handlers({
       handlers = handlers,
       on_attach = on_attach,
       capabilities = capabilities,
-      on_init = function(client)
-        local path = client.workspace_folders[1].name
-        if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-          client.config.settings = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            runtime = {
-              version = 'LuaJIT',
-            },
-            workspace = {
-              library = { vim.env.VIMRUNTIME },
-              checkThirdParty = false,
-            },
-          })
-        end
-      end,
+      settings = {
+        Lua = {
+          completion = { callSnippet = 'Replace' },
+          hint = { enable = true },
+        },
+      },
     })
   end,
 })
@@ -393,9 +393,8 @@ require('typescript').setup({
       'typescriptreact',
       'tsx',
     },
-    -- init_options = ts_utils.init_options,
     on_attach = function(client, bufnr)
-      -- Use efm-ls for formatting instead of builtin
+      -- Use none-ls for formatting instead of builtin
       client.server_capabilities.document_formatting = false
       client.server_capabilities.document_range_formatting = false
 
@@ -414,23 +413,3 @@ require('typescript').setup({
     end,
   },
 })
-
--- local function setup_rust_tools()
---   local tools = {
---     autoSetHints = true,
---     runnables = { use_telescope = true },
---     inlay_hints = { show_parameter_hints = true },
---     hover_actions = { auto_focus = true },
---   }
---   require('rust-tools').setup({
---     tools = tools,
---     server = {
---       on_attach = on_attach,
---       capabilities = capabilities,
---       flags = { debounce_text_changes = 150 },
---     },
---   })
---   require('rust-tools-debug').setup()
--- end
---
--- pcall(setup_rust_tools)

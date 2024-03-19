@@ -9,14 +9,10 @@ return {
   --     'rcarriga/nvim-notify',
   --   },
   -- },
-  {
-    'stevearc/dressing.nvim',
-  },
+  'stevearc/dressing.nvim',
 
   -- Pane Management
-  {
-    'mrjones2014/smart-splits.nvim',
-  },
+  'mrjones2014/smart-splits.nvim',
 
   -- File explorer
   {
@@ -99,6 +95,7 @@ return {
   'RaafatTurki/corn.nvim',
   'icholy/lsplinks.nvim',
   'folke/neodev.nvim',
+  'folke/neoconf.nvim',
   {
     'folke/trouble.nvim',
     dependencies = 'nvim-tree/nvim-web-devicons',
@@ -122,6 +119,7 @@ return {
   { 'LuaLS/lua-language-server', submodules = false },
   { 'j-hui/fidget.nvim',         tag = 'legacy' },
   'simrat39/rust-tools.nvim',
+  'simrat39/inlay-hints.nvim',
 
   -- Syntax Definitions
   'fladson/vim-kitty',
@@ -269,7 +267,7 @@ return {
       'MunifTanjim/nui.nvim',
     },
   },
-
+  'backdround/global-note.nvim',
   'chrisbra/unicode.vim',
 
   {
