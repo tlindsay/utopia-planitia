@@ -225,6 +225,22 @@
         "type": "github"
       }
     },
+    "homebrew-slumber": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709849437,
+        "narHash": "sha256-49EJsP5SFk72xc9K+RBm7SodLha27gvJJ508fC2o6S4=",
+        "owner": "LucasPickering",
+        "repo": "homebrew-tap",
+        "rev": "82c6b7619e3fa503755c6cdab47cb030f3928c41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LucasPickering",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "homebrew-tako8ki": {
       "flake": false,
       "locked": {
@@ -238,6 +254,22 @@
       "original": {
         "owner": "TaKO8Ki",
         "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
+    "homebrew-vacuum": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709223812,
+        "narHash": "sha256-O3LBU6Fi55Wk7B+0RV+YSLOoB+wRHHHYy+9x/+PHJCg=",
+        "owner": "daveshanley",
+        "repo": "homebrew-vacuum",
+        "rev": "c837e054800c7ad1c2323b9c3d68090669cf4fcf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "daveshanley",
+        "repo": "homebrew-vacuum",
         "type": "github"
       }
     },
@@ -351,7 +383,9 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "homebrew-infra": "homebrew-infra",
+        "homebrew-slumber": "homebrew-slumber",
         "homebrew-tako8ki": "homebrew-tako8ki",
+        "homebrew-vacuum": "homebrew-vacuum",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_4"
       }

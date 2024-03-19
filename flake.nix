@@ -34,6 +34,16 @@
       url = "github:TaKO8Ki/homebrew-tap";
       flake = false;
     };
+    # Slumber is a REST TUI
+    homebrew-slumber = {
+      url = "github:LucasPickering/homebrew-tap";
+      flake = false;
+    };
+    # Vacuum is an OpenAPI linter/toolkit
+    homebrew-vacuum = {
+      url = "github:daveshanley/homebrew-vacuum";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -131,6 +141,8 @@
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "infrahq/tap" = homebrew-infra;
                   "tako8ki/tap" = homebrew-tako8ki;
+                  "lucaspickering/tap" = homebrew-slumber;
+                  "daveshanley/vacuum" = homebrew-vacuum;
                 };
                 mutableTaps = true;
                 autoMigrate = true;

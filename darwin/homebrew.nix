@@ -6,6 +6,8 @@
       "fileicon"
       "infrahq/tap/infra"
       "tako8ki/tap/gobang"
+      "LucasPickering/tap/slumber"
+      "daveshanley/vacuum/vacuum"
     ];
     casks = [
       "qmk-toolbox"
