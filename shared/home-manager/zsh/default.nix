@@ -208,6 +208,8 @@
       alias yp="yadm push"
       alias yst="yadm status"
 
+      # eval "$(${pkgs.navi} widget zsh)"
+
       function cd() {
         builtin cd $@
         l
@@ -254,48 +256,10 @@
         ping -o "$host" && terminal-notifier -message "The internet is back!"
       }
 
-      function office() {
-        lights="6,8"
-
-        if [ "$1" = "up" ]; then
-          if [ "$2" != "" ]; then
-            echo "Increasing brightness $2%"
-            cmd="+$2%"
-          else
-            echo "Increasing brightness to 100%"
-            cmd="=100%"
-          fi
-        elif [ "$1" = "down" ]; then
-          if [ "$2" != "" ]; then
-            echo "Decreasing brightness $2%"
-            cmd="-$2%"
-          else
-            echo "Decreasing brightness 10%"
-            cmd="-10%"
-          fi
-        else
-          cmd="$1"
-        fi
-
-        hue lights $lights $cmd
-      }
-
       function randomSha() {
         local n = $1
         for i in `seq $n`; do od -vAn -N2 -tu2 < /dev/urandom | sha1sum; done
       }
-
-      function onsave() {
-         while true
-         do
-            eval "$1 &!"
-            trap "kill $! &> /dev/null; return;" SIGINT SIGTERM
-            # inotifywait -e modify -qq $2
-            watchman-wait $2
-            kill $! &> /dev/null
-         done
-      }
-
 
       # Use nvim if available
       if type nvim > /dev/null 2>&1; then
