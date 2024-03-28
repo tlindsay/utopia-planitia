@@ -48,6 +48,9 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
     # ghostty = {
     #   url = "git+ssh://git@github.com/mitchellh/ghostty";
     # };
