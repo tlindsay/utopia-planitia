@@ -8,6 +8,7 @@
       "tako8ki/tap/gobang"
       "LucasPickering/tap/slumber"
       "daveshanley/vacuum/vacuum"
+      "ynqa/tap/jnv"
     ];
     casks = [
       "qmk-toolbox"

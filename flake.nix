@@ -1,6 +1,18 @@
 {
   description = "Starter Configuration for NixOS and MacOS";
 
+  # nixConfig = {
+  #   extra-substituters = [
+  #     # "https://ghostty.cachix.org/"
+  #     "https://nix-community.cachix.org/"
+  #   ];
+  #
+  #   extra-trusted-public-keys = [
+  #     # "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+  #     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  #   ];
+  # };
+
   inputs = {
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -42,6 +54,11 @@
     # Vacuum is an OpenAPI linter/toolkit
     homebrew-vacuum = {
       url = "github:daveshanley/homebrew-vacuum";
+      flake = false;
+    };
+    # jnv is an interactive filter builder for jq
+    homebrew-jnv = {
+      url = "github:ynqa/homebrew-tap";
       flake = false;
     };
     disko = {
@@ -146,6 +163,7 @@
                   "tako8ki/tap" = homebrew-tako8ki;
                   "lucaspickering/tap" = homebrew-slumber;
                   "daveshanley/vacuum" = homebrew-vacuum;
+                  "ynqa/tap" = homebrew-jnv;
                 };
                 mutableTaps = true;
                 autoMigrate = true;

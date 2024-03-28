@@ -20,8 +20,10 @@ with pkgs; [
   home-manager
   llvmPackages_latest.llvm
   killall
+  moreutils
   mosh
   mprocs
+  navi # zsh cheatsheet auto substitutions!!!
   neofetch
   neovim
   pet # Shell snippet mgr
@@ -82,10 +84,12 @@ with pkgs; [
   (nerdfonts.override {fonts = ["FantasqueSansMono"];})
 
   # Still using asdf for tool versioning
+  mise
   asdf-vm
 
   # Text and terminal utilities
   diff-so-fancy
+  difftastic
   direnv
   du-dust
   figlet

@@ -17,6 +17,12 @@ in {
     ./tmux
   ];
 
+  programs.navi = {
+    enable = true;
+    enableZshIntegration = true;
+    package = pkgs.navi;
+  };
+
   programs.nushell = {
     enable = true;
   };
