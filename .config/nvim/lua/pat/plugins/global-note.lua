@@ -1,7 +1,7 @@
 local gn = require('global-note')
 local wk = require('which-key')
 
-local get_project_name = function()
+local function get_project_name()
   local result = vim.system({
     'git',
     'rev-parse',

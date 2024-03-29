@@ -18,10 +18,14 @@ null.setup({
         '-checks=inherit,ST1003,ST1016',
         './...',
       },
+      diagnostics_postprocess = function(d)
+        d.severity = d.code == 'ST1003' and vim.diagnostic.severity.HINT
+      end,
     }),
     null.builtins.formatting.gofmt,
     null.builtins.formatting.goimports,
-    null.builtins.formatting.goimports_reviser,
+    -- 3/21/24: Quit working for some reason? Not detecting missing pkgs even when manually invoked from shell
+    -- null.builtins.formatting.goimports_reviser,
     null.builtins.code_actions.gomodifytags,
     null.builtins.code_actions.impl,
 
@@ -59,4 +63,9 @@ null.setup({
       end,
     }),
   },
+})
+
+require('mason-null-ls').setup({
+  ensure_installed = nil,
+  automatic_installation = true,
 })

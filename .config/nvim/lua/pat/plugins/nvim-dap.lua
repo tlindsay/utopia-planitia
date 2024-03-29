@@ -1,8 +1,38 @@
 local wk = require('which-key')
 local dap = require('dap')
 local dapui = require('dapui')
-dapui.register_element('terminal')
+-- dapui.register_element('terminal')
 dapui.setup({
+  controls = {
+    element = 'repl',
+    enabled = true,
+    icons = {
+      disconnect = '',
+      pause = '',
+      play = '',
+      run_last = '',
+      step_back = '',
+      step_into = '',
+      step_out = '',
+      step_over = '',
+      terminate = '',
+    },
+  },
+  element_mappings = {},
+  expand_lines = true,
+  floating = {
+    border = 'single',
+    mappings = {
+      close = { 'q', '<Esc>' },
+    },
+  },
+  force_buffers = true,
+  icons = {
+    collapsed = '',
+    current_frame = '',
+    expanded = '',
+  },
+
   layouts = {
     {
       elements = {
@@ -46,6 +76,18 @@ dapui.setup({
       size = 10,
     },
   },
+  mappings = {
+    edit = 'e',
+    expand = { '<CR>', '<2-LeftMouse>' },
+    open = 'o',
+    remove = 'd',
+    repl = 'r',
+    toggle = 't',
+  },
+  render = {
+    indent = 1,
+    max_value_lines = 100,
+  },
 })
 local dapui_augroup = vim.api.nvim_create_augroup('dapui_ft_overrides', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
@@ -69,7 +111,7 @@ end
 --   dapui.close()
 -- end
 
-require('nvim-dap-virtual-text').setup()
+require('nvim-dap-virtual-text').setup({})
 
 local dapgo = require('dap-go')
 dapgo.setup({
@@ -125,6 +167,7 @@ dap.configurations.c = dap.configurations.cpp
 
 dap.configurations.typescriptreact = { -- change to typescript if needed
   {
+    name = 'Chrome',
     type = 'chrome',
     request = 'launch',
     program = '${file}',
@@ -138,6 +181,7 @@ dap.configurations.typescriptreact = { -- change to typescript if needed
 }
 dap.configurations.javascript = { -- change to typescript if needed
   {
+    name = 'Chrome',
     type = 'chrome',
     request = 'launch',
     cwd = vim.fn.getcwd(),

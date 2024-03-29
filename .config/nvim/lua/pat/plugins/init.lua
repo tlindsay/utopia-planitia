@@ -113,6 +113,14 @@ return {
       'nvimtools/none-ls-extras.nvim',
     },
   },
+  {
+    'jay-babu/mason-null-ls.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
+    dependencies = {
+      'williamboman/mason.nvim',
+      'nvimtools/none-ls.nvim',
+    },
+  },
   'elentok/format-on-save.nvim',
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
@@ -212,7 +220,13 @@ return {
     },
   },
   'leoluz/nvim-dap-go',
-  'rcarriga/nvim-dap-ui',
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
+    },
+  },
   'theHamsta/nvim-dap-virtual-text',
   'nvim-telescope/telescope-dap.nvim',
 
@@ -223,23 +237,25 @@ return {
     lazy = false,
   },
 
-  -- Luapad
+  -- Playgrounds
   'rafcamlet/nvim-luapad',
+  'jeniasaigak/goplay.nvim',
 
   -- Notifications
   'rcarriga/nvim-notify',
 
   -- Tests
-  {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'haydenmeade/neotest-jest',
-      'marilari88/neotest-vitest',
-      'nvim-neotest/neotest-go',
-    },
-  },
+  -- 3/21/24: Disabling for now. Don't use it much
+  -- {
+  --   'nvim-neotest/neotest',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'haydenmeade/neotest-jest',
+  --     'marilari88/neotest-vitest',
+  --     'nvim-neotest/neotest-go',
+  --   },
+  -- },
 
   -- Tpope
   'tpope/vim-abolish',

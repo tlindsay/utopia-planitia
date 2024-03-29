@@ -41,13 +41,34 @@ require('mason').setup({
 require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
-require('neodev').setup({})
+require('neodev').setup({
+  library = {
+    plugins = {
+      'nvim-dap-ui',
+    },
+    types = true,
+  },
+})
 require('neoconf').setup({})
 lsp_links.setup()
 inlay_hints.setup({
   -- possible options are dynamic, eol, virtline and custom
   renderer = 'inlay-hints/render/eol',
   only_current_line = true,
+})
+
+navbuddy.setup({
+  window = {
+    border = border,
+    sections = {
+      left = { size = '0%' },
+      mid = { size = '40%' },
+      right = { preview = 'always' },
+    },
+  },
+  source_buffer = {
+    follow_node = false,
+  },
 })
 
 corn.setup({
