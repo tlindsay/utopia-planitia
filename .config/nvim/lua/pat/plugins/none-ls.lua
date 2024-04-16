@@ -1,11 +1,15 @@
 local null = require('null-ls')
 
+local gotest = require('go.null_ls').gotest()
+local gotest_codeaction = require('go.null_ls').gotest_action()
+
 null.setup({
   debug = true,
   sources = {
     -- null.builtins.diagnostics.editorconfig_checker,
 
-    null.builtins.diagnostics.vacuum, -- OpenAPI linter
+    -- Try using yaml.openapi filetype - 04/02/2024
+    -- null.builtins.diagnostics.vacuum, -- OpenAPI linter
 
     -- Golang
     -- extra_args doesn't work with staticcheck
@@ -28,6 +32,9 @@ null.setup({
     -- null.builtins.formatting.goimports_reviser,
     null.builtins.code_actions.gomodifytags,
     null.builtins.code_actions.impl,
+
+    -- gotest,
+    gotest_codeaction,
 
     -- Nix
     null.builtins.formatting.alejandra,

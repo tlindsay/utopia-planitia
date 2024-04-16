@@ -9,6 +9,11 @@ local snippet_node = ls.snippet_node
 local rep = require('luasnip.extras').rep
 
 require('luasnip.loaders.from_vscode').lazy_load()
+local ls = require('go.utils').load_plugin('LuaSnip', 'luasnip')
+if ls then
+  require('snips.go')
+  require('snips.all')
+end
 
 wk.register({
   ['<C-y>'] = {

@@ -65,14 +65,14 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   -- Treesitter interface
-  { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate',       lazy = false },
+  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
   'andersevenrud/nvim_context_vt',
   'HiPhish/rainbow-delimiters.nvim',
-  { 'Wansmer/treesj',            dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
@@ -125,9 +125,20 @@ return {
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
-  { 'j-hui/fidget.nvim',         tag = 'legacy' },
+  { 'j-hui/fidget.nvim', tag = 'legacy' },
   'simrat39/rust-tools.nvim',
   'simrat39/inlay-hints.nvim',
+  {
+    'ray-x/go.nvim',
+    dependencies = { -- optional packages
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    event = { 'CmdlineEnter' },
+    ft = { 'go', 'gomod' },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
@@ -200,6 +211,13 @@ return {
     commit = '6420a73b340fdb1f842479cd7640dcca9ec6f5d1',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
+  {
+    'yutkat/git-rebase-auto-diff.nvim',
+    ft = { 'gitrebase' },
+    config = function()
+      require('git-rebase-auto-diff').setup()
+    end,
+  },
 
   -- git labels
   {
@@ -215,7 +233,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },

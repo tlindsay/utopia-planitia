@@ -50,6 +50,7 @@ require('neodev').setup({
   },
 })
 require('neoconf').setup({})
+
 lsp_links.setup()
 inlay_hints.setup({
   -- possible options are dynamic, eol, virtline and custom
@@ -61,7 +62,7 @@ navbuddy.setup({
   window = {
     border = border,
     sections = {
-      left = { size = '0%' },
+      -- left = { size = '0%' },
       mid = { size = '40%' },
       right = { preview = 'always' },
     },
@@ -94,11 +95,11 @@ vim.diagnostic.config({
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-capabilities.textDocument.completion.completionItem = vim.tbl_extend(
-  'force',
-  capabilities.textDocument.completion.completionItem,
-  {
+-- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+capabilities.textDocument.completion.completionItem =
+  vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
     documentationFormat = { 'markdown', 'plaintext' },
     snippetSupport = true,
     preselectSupport = true,
@@ -118,8 +119,7 @@ capabilities.textDocument.completion.completionItem = vim.tbl_extend(
     -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
     contextSupport = true,
     dynamicRegistration = true,
-  }
-)
+  })
 
 -- Autoformat on save
 require('format-on-save').setup({
@@ -143,6 +143,20 @@ local function on_attach(client, bufnr)
   -- end
   if vim.tbl_contains({ 'gopls', 'tsserver', 'lua_ls' }, client.name) then
     inlay_hints.on_attach(client, bufnr)
+  end
+
+  if client.name == 'gopls' then
+    wk.register({
+      ['<leader>'] = {
+        t = {
+          function()
+            require('go.gotests').fun_test()
+            require('go.alternate').switch(true, 'vsplit')
+          end,
+          'Create test for function under cursor',
+        },
+      },
+    })
   end
 
   -- Attach Navic for breadcrumbs
@@ -252,6 +266,61 @@ local handlers = {
     == CUSTOM SERVER CONFIGS
     ========================= ]]
 
+require('go').setup({
+  disable_defaults = true,
+  text_objects = true,
+  luasnip = false, -- setup in luasnip config
+  test_efm = true,
+  lsp_codelens = true,
+  textobjects = true,
+  dap_debug_vt = { enabled_commands = true, all_frames = true },
+  -- lsp_cfg = {
+  --   capabilities = capabilities,
+  -- },
+  lsp_on_attach = on_attach,
+  lsp_cfg = {
+    handlers = handlers,
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      gopls = {
+        experimentalPostfixCompletions = true,
+        analyses = {
+          useany = true,
+          unusedwrite = true,
+          unusedvariable = true,
+          -- fieldalignment = true,
+          shadow = true,
+        },
+        codelenses = {
+          generate = true,
+          gc_details = false,
+          regenerate_cgo = true,
+          tidy = true,
+          test = true,
+          upgrade_depdendency = true,
+          vendor = true,
+        },
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+        usePlaceholders = true,
+        completeUnimported = true,
+        linksInHover = true,
+
+        semanticTokens = true,
+        noSemanticTokens = true, -- disable semantic string tokens so we can use treesitter highlight injections
+      },
+    },
+  },
+})
+
 nvim_lsp.nixd.setup({
   handlers = handlers,
   on_attach = on_attach,
@@ -272,45 +341,52 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
-  ['gopls'] = function()
-    require('lspconfig').gopls.setup({
-      handlers = handlers,
-      on_attach = on_attach,
-      capabilities = capabilities,
-      settings = {
-        gopls = {
-          experimentalPostfixCompletions = true,
-          analyses = {
-            useany = true,
-            unusedwrite = true,
-            unusedvariable = true,
-            -- fieldalignment = true,
-            shadow = true,
-          },
-          codelenses = {
-            generate = true,
-            gc_details = false,
-            regenerate_cgo = true,
-            tidy = true,
-            upgrade_depdendency = true,
-            vendor = true,
-          },
-          hints = {
-            assignVariableTypes = true,
-            compositeLiteralFields = true,
-            compositeLiteralTypes = true,
-            constantValues = true,
-            functionTypeParameters = true,
-            parameterNames = true,
-            rangeVariableTypes = true,
-          },
-          usePlaceholders = true,
-          completeUnimported = true,
-          linksInHover = true,
-        },
-      },
-    })
-  end,
+  -- ['gotests'] = function()
+  --   local gotests = require('mason-registry').get_installed_
+  -- end,
+  -- ['gopls'] = function()
+  --   require('lspconfig').gopls.setup({
+  --     handlers = handlers,
+  --     on_attach = on_attach,
+  --     capabilities = capabilities,
+  --     settings = {
+  --       gopls = {
+  --         experimentalPostfixCompletions = true,
+  --         analyses = {
+  --           useany = true,
+  --           unusedwrite = true,
+  --           unusedvariable = true,
+  --           -- fieldalignment = true,
+  --           shadow = true,
+  --         },
+  --         codelenses = {
+  --           generate = true,
+  --           gc_details = false,
+  --           regenerate_cgo = true,
+  --           tidy = true,
+  --           test = true,
+  --           upgrade_depdendency = true,
+  --           vendor = true,
+  --         },
+  --         hints = {
+  --           assignVariableTypes = true,
+  --           compositeLiteralFields = true,
+  --           compositeLiteralTypes = true,
+  --           constantValues = true,
+  --           functionTypeParameters = true,
+  --           parameterNames = true,
+  --           rangeVariableTypes = true,
+  --         },
+  --         usePlaceholders = true,
+  --         completeUnimported = true,
+  --         linksInHover = true,
+  --
+  --         semanticTokens = true,
+  --         noSemanticTokens = true, -- disable semantic string tokens so we can use treesitter highlight injections
+  --       },
+  --     },
+  --   })
+  -- end,
   ['nil_ls'] = function()
     require('lspconfig').nil_ls.setup({
       handlers = handlers,
