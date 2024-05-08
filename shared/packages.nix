@@ -64,7 +64,7 @@ with pkgs; [
   age-plugin-yubikey
   gnupg
   libfido2
-  pinentry
+  pinentry-curses
   yubikey-manager
 
   # Cloud-related tools and SDKs

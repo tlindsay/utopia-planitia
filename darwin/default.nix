@@ -37,7 +37,7 @@ in {
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
 
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings.trusted-users = ["@admin" "${user}"];
 
     gc = {
