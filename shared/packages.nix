@@ -3,8 +3,10 @@ with pkgs; [
   # General packages for development and system management
   _1password
   act
+  amber # A code search-and-replace tool
   aspell
   aspellDicts.en
+  atac
   bash-completion
   bat
   bat-extras.batdiff
@@ -23,6 +25,7 @@ with pkgs; [
   moreutils
   mosh
   mprocs
+  mysql-shell
   navi # zsh cheatsheet auto substitutions!!!
   neofetch
   neovim
@@ -103,6 +106,7 @@ with pkgs; [
   hunspell
   iftop
   jq
+  jnv
   lazygit
   kitty
   ncurses

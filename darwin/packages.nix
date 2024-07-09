@@ -10,6 +10,5 @@ in
     imagemagick
     qemu
     reattach-to-user-namespace
-    spotify
     yadm
   ]

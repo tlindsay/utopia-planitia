@@ -129,6 +129,11 @@
 
       # Add go binaries to PATH
       export PATH="$PATH:$HOME/go/bin"
+
+      # Use 1Password ssh-agent if available
+      if [[ -S "/Users/${user}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
+        export SSH_AUTH_SOCK="/Users/${user}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+      fi
     '';
 
     loginExtra = ''
@@ -169,6 +174,9 @@
 
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
+      function zvm_config() {
+        ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+      }
       function zvm_after_init() {
         [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
         bindkey -M main '^R' fzf-history-widget
@@ -184,6 +192,7 @@
       alias ll="eza -l -F --git --group-directories-first --icons=auto"
       alias lll="ll --git -g --header -a"
       alias tree="eza --tree"
+      alias now="date --utc +%FT%TZ"
       alias rz="source ~/.zshrc && source ~/.zlogin && rehash"
       alias root='cd $(npm root)/..'
       alias forgit='alias | fzf -q forgit::'

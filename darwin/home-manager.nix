@@ -56,7 +56,6 @@ in {
         # services.ssh-agent.enable = true;
         programs = {
           home-manager = {enable = true;};
-          # bat = {};
           # bottom = {};
           # direnv = {};
           # eza = {};

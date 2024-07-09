@@ -57,10 +57,12 @@
       flake = false;
     };
     # jnv is an interactive filter builder for jq
-    homebrew-jnv = {
-      url = "github:ynqa/homebrew-tap";
-      flake = false;
-    };
+    # homebrew-dbui = {
+    #   url = "github:kenanbek/dbui";
+    #   flake = false;
+    # };
+    # nix-inspect is a ranger-like TUI for inspecting your nixos config and other arbitrary nix expressions.
+    nix-inspect.url = "github:bluskript/nix-inspect";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -134,6 +136,8 @@
         ];
         fastbook = with pkgs; [
           google-cloud-sdk
+          openapi-tui
+          tilt
         ];
       };
     in {
@@ -163,7 +167,7 @@
                   "tako8ki/tap" = homebrew-tako8ki;
                   "lucaspickering/tap" = homebrew-slumber;
                   "daveshanley/vacuum" = homebrew-vacuum;
-                  "ynqa/tap" = homebrew-jnv;
+                  # "kenanbek/dbui" = homebrew-dbui;
                 };
                 mutableTaps = true;
                 autoMigrate = true;

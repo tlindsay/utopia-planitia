@@ -8,6 +8,7 @@
   ...
 }: let
   agenix = inputs.agenix;
+  nix-inspect = inputs.nix-inspect;
   # ghostty = inputs.ghostty;
 in {
   imports = [
@@ -61,16 +62,14 @@ in {
   system.checks.verifyNixPath = false;
 
   # Load configuration that is shared across systems
-  environment.systemPackages = with pkgs;
+  environment.systemPackages =
     [
       agenix.packages."${pkgs.system}".default
+      nix-inspect.packages."${pkgs.system}".default
       # ghostty.packages."${pkgs.system}".ghostty
     ]
     ++ hostpkgs
     ++ (import ./packages.nix {inherit pkgs;});
-
-  # Enable fonts dir
-  fonts.fontDir.enable = true;
 
   security.pam.enableSudoTouchIdAuth = true;
   system = {
@@ -88,8 +87,8 @@ in {
         InitialKeyRepeat = 15;
 
         "com.apple.mouse.tapBehavior" = 1;
-        "com.apple.sound.beep.volume" = 0.0;
-        "com.apple.sound.beep.feedback" = 0;
+        "com.apple.sound.beep.volume" = 1.0;
+        "com.apple.sound.beep.feedback" = 1;
       };
 
       dock = {

@@ -8,9 +8,9 @@
       "tako8ki/tap/gobang"
       "LucasPickering/tap/slumber"
       "daveshanley/vacuum/vacuum"
-      "ynqa/tap/jnv"
     ];
     casks = [
+      "apparency"
       "qmk-toolbox"
       # # Development Tools
       # "1password"

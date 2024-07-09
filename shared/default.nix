@@ -20,7 +20,7 @@
             || pathExists (path + ("/" + n + "/default.nix")))
           (attrNames (readDir path)))
           ++ [
-            inputs.neovim-nightly-overlay.overlay
+            # inputs.neovim-nightly-overlay.overlay
           ];
   };
 }

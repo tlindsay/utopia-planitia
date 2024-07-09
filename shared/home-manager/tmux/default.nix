@@ -25,15 +25,24 @@ in {
     mouse = true;
 
     extraConfig = ''
-      # set-env -g TERMINFO_DIRS $HOME/.local/share/terminfo:${pkgs.ncurses}/share/terminfo:/Applications/Ghostty.app/Contents/Resources/terminfo:$TERMINFO_DIRS
+      # Fix undercurls, RGB, etc.
+      # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+      set-env -g TERMINFO_DIRS ${pkgs.ncurses}/share/terminfo:/Applications/Ghostty.app/Contents/Resources/terminfo:$TERMINFO_DIRS
+
       if-shell 'infocmp tmux-256color' { set default-terminal tmux-256color } { set default-terminal screen-256color }
-      # if-shell 'infocmp tmux-256color' { set default-terminal xterm-ghostty } { set default-terminal screen-256color }
 
       # Enable RGB (truecolor)
-      set -a terminal-features '*:RGB'
+      set -ga terminal-features '*:RGB'
 
       # Enable colored underlines (e.g. in Vim)
-      set -a terminal-features '*:usstyle'
+      set -ga terminal-features '*:usstyle'
+
+      # set -ga terminal-features '*ghostty*:hyperlinks'
+      # set -ga terminal-features '*ghostty*:overline'
+      # set -ga terminal-features '*ghostty*:RGB'
+      # set -ga terminal-features '*ghostty*:sixel'
+      # set -ga terminal-features '*ghostty*:strikethrough'
+      # set -ga terminal-features '*ghostty*:usstyle'
 
       # Use extended keys (CSI u)
       set extended-keys on
@@ -112,7 +121,7 @@ in {
       # Smart pane switching with awareness of Vim splits.
       # See: https://github.com/christoomey/vim-tmux-navigator
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf|gum|jnv)(diff)?$'"
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf|gum)(diff)?$'"
       bind-key -n C-h if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
       bind-key -n C-j if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
       bind-key -n C-k if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
@@ -193,9 +202,9 @@ in {
           set -g @prefix_highlight_fg 'pink'
           set -g @prefix_highlight_bg 'black'
           # set -g @prefix_highlight_empty_prompt '󰵟 '
+          set -g @prefix_highlight_copy_prompt ' '
           set -g @prefix_highlight_prefix_prompt '󰽀 '
-          # set -g @prefix_highlight_sync_prompt '󱍸 '
-          set -g @prefix_highlight_sync_prompt '󱎡 '
+          set -g @prefix_highlight_sync_prompt ' 󱎡 '
           set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
