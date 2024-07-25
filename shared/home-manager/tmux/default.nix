@@ -79,10 +79,10 @@ in {
       #############################
 
       # Vertical Separator Char: "▍"
-      set-option -g status-position top
       set -g status-fg black
       set -g status-bg brightmagenta
       set -g status-left "#[fg=black,bg=green,bold] #S "
+      set-option -g status-position bottom
       set -g status-left-length 100
       set -g status-right-length 140
       set -g status-right ""

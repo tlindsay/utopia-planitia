@@ -55,6 +55,7 @@ with pkgs; [
   statix
   alejandra
   air # live reload for go apps
+  gomacro # golang repl
   ## TS/JS:
   nodePackages_latest.typescript-language-server
   nodePackages_latest.eslint
@@ -75,6 +76,7 @@ with pkgs; [
   docker-buildx
   docker-credential-helpers
   docker-compose
+  fastly
   k9s
   kubectl
   kubernetes-helm

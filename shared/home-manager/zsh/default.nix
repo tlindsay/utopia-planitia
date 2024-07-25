@@ -59,6 +59,11 @@
       # asdf plugin specific configs
       . ~/.asdf/plugins/golang/set-env.zsh
       export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+
+      # zsh-vi-mode config func
+      function zvm_config() {
+        ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+      }
     '';
     initExtraBeforeCompInit = ''
       # asdf shell completions
@@ -72,19 +77,21 @@
       autoload -Uz compinit && compinit
       autoload -Uz compaudit && compaudit
     '';
-    antidote.enable = true;
-    antidote.plugins = [
-      "jeffreytse/zsh-vi-mode"
+    antidote = {
+      enable = true;
+      plugins = [
+        "jeffreytse/zsh-vi-mode"
 
-      "mdumitru/git-aliases"
-      "wfxr/forgit"
+        "mdumitru/git-aliases"
+        "wfxr/forgit"
 
-      "Aloxaf/fzf-tab"
-      "zdharma/fast-syntax-highlighting"
-      "zsh-users/zsh-autosuggestions"
-      "zsh-users/zsh-completions"
-      "junegunn/fzf path:shell/key-bindings.zsh"
-    ];
+        "Aloxaf/fzf-tab"
+        "zdharma/fast-syntax-highlighting"
+        "zsh-users/zsh-autosuggestions"
+        "zsh-users/zsh-completions"
+        "junegunn/fzf path:shell/key-bindings.zsh"
+      ];
+    };
     completionInit = ''
       # Set up tab-completions
       compinit -i -C -d ~/.zcompdump*
@@ -174,9 +181,6 @@
 
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
-      function zvm_config() {
-        ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-      }
       function zvm_after_init() {
         [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
         bindkey -M main '^R' fzf-history-widget
@@ -185,8 +189,6 @@
         bindkey -M visual '^R' fzf-history-widget
         bindkey -M vicmd '^R' fzf-history-widget
       }
-
-      # alias sed="echo 'Did you mean to use sad?\r\n'; sed"
 
       alias l="eza -1 -F --git --group-directories-first --icons=auto"
       alias ll="eza -l -F --git --group-directories-first --icons=auto"

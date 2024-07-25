@@ -37,6 +37,7 @@ in {
 
   # Enable home-manager
   home-manager = {
+    backupFileExtension = "nix.bak";
     useGlobalPkgs = true;
     useUserPackages = true;
     verbose = true;
@@ -47,12 +48,15 @@ in {
       ...
     }:
       {
-        home.enableNixpkgsReleaseCheck = false;
-        home.packages = pkgs.callPackage ./packages.nix {};
-        home.file = lib.mkMerge [sharedFiles additionalFiles];
-        fonts.fontconfig.enable = true;
+        home = {
+          enableNixpkgsReleaseCheck = true;
+          packages = pkgs.callPackage ./packages.nix {};
+          file = lib.mkMerge [sharedFiles additionalFiles];
 
-        home.stateVersion = "23.11";
+          stateVersion = "24.05";
+        };
+
+        fonts.fontconfig.enable = true;
         # services.ssh-agent.enable = true;
         programs = {
           home-manager = {enable = true;};
