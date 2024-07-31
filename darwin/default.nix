@@ -23,6 +23,7 @@ in {
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
+  services.tailscale.enable = lib.mkIf (hostname == "delta-flyer") true;
 
   networking.hostName = hostname;
 
