@@ -1,0 +1,97 @@
+##
+# UI behavior
+##
+mouse-hide-while-typing = true
+shell-integration = zsh
+shell-integration-features = cursor
+
+# custom-shader = ./crt.glsl
+custom-shader-animation = false
+
+##
+# Window settings
+##
+# Trying out new config with macOS on top/tmux on bottom
+# macos-non-native-fullscreen = true
+macos-non-native-fullscreen = visible-menu 
+macos-option-as-alt = true
+
+window-theme = dark
+
+window-decoration = true
+confirm-close-surface = false
+quit-after-last-window-closed = false
+
+window-padding-balance = true
+
+##
+# Keybinds
+##
+# keybind = ctrl+z=close_surface
+# keybind = ctrl+d=new_split:right
+
+##
+# Font settings
+##
+font-family = FantasqueSansM Nerd Font
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+
+font-size = 20
+
+font-feature = -liga
+font-feature = +calt
+
+font-thicken = true
+
+adjust-underline-position = 0
+adjust-underline-thickness = -50%
+
+# adjust-cell-height = -2
+# adjust-font-baseline = 2
+
+##
+# Codepoint overrides
+# U+29C6 ⧆
+# U+21E0 ⇠
+# U+21E1 ⇡
+# U+21E2 ⇢
+# U+21E3 ⇣
+##
+# font-codepoint-map = U+29C6=Apple Symbols
+font-codepoint-map = U+21E0-U+21E3,U+29C6=Menlo
+
+##
+# Color scheme
+# TokyoNight Moon
+##
+background = 222436
+foreground = c8d3f5
+selection-background = 3654a7
+selection-foreground = c8d3f5
+
+palette = 0=#1b1d2b
+palette = 8=#444a73
+# red
+palette = 1=#ff757f
+palette = 9=#ff757f
+# green
+palette = 2=#c3e88d
+palette = 10=#c3e88d
+# yellow
+palette = 3=#ffc777
+palette = 11=#ffc777
+# blue
+palette = 4=#82aaff
+palette = 12=#82aaff
+# purple
+palette = 5=#c099ff
+palette = 13=#c099ff
+# aqua
+palette = 6=#86e1fc
+palette = 14=#86e1fc
+# white
+palette = 7=#828bb8
+palette = 15=#c8d3f5

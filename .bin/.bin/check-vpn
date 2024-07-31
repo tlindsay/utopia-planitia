@@ -1,0 +1,3 @@
+#!/bin/bash
+
+scutil --nc status plindsay-us-central1 | sed -n 1p | grep -q 'Connected'

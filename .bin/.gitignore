@@ -1,0 +1,12 @@
+/config/hub
+/vim/plugins
+/tmux/plugins
+/tmux/resurrect
+*.local
+tmux/resurrect/*
+tmux/plugins/
+config/configstore
+config/yarn
+config/kitty
+config/thefuck
+!*.vim
