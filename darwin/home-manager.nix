@@ -56,6 +56,23 @@ in {
           stateVersion = "24.05";
         };
 
+        xdg = {
+          enable = true;
+          configFile = {
+            # Do not change key. "." is important for plugging all the files into ~/.config
+            "." = {
+              source = ../dotfiles/config;
+              recursive = true;
+              target = "./";
+            };
+            "bins" = {
+              source = ../dotfiles/bin;
+              recursive = true;
+              target = ".bin/";
+            };
+          };
+        };
+
         fonts.fontconfig.enable = true;
         # services.ssh-agent.enable = true;
         programs = {
