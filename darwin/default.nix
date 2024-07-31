@@ -2,6 +2,8 @@
   inputs,
   config,
   pkgs,
+  upkgs,
+  lib,
   hostpkgs,
   hostname,
   user,
@@ -38,7 +40,7 @@ in {
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
 
-    package = pkgs.nixVersions.latest;
+    package = upkgs.nixVersions.latest;
     settings.trusted-users = ["@admin" "${user}"];
 
     gc = {
@@ -69,7 +71,7 @@ in {
       # ghostty.packages."${pkgs.system}".ghostty
     ]
     ++ hostpkgs
-    ++ (import ./packages.nix {inherit pkgs;});
+    ++ (import ./packages.nix {inherit pkgs upkgs;});
 
   security.pam.enableSudoTouchIdAuth = true;
   system = {

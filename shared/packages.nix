@@ -1,5 +1,8 @@
-{pkgs}:
-with pkgs; [
+{
+  pkgs,
+  upkgs,
+}:
+with upkgs; [
   # General packages for development and system management
   _1password
   act
