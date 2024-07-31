@@ -1,13 +1,35 @@
 local neotest = require('neotest')
 local wk = require('which-key')
 
+local neotest_ns = vim.api.nvim_create_namespace('neotest')
+vim.diagnostic.config({
+  virtual_text = {
+    format = function(diagnostic)
+      local message = diagnostic.message:gsub('\n', ' '):gsub('\t', ' '):gsub('%s+', ' '):gsub('^%s+', '')
+      return message
+    end,
+  },
+}, neotest_ns)
+
 neotest.setup({
   adapters = {
-    require('neotest-vitest'),
+    -- require('neotest-vitest'),
     -- require('neotest-jest')({
     --   jestCommand = 'yarn test --watchAll=false',
     -- }),
-    require('neotest-go'),
+    -- require('neotest-go')({
+    --   experimental = { test_table = true },
+    -- }),
+    require('neotest-golang')({
+      dap_go_enabled = true,
+    }),
+  },
+  diagnostic = {
+    enabled = true,
+    severity = vim.log.levels.ERROR,
+  },
+  output = {
+    open_on_run = false,
   },
   icons = {
     passed = '󰗠 ',
@@ -36,28 +58,47 @@ vim.g.ultest_not_run_sign = ' '
 vim.g.ultest_pass_sign = ' '
 vim.g.ultest_fail_sign = ' '
 
+vim.cmd([[
+command! NeotestSummary lua require("neotest").summary.toggle()
+command! NeotestFile lua require("neotest").run.run(vim.fn.expand("%"))
+command! Neotest lua require("neotest").run.run(vim.fn.getcwd())
+command! NeotestNearest lua require("neotest").run.run()
+command! NeotestDebug lua require("neotest").run.run({ strategy = "dap" })
+command! NeotestAttach lua require("neotest").run.attach()
+command! NeotestOutput lua require("neotest").output.open()
+]])
+
+local function clearAndRun(...)
+  local args = { ... }
+  return function()
+    neotest.output_panel.clear()
+    neotest.run.run(unpack(args))
+  end
+end
+
 wk.register({
-  T = {
-    function()
-      neotest.output.open({ enter = false })
-    end,
-    'Display neotest output',
-  },
   ['<leader>'] = {
     t = {
       name = 'Tests',
       t = { neotest.summary.toggle, 'Open testing panel' },
+      o = { neotest.output_panel.toggle, 'Open output panel' },
       f = {
-        function()
-          neotest.run.run(vim.fn.expand('%'))
-        end,
+        clearAndRun(vim.fn.expand('%')),
         'Test file',
       },
-      n = { neotest.run.run, 'Run nearest test' },
+      n = { clearAndRun(), 'Run nearest test' },
+      d = {
+        clearAndRun({
+          strategy = 'dap',
+          env = {
+            ['RUN_CLICKHOUSE_TESTS'] = '1',
+            ['RUN_MYSQL_TESTS'] = '1',
+          },
+        }),
+        'Debug nearest test',
+      },
       a = { neotest.jump.next, 'Jump to the next test' },
       A = { neotest.jump.prev, 'Jump to the previous test' },
-      -- x = { '<cmd>UltestClear<CR>', 'Clear test results' },
-      -- j = { '<Plug>(ultest-summary-jump)', 'Jump to results window' },
     },
   },
 })

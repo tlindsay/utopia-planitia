@@ -15,9 +15,10 @@ local servers = {
   'gopls',
   'html',
   'lua_ls',
-  'gopls',
   'rust_analyzer',
   'tsserver',
+  'vacuum',
+  'yamlls',
 }
 
 -- Define border chars for hover window
@@ -91,6 +92,11 @@ corn.setup({
 
 vim.diagnostic.config({
   virtual_text = false,
+  -- underline = function(...)
+  --   P('UNDERLINE?')
+  --   P(...)
+  --   return false
+  -- end,
 })
 
 -- Add additional capabilities supported by nvim-cmp
@@ -130,33 +136,30 @@ require('format-on-save').setup({
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local function on_attach(client, bufnr)
-  local function buf_set_option(...)
-    vim.api.nvim_buf_set_option(bufnr, ...)
+  local function buf_set_option(name, value)
+    vim.api.nvim_set_option_value(name, value, { buf = bufnr })
   end
 
   if client.server_capabilities.codeLensProvider then
-    vim.lsp.codelens.refresh()
-  end
-
-  -- if client.server_capabilities.inlayHintProvider then
-  --   vim.lsp.inlay_hint(bufnr, true)
-  -- end
-  if vim.tbl_contains({ 'gopls', 'tsserver', 'lua_ls' }, client.name) then
-    inlay_hints.on_attach(client, bufnr)
-  end
-
-  if client.name == 'gopls' then
+    local lenses = vim.lsp.codelens.get(bufnr)
+    vim.lsp.codelens.display(lenses, bufnr, client.id)
     wk.register({
-      ['<leader>'] = {
-        t = {
-          function()
-            require('go.gotests').fun_test()
-            require('go.alternate').switch(true, 'vsplit')
-          end,
-          'Create test for function under cursor',
-        },
-      },
+      ['<leader><leader>a'] = { vim.lsp.codelens.run, 'Run codelens for current line' },
     })
+
+    local lens_group = vim.api.nvim_create_augroup('lsp_document_codelens', { clear = true })
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+      callback = function()
+        vim.lsp.codelens.refresh({ bufnr = bufnr })
+      end,
+      buffer = bufnr,
+      group = lens_group,
+    })
+  end
+
+  if vim.tbl_contains({ 'null-ls', 'gopls', 'tsserver', 'lua_ls' }, client.name) then
+    -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    inlay_hints.on_attach(client, bufnr)
   end
 
   -- Attach Navic for breadcrumbs
@@ -168,7 +171,8 @@ local function on_attach(client, bufnr)
   -- Highlighting references
   if client.server_capabilities.document_highlight then
     local hi_group = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
-    local buffer = vim.api.nvim_get_current_buf()
+    -- local buffer = vim.api.nvim_get_current_buf()
+    local buffer = bufnr
     vim.api.nvim_create_autocmd(
       'CursorHold',
       { callback = vim.lsp.buf.document_highlight, buffer = buffer, group = hi_group }
@@ -183,7 +187,7 @@ local function on_attach(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { buffer = bufnr, noremap = true, silent = true }
+  local opts = { buffer = bufnr, noremap = true, silent = true, mode = { 'n', 'v' } }
 
   wk.register({
     ['<space>'] = { vim.lsp.buf.hover, 'Show Inline Documentation' },
@@ -206,120 +210,78 @@ local function on_attach(client, bufnr)
       k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
       f = { vim.lsp.buf.code_action, 'Fix Diagnostic' },
       F = {
-        require('format-on-save').format,
+        function()
+          vim.lsp.buf.format({ async = true })
+        end,
         'Autoformat',
       },
+      -- F = {
+      --   require('format-on-save').format,
+      --   'Autoformat',
+      -- },
       l = { corn.scope_cycle, 'Toggle line/file diagnostics' },
-      s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Open symbol selector' },
       x = {
-        name = 'Trouble',
-        x = { '<cmd>TroubleToggle<cr>', 'Toggle Trouble' },
-        w = { '<cmd>Trouble workspace_diagnostics<cr>', 'Workspace Diagnostics' },
-        d = { '<cmd>Trouble document_diagnostics<cr>', 'Document Diagnostics' },
+        x = { '<cmd>Trouble diagnostics toggle<cr>', 'Toggle Trouble' },
+        w = { '<cmd>Trouble diagnostics open<cr>', 'Workspace Diagnostics' },
+        d = { '<cmd>Trouble diagnostics open filter.buf=0<cr>', 'Document Diagnostics' },
         q = { '<cmd>Trouble quickfix<cr>', 'Quickfix' },
         l = { '<cmd>Trouble loclist<cr>', 'Loclist' },
       },
+      s = {
+        '<cmd>Trouble symbols toggle<cr>',
+        'Symbol list',
+      },
     },
     g = {
-      D = {
-        function()
-          local params = vim.lsp.util.make_position_params()
-          local success, _ = pcall(
-            vim.lsp.buf_request,
-            0,
-            'textDocument/definition',
-            params,
-            function(err, result, ctx, config)
-              -- P({
-              --   err = err,
-              --   result = result,
-              --   ctx = ctx,
-              --   config = config,
-              -- })
-              if result and result[1] then
-                vim.cmd([[tabedit]])
-                local buf = vim.api.nvim_get_current_buf()
-                local offset_encoding = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
-                vim.lsp.util.jump_to_location(result[1], offset_encoding, true)
-                vim.api.nvim_command(buf .. 'bd')
-              end
-            end
-          )
-        end,
-        'Go to Definition in new tab',
+      ['<space>'] = { '<cmd>Trouble inspect toggle pinned=true focus=true<cr>', 'Open symbol inspector' },
+      d = { '<cmd>Trouble lsp_definitions<cr>', 'Go to Definition' },
+      D = { '<cmd>Trouble lsp_definitions open auto_jump=false<cr>', 'List Definitions in Trouble' },
+      i = { '<cmd>Trouble lsp_implementations<cr>', 'Go to Implementation' },
+      I = { '<cmd>Trouble lsp_implementations open auto_jump=false<cr>', 'List Implementations in Trouble' },
+      r = { '<cmd>Trouble lsp_references<cr>', 'List References in Trouble' },
+      R = { '<cmd>Trouble lsp_references open auto_jump=false<cr>', 'List References in Trouble' },
+      C = {
+        i = { '<cmd>Trouble lsp_incoming_calls<cr>', 'List call sites of the symbol under the cursor' },
+        o = {
+          '<cmd>Trouble lsp_outgoing_calls<cr>',
+          'List the items that are called by the symbol under the cursor',
+        },
       },
-      d = { vim.lsp.buf.definition, 'Go to Definition' },
-      i = { vim.lsp.buf.implementation, 'Go to Implementation' },
-      I = { '<cmd>vsp | lua vim.lsp.buf.implementation()<CR>', 'Split to Implementation' },
-      r = { vim.lsp.buf.references, 'List References' },
-      R = { '<cmd>Trouble lsp_references<cr>', 'List References in Trouble' },
       x = { lsp_links.gx, 'Open file or documentLink' },
     },
   }, opts)
+  -- wk.register(
+  --   {
+  --     ['<leader>f'] = { function() vim.lsp.buf.code_action({ range = "" }) end, "Fix Diagnostic" },
+  --     ['<leader>F'] = { function() vim.lsp.buf.format({ range = "" }) end, "Fix Diagnostic" },
+  --   },
+  --   { mode = 'v' }
+  -- )
 end
 
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+  ['textDocument/typeDefinition'] = vim.lsp.with(function(_, result, ctx, config)
+    local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
+
+    -- if not vim.islist(result) then
+    --   result = { result }
+    -- end
+
+    local items = vim.lsp.util.locations_to_items(result, client.offset_encoding)
+    P('type def: ', result[1])
+
+    if #result == 1 then
+      vim.lsp.util.preview_location(result[1], { border = border })
+    else
+      vim.ui.select(items, {}, P)
+    end
+  end, {}),
 }
 --[[=========================
     == CUSTOM SERVER CONFIGS
     ========================= ]]
-
-require('go').setup({
-  disable_defaults = true,
-  text_objects = true,
-  luasnip = false, -- setup in luasnip config
-  test_efm = true,
-  lsp_codelens = true,
-  textobjects = true,
-  dap_debug_vt = { enabled_commands = true, all_frames = true },
-  -- lsp_cfg = {
-  --   capabilities = capabilities,
-  -- },
-  lsp_on_attach = on_attach,
-  lsp_cfg = {
-    handlers = handlers,
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-      gopls = {
-        experimentalPostfixCompletions = true,
-        analyses = {
-          useany = true,
-          unusedwrite = true,
-          unusedvariable = true,
-          -- fieldalignment = true,
-          shadow = true,
-        },
-        codelenses = {
-          generate = true,
-          gc_details = false,
-          regenerate_cgo = true,
-          tidy = true,
-          test = true,
-          upgrade_depdendency = true,
-          vendor = true,
-        },
-        hints = {
-          assignVariableTypes = true,
-          compositeLiteralFields = true,
-          compositeLiteralTypes = true,
-          constantValues = true,
-          functionTypeParameters = true,
-          parameterNames = true,
-          rangeVariableTypes = true,
-        },
-        usePlaceholders = true,
-        completeUnimported = true,
-        linksInHover = true,
-
-        semanticTokens = true,
-        noSemanticTokens = true, -- disable semantic string tokens so we can use treesitter highlight injections
-      },
-    },
-  },
-})
 
 nvim_lsp.nixd.setup({
   handlers = handlers,
@@ -341,52 +303,51 @@ require('mason-lspconfig').setup_handlers({
       },
     })
   end,
-  -- ['gotests'] = function()
-  --   local gotests = require('mason-registry').get_installed_
-  -- end,
-  -- ['gopls'] = function()
-  --   require('lspconfig').gopls.setup({
-  --     handlers = handlers,
-  --     on_attach = on_attach,
-  --     capabilities = capabilities,
-  --     settings = {
-  --       gopls = {
-  --         experimentalPostfixCompletions = true,
-  --         analyses = {
-  --           useany = true,
-  --           unusedwrite = true,
-  --           unusedvariable = true,
-  --           -- fieldalignment = true,
-  --           shadow = true,
-  --         },
-  --         codelenses = {
-  --           generate = true,
-  --           gc_details = false,
-  --           regenerate_cgo = true,
-  --           tidy = true,
-  --           test = true,
-  --           upgrade_depdendency = true,
-  --           vendor = true,
-  --         },
-  --         hints = {
-  --           assignVariableTypes = true,
-  --           compositeLiteralFields = true,
-  --           compositeLiteralTypes = true,
-  --           constantValues = true,
-  --           functionTypeParameters = true,
-  --           parameterNames = true,
-  --           rangeVariableTypes = true,
-  --         },
-  --         usePlaceholders = true,
-  --         completeUnimported = true,
-  --         linksInHover = true,
-  --
-  --         semanticTokens = true,
-  --         noSemanticTokens = true, -- disable semantic string tokens so we can use treesitter highlight injections
-  --       },
-  --     },
-  --   })
-  -- end,
+  ['gopls'] = function()
+    require('lspconfig').gopls.setup({
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = {
+        gopls = {
+          experimentalPostfixCompletions = true,
+          analyses = {
+            useany = true,
+            unusedwrite = true,
+            unusedvariable = true,
+            -- fieldalignment = true,
+            shadow = true,
+          },
+          codelenses = {
+            generate = true,
+            gc_details = false,
+            regenerate_cgo = true,
+            tidy = true,
+            test = true,
+            upgrade_depdendency = true,
+            vendor = true,
+          },
+          hints = {
+            assignVariableTypes = true,
+            compositeLiteralFields = true,
+            compositeLiteralTypes = true,
+            constantValues = true,
+            functionTypeParameters = true,
+            parameterNames = true,
+            rangeVariableTypes = true,
+          },
+          usePlaceholders = true,
+          completeUnimported = true,
+          -- linksInHover = true,
+          linksInHover = 'gopls',
+          hoverKind = 'FullDocumentation',
+
+          semanticTokens = true,
+          noSemanticString = true, -- disable semantic string tokens so we can use treesitter highlight injections
+        },
+      },
+    })
+  end,
   ['nil_ls'] = function()
     require('lspconfig').nil_ls.setup({
       handlers = handlers,
@@ -452,17 +413,6 @@ require('mason-lspconfig').setup_handlers({
           '--all-features',
         },
       },
-    })
-  end,
-  ['ember'] = function()
-    require('lspconfig').ember.setup({
-      handlers = handlers,
-      on_attach = on_attach,
-      capabilities = capabilities,
-      flags = {
-        debounce_text_changes = 150,
-      },
-      root_dir = require('lspconfig.util').root_pattern('.ember-cli'),
     })
   end,
   ['lua_ls'] = function()

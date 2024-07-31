@@ -32,7 +32,10 @@ wk.register({
   ['<leader>H'] = { ':TSHighlightCapturesUnderCursor<CR>', 'Display TS Highlight' },
 })
 
-require('treesj').setup()
+require('treesj').setup({
+  check_syntax_error = false,
+  max_join_length = 1000,
+})
 
 vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup({

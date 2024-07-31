@@ -23,18 +23,26 @@ local excluded_filetypes = {
 }
 
 require('hlchunk').setup({
-  context = { enabled = false }, -- experimental!
   chunk = {
+    enable = true,
     exclude_filetypes = excluded_filetypes,
-    style = { { fg = colors.pink } },
+    textobject = 'iC',
+
+    style = {
+      { fg = colors.pink },
+    },
+    delay = 150,
+    duration = 100,
   },
   indent = {
+    enable = true,
     exclude_filetypes = excluded_filetypes,
     style = {
       { fg = colors.fg_gutter },
     },
   },
   line_num = {
+    enable = true,
     style = colors.comment,
   },
   blank = { enable = false },

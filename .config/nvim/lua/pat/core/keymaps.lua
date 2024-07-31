@@ -30,7 +30,7 @@ wk.register({
 wk.register({
   ['<A-S-Left>'] = { ':tabm -1<CR>', 'Move tab left' },
   ['<A-S-Right>'] = { ':tabm +1<CR>', 'Move tab right' },
-  ['<C-w>='] = { fns.scrollbindPanes, 'Sync cursor line for open panes' },
+  -- ['<C-w>='] = { fns.scrollbindPanes, 'Sync cursor line for open panes' },
   ['<leader>'] = {
     ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
     ['rv'] = { _G.reload_config, 'Reload Vim config' },
@@ -127,4 +127,3 @@ map('n', '&', ':Telescope grep_string<CR>')
 -- Terminal mappings
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
 map('t', '<Esc>', '<C-\\><C-n>') -- exit
-

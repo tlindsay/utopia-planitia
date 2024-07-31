@@ -1,11 +1,19 @@
-local cmd = vim.cmd
-
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
 
 -- Remove whitespace on save
-cmd([[au BufWritePre * :%s/\s\+$//e]])
+vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
+
+-- local focusGroup = vim.api.nvim_create_augroup('PatFocusEvents', { clear = true })
+-- vim.api.nvim_create_autocmd('FocusLost', {
+--   command = 'set norelativenumber',
+--   group = focusGroup,
+-- })
+-- vim.api.nvim_create_autocmd('FocusGained', {
+--   command = 'set relativenumber',
+--   group = focusGroup,
+-- })
 
 local yankGroup = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -54,19 +62,27 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- -- 2 spaces for selected filetypes
--- cmd [[
+-- vim.cmd [[
 --   autocmd FileType xml,html,xhtml,css,scss,json,javascript,javascriptreact,typescript,typescriptreact,lua,yaml setlocal shiftwidth=2 tabstop=2
 -- ]]
 -- -- 8 spaces for golang
--- cmd [[
+-- vim.cmd [[
 --   autocmd FileType go setlocal shiftwidth=8 tabstop=8
 -- ]]
 
 -- easy exits
 vim.api.nvim_create_autocmd('FileType', {
   desc = 'Easy exits',
-  pattern = 'help,list,fugitiveblame,tsplayground,option-window',
-  command = 'nmap <buffer> q :q<CR>',
+  callback = function(evt)
+    local filetypes = { 'list', 'fugitiveblame', 'tsplayground', 'option-window' }
+    local buftypes = { 'help' }
+    local bt = vim.api.nvim_get_option_value('buftype', { buf = evt.buf })
+    local ft = vim.api.nvim_get_option_value('filetype', { buf = evt.buf })
+
+    if vim.list_contains(filetypes, ft) or vim.list_contains(buftypes, bt) then
+      vim.cmd([[ nmap <buffer> q :q<CR> ]])
+    end
+  end,
 })
 
 -----------------------------------------------------------

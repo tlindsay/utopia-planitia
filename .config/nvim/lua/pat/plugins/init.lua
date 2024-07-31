@@ -40,7 +40,7 @@ return {
   },
 
   -- Indentation Guides
-  'shellRaining/hlchunk.nvim',
+  { 'shellRaining/hlchunk.nvim', dev = true },
 
   -- Which Key
   'folke/which-key.nvim',
@@ -92,7 +92,7 @@ return {
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  'RaafatTurki/corn.nvim',
+  { 'RaafatTurki/corn.nvim', dev = true },
   'icholy/lsplinks.nvim',
   'folke/neodev.nvim',
   'folke/neoconf.nvim',
@@ -128,20 +128,22 @@ return {
   { 'j-hui/fidget.nvim', tag = 'legacy' },
   'simrat39/rust-tools.nvim',
   'simrat39/inlay-hints.nvim',
-  {
-    'ray-x/go.nvim',
-    dependencies = { -- optional packages
-      'ray-x/guihua.lua',
-      'neovim/nvim-lspconfig',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    event = { 'CmdlineEnter' },
-    ft = { 'go', 'gomod' },
-    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
-  },
+  { 'tlindsay/go-gently.nvim', dev = true },
+  -- {
+  --   'ray-x/go.nvim',
+  --   dependencies = { -- optional packages
+  --     'ray-x/guihua.lua',
+  --     'neovim/nvim-lspconfig',
+  --     'nvim-treesitter/nvim-treesitter',
+  --   },
+  --   event = { 'CmdlineEnter' },
+  --   ft = { 'go', 'gomod' },
+  --   build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  -- },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
+  'direnv/direnv.vim',
 
   -- Autocomplete
   {
@@ -177,7 +179,8 @@ return {
   -- Bufferline
   {
     'akinsho/bufferline.nvim',
-    version = '*',
+    branch = 'main',
+    -- version = '*',
     dependencies = 'nvim-tree/nvim-web-devicons',
   },
 
@@ -263,17 +266,17 @@ return {
   'rcarriga/nvim-notify',
 
   -- Tests
-  -- 3/21/24: Disabling for now. Don't use it much
-  -- {
-  --   'nvim-neotest/neotest',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'nvim-treesitter/nvim-treesitter',
-  --     'haydenmeade/neotest-jest',
-  --     'marilari88/neotest-vitest',
-  --     'nvim-neotest/neotest-go',
-  --   },
-  -- },
+  {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'haydenmeade/neotest-jest',
+      'marilari88/neotest-vitest',
+      -- 'nvim-neotest/neotest-go',
+      'fredrikaverpil/neotest-golang',
+    },
+  },
 
   -- Tpope
   'tpope/vim-abolish',
@@ -302,7 +305,6 @@ return {
     },
   },
   'backdround/global-note.nvim',
-  'chrisbra/unicode.vim',
 
   {
     'camspiers/luarocks',

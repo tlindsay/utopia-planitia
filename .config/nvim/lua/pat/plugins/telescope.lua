@@ -1,7 +1,7 @@
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 local builtins = require('telescope.builtin')
-local trouble = require('trouble.providers.telescope')
+local trouble = require('trouble.sources.telescope')
 local themes = require('telescope.themes')
 local wk = require('which-key')
 
@@ -11,8 +11,8 @@ function M.edit_neovim()
   builtins.find_files({
     prompt_title = '~ dotfiles ~',
     shorten_path = false,
-    find_command = { 'yadm', 'list' },
-    cwd = '~/',
+    find_command = { 'fd', '--extension', 'lua' },
+    cwd = '~/.config/nvim',
 
     layout_strategy = 'horizontal',
     layout_config = {
@@ -31,7 +31,7 @@ require('telescope').setup({
         ['<C-p>'] = actions.cycle_history_prev,
         ['<C-n>'] = actions.cycle_history_next,
         ['<C-u>'] = false, -- Enable C-u to clear
-        ['<C-l>'] = trouble.open_with_trouble,
+        ['<C-l>'] = trouble.open,
         ['<M-k>'] = actions.preview_scrolling_up,
         ['<M-j>'] = actions.preview_scrolling_down,
       },
@@ -65,31 +65,31 @@ require('telescope').setup({
     ['command_palette'] = {
       {
         'Help',
-        { 'tips',            ':help tips' },
-        { 'cheatsheet',      ':help index' },
-        { 'tutorial',        ':help tutor' },
-        { 'summary',         ':help summary' },
+        { 'tips', ':help tips' },
+        { 'cheatsheet', ':help index' },
+        { 'tutorial', ':help tutor' },
+        { 'summary', ':help summary' },
         { 'quick reference', ':help quickref' },
         { 'search help(F1)', ":lua require('telescope.builtin').help_tags()", 1 },
       },
       {
         'Vim',
-        { 'reload vimrc',              ':source $MYVIMRC' },
-        { 'check health',              ':checkhealth' },
-        { 'jumps (Alt-j)',             ":lua require('telescope.builtin').jumplist()" },
-        { 'commands',                  ":lua require('telescope.builtin').commands()" },
-        { 'command history',           ":lua require('telescope.builtin').command_history()" },
-        { 'registers (A-e)',           ":lua require('telescope.builtin').registers()" },
-        { 'colorshceme',               ":lua require('telescope.builtin').colorscheme()",    1 },
-        { 'vim options',               ":lua require('telescope.builtin').vim_options()" },
-        { 'keymaps',                   ":lua require('telescope.builtin').keymaps()" },
-        { 'buffers',                   ':Telescope buffers' },
-        { 'search history (C-h)',      ":lua require('telescope.builtin').search_history()" },
-        { 'paste mode',                ':set paste!' },
-        { 'cursor line',               ':set cursorline!' },
-        { 'cursor column',             ':set cursorcolumn!' },
-        { 'spell checker',             ':set spell!' },
-        { 'relative number',           ':set relativenumber!' },
+        { 'reload vimrc', ':source $MYVIMRC' },
+        { 'check health', ':checkhealth' },
+        { 'jumps (Alt-j)', ":lua require('telescope.builtin').jumplist()" },
+        { 'commands', ":lua require('telescope.builtin').commands()" },
+        { 'command history', ":lua require('telescope.builtin').command_history()" },
+        { 'registers (A-e)', ":lua require('telescope.builtin').registers()" },
+        { 'colorscheme', ":lua require('telescope.builtin').colorscheme()", 1 },
+        { 'vim options', ":lua require('telescope.builtin').vim_options()" },
+        { 'keymaps', ":lua require('telescope.builtin').keymaps()" },
+        { 'buffers', ':Telescope buffers' },
+        { 'search history (C-h)', ":lua require('telescope.builtin').search_history()" },
+        { 'paste mode', ':set paste!' },
+        { 'cursor line', ':set cursorline!' },
+        { 'cursor column', ':set cursorcolumn!' },
+        { 'spell checker', ':set spell!' },
+        { 'relative number', ':set relativenumber!' },
         { 'search highlighting (F12)', ':set hlsearch!' },
       },
     },
@@ -97,10 +97,9 @@ require('telescope').setup({
 })
 
 local function get_files()
-  local dotfiles_repo = vim.fn.glob('$HOME/.config')
+  local dotfiles_repo = vim.fn.glob('$HOME/.config/nvim')
   local cwd = vim.fn.getcwd()
   local in_dotfiles_repo = cwd == dotfiles_repo
-  ---@diagnostic disable-next-line: param-type-mismatch
   local in_dotfiles_subdir = vim.tbl_contains(vim.fn.globpath(dotfiles_repo, '*', false, true), cwd)
   local in_git_repo = vim.fn.systemlist('git rev-parse --is-inside-work-tree')[1] == 'true'
   if in_git_repo then

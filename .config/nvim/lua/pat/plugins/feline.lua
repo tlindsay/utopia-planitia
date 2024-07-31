@@ -156,28 +156,28 @@ component.diagnos = {
     provider = 'diagnostic_errors',
     -- icon = ' ',
     icon = utils:get_diagnostic_icon('error'),
-    hl = { fg = colors.red },
+    hl = { fg = colors.error },
     left_sep = '  ',
   },
   warn = {
     provider = 'diagnostic_warnings',
     -- icon = ' ',
     icon = utils:get_diagnostic_icon('warn'),
-    hl = { fg = colors.yellow },
+    hl = { fg = colors.warning },
     left_sep = ' ',
   },
   info = {
     provider = 'diagnostic_info',
     -- icon = ' ',
     icon = utils:get_diagnostic_icon('info'),
-    hl = { fg = colors.green },
+    hl = { fg = colors.info },
     left_sep = ' ',
   },
   hint = {
     provider = 'diagnostic_hints',
     -- icon = ' ',
     icon = utils:get_diagnostic_icon('hint'),
-    hl = { fg = colors.cyan },
+    hl = { fg = colors.hint },
     left_sep = ' ',
   },
 }
@@ -328,11 +328,8 @@ require('feline').setup({
 local wcomps = {
   active_file_info = {
     provider = function(comp)
-      local opts = vim.tbl_extend(
-        'force',
-        component.file.info.provider.opts,
-        { colored_icon = true, type = 'unique-short' }
-      )
+      local opts =
+        vim.tbl_extend('force', component.file.info.provider.opts, { colored_icon = true, type = 'unique-short' })
       local isBound = require('pat.utils').getVarWithDefault('t', 0, 'is_scroll_bound', false)
       local file_info, icon = require('feline.providers.file').file_info(comp, opts)
       return file_info, isBound and '󱈖 ' or icon
@@ -395,7 +392,11 @@ require('feline').winbar.setup({
       '^alpha$',
       '^outline$',
       '^guihua$',
+      '^trouble$',
       '^neotest.*$',
+    },
+    buftypes = {
+      '^nofile$',
     },
   },
 })
