@@ -2,6 +2,8 @@
   inputs,
   config,
   pkgs,
+  upkgs,
+  lib,
   hostpkgs,
   hostname,
   user,
@@ -69,7 +71,7 @@ in {
       # ghostty.packages."${pkgs.system}".ghostty
     ]
     ++ hostpkgs
-    ++ (import ./packages.nix {inherit pkgs;});
+    ++ (import ./packages.nix {inherit pkgs upkgs;});
 
   security.pam.enableSudoTouchIdAuth = true;
   system = {

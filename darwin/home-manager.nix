@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  upkgs,
   inputs,
   lib,
   user,
@@ -50,7 +51,7 @@ in {
       {
         home = {
           enableNixpkgsReleaseCheck = true;
-          packages = pkgs.callPackage ./packages.nix {};
+          packages = pkgs.callPackage ./packages.nix {inherit upkgs;};
           file = lib.mkMerge [sharedFiles additionalFiles];
 
           stateVersion = "24.05";
@@ -98,7 +99,7 @@ in {
         };
       }
       // import ../shared/home-manager/default.nix {
-        inherit config inputs pkgs lib user;
+        inherit config inputs pkgs upkgs lib user;
       };
   };
 

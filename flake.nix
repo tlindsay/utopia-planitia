@@ -14,8 +14,8 @@
   # };
 
   inputs = {
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -99,42 +99,52 @@
         nixpkgs.lib.genAttrs darwinSystems (system: f system);
       forAllSystems = f:
         nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) (system: f system);
-      devShell = system: let
-        pkgs = import nixpkgs {
+      pkgs = system:
+        import nixpkgs {
           system = "${system}";
-          config.allowUnfree = true;
+          config = {
+            allowUnfree = true;
+            allowImpure = true;
+          };
         };
-        # pkgs = nixpkgs.legacyPackages.${system};
+      upkgs = system:
+        import nixpkgs-unstable {
+          system = "${system}";
+          config = {
+            allowUnfree = true;
+            allowImpure = true;
+          };
+        };
+      devShell = system: let
+        p = pkgs system;
       in {
-        default = with pkgs;
+        default = with p;
           mkShell {
-            nativeBuildInputs = with pkgs; [
+            nativeBuildInputs = with p; [
               bashInteractive
               neovim
               git
               age
               age-plugin-yubikey
             ];
-            shellHook = with pkgs; ''
+            shellHook = ''
               export EDITOR=nvim
             '';
           };
       };
       hostpkgs = system: let
-        # pkgs = nixpkgs.legacyPackages.${system};
-        pkgs = import nixpkgs {
-          system = system;
-          config.allowUnfree = true;
-        };
+        p = pkgs system;
+        u = upkgs system;
       in {
-        delta-flyer = with pkgs; [
-          # super-slicer-beta
+        delta-flyer = with u; [
           arduino-cli
           avrdude
+          esphome
           esptool
+          mosquitto
           openscad
         ];
-        fastbook = with pkgs; [
+        fastbook = with p; [
           google-cloud-sdk
           openapi-tui
           tilt
@@ -149,6 +159,8 @@
             inherit inputs;
             user = conf.user;
             hostpkgs = (hostpkgs conf.system).${hn};
+            pkgs = pkgs conf.system;
+            upkgs = upkgs conf.system;
             hostname = hn;
           };
           modules = [

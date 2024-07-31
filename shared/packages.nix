@@ -1,4 +1,7 @@
-{pkgs}:
+{
+  pkgs,
+  upkgs,
+}:
 with pkgs; [
   # General packages for development and system management
   _1password
@@ -28,7 +31,7 @@ with pkgs; [
   mysql-shell
   navi # zsh cheatsheet auto substitutions!!!
   neofetch
-  neovim
+  upkgs.neovim
   pet # Shell snippet mgr
   qmk
   sqlite

@@ -1,6 +1,9 @@
-{pkgs}:
+{
+  pkgs,
+  upkgs,
+}:
 with pkgs; let
-  shared-packages = import ../shared/packages.nix {inherit pkgs;};
+  shared-packages = import ../shared/packages.nix {inherit pkgs upkgs;};
 in
   shared-packages
   ++ [
@@ -8,6 +11,7 @@ in
     lima-bin
     dockutil
     imagemagick
+    monitorcontrol
     qemu
     reattach-to-user-namespace
     yadm
