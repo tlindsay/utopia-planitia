@@ -1,0 +1,5 @@
+set mouse true
+theme --name classic --component All.ActiveViewSelectedRow --bgcolor Black --fgcolor Green
+theme --name classic --component MainView.NormalView --fgcolor Black --bgcolor Blue
+theme --name classic --component MainView.ActiveView --fgcolor Green --bgcolor Black
+set theme classic

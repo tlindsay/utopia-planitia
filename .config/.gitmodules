@@ -1,0 +1,6 @@
+[submodule ".config/icons/kitty-icon"]
+	path = .config/icons/kitty-icon
+	url = https://github.com/k0nserv/kitty-icon
+[submodule ".config/icons/whiskers"]
+	path = .config/icons/whiskers
+	url = https://github.com/igrmk/whiskers
