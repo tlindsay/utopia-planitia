@@ -1,2 +1,0 @@
-#!/usr/bin/env ruby
-puts Array.new(6) { Array.new(4){ rand(1..6) }.max(3).sum }

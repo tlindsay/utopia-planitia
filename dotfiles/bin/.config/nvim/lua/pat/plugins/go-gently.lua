@@ -1,1 +1,0 @@
-require('go-gently').setup()
