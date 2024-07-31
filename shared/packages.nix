@@ -22,6 +22,7 @@ with upkgs; [
   coreutils
   eza
   fzf
+  go-task
   home-manager
   llvmPackages_latest.llvm
   killall
@@ -42,7 +43,6 @@ with upkgs; [
 
   # Lang specific runtimes
   go
-  tinygo
   lua
   nodePackages.nodejs
   nodePackages.yarn
