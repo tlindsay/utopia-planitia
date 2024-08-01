@@ -43,7 +43,6 @@ with pkgs; [
 
   # Lang specific runtimes
   go
-  tinygo
   lua
   nodePackages.nodejs
   nodePackages.yarn
