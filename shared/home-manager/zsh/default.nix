@@ -89,7 +89,6 @@
         "zdharma/fast-syntax-highlighting"
         "zsh-users/zsh-autosuggestions"
         "zsh-users/zsh-completions"
-        "junegunn/fzf path:shell/key-bindings.zsh"
       ];
     };
     completionInit = ''
@@ -98,6 +97,7 @@
       # set up app-specific completions
       eval "$(op completion zsh)"; compdef _op op
       eval "$(kubectl completion zsh)"; compdef _kubectl kubectl
+      eval "$(atuin gen-completions --shell zsh); compdef _atuin atuin"
 
       # Arrow key menu for completions
       zstyle ':completion:*' menu select
@@ -182,12 +182,7 @@
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
       function zvm_after_init() {
-        [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-        bindkey -M main '^R' fzf-history-widget
-      }
-      function zvm_after_lazy_keybindings() {
-        bindkey -M visual '^R' fzf-history-widget
-        bindkey -M vicmd '^R' fzf-history-widget
+        bindkey -M main '^R' atuin-search
       }
 
       alias l="eza -1 -F --git --group-directories-first --icons=auto"

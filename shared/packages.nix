@@ -10,6 +10,7 @@ with pkgs; [
   aspell
   aspellDicts.en
   atac
+  upkgs.atuin
   bash-completion
   bat
   bat-extras.batdiff

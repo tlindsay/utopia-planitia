@@ -17,6 +17,16 @@ in {
     #   # ./nvim
     ./tmux
   ];
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    package = upkgs.atuin;
+    settings = {
+      auto_sync = true;
+      sync_frequency = "5m";
+      sync_address = "https://atuin.ds1.federation:8888";
+    };
+  };
 
   programs.bat = {
     enable = true;
