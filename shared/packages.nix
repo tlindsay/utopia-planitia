@@ -36,7 +36,7 @@ with pkgs; [
   pet # Shell snippet mgr
   qmk
   sqlite
-  tailscale
+  upkgs.tailscale
   usql
   wget
   xh # better curl https://github.com/ducaale/xh

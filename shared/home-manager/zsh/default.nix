@@ -98,6 +98,7 @@
       eval "$(op completion zsh)"; compdef _op op
       eval "$(kubectl completion zsh)"; compdef _kubectl kubectl
       eval "$(atuin gen-completions --shell zsh); compdef _atuin atuin"
+      eval "$(tailscale completion zsh); compdef _tailscale tailscale"
 
       # Arrow key menu for completions
       zstyle ':completion:*' menu select

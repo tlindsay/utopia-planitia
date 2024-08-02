@@ -21,11 +21,30 @@ in {
     agenix.darwinModules.default
   ];
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  services.tailscale.enable = true;
+  services = {
+    # Auto upgrade nix package and the daemon service.
+    nix-daemon.enable = true;
+    tailscale = {
+      enable = true;
+      package = upkgs.tailscale;
+    };
+  };
 
-  networking.hostName = hostname;
+  networking = {
+    hostName = hostname;
+    knownNetworkServices = ["Wi-Fi" "Thunderbolt Ethernet Slot 0"];
+    dns = [
+      # Tailscale
+      "100.100.100.100"
+      # NextDNS
+      "45.90.28.65"
+      "45.90.30.65"
+      "2a07:a8c0::9c:b526"
+      "2a07:a8c1::9c:b526"
+      # Fallback
+      "9.9.9.9"
+    ];
+  };
 
   # Setup user, packages, programs
   nix = {
