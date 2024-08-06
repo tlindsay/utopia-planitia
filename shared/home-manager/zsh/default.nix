@@ -89,6 +89,7 @@
         "zdharma/fast-syntax-highlighting"
         "zsh-users/zsh-autosuggestions"
         "zsh-users/zsh-completions"
+        "junegunn/fzf path:shell/key-bindings.zsh"
       ];
     };
     completionInit = ''
