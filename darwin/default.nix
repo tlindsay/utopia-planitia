@@ -101,6 +101,9 @@ in {
       NSGlobalDomain = {
         AppleShowAllExtensions = true;
         ApplePressAndHoldEnabled = false;
+        AppleEnableSwipeNavigateWithScrolls = true;
+        AppleEnableMouseSwipeNavigateWithScrolls = true;
+        AppleInterfaceStyleSwitchesAutomatically = true;
 
         # 120, 90, 60, 30, 12, 6, 2
         KeyRepeat = 2;
@@ -109,7 +112,7 @@ in {
         InitialKeyRepeat = 15;
 
         "com.apple.mouse.tapBehavior" = 1;
-        "com.apple.sound.beep.volume" = 1.0;
+        "com.apple.sound.beep.volume" = 0.65;
         "com.apple.sound.beep.feedback" = 1;
       };
 
@@ -121,11 +124,16 @@ in {
         tilesize = 72;
       };
 
-      finder = {_FXShowPosixPathInTitle = false;};
+      finder = {
+        _FXShowPosixPathInTitle = false;
+        FXPreferredViewStyle = "clmv";
+      };
+
+      screencapture.location = "~/Pictures/Screenshots";
 
       trackpad = {
         Clicking = true;
-        TrackpadThreeFingerDrag = true;
+        TrackpadThreeFingerTapGesture = 0;
       };
     };
 
