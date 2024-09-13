@@ -46,9 +46,11 @@ in {
 
       # Use extended keys (CSI u)
       set extended-keys on
+      set-option -g extended-keys on
 
       # Enable focus events
       set focus-events on
+      set-option -g focus-events on
 
       # Allow tmux to set the title of the terminal emulator
       set -g set-titles on

@@ -24,7 +24,7 @@ in {
     settings = {
       auto_sync = true;
       sync_frequency = "5m";
-      sync_address = "https://atuin.ds1.federation";
+      sync_address = "https://atuin.ds1.federation.space";
     };
   };
 

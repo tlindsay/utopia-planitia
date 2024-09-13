@@ -54,6 +54,7 @@
       setopt share_history          # share command history data
 
       # load asdf
+      export ASDF_CONFIG_FILE=$HOME/.config/asdfrc
       . ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh
 
       # asdf plugin specific configs
@@ -84,6 +85,8 @@
 
         "mdumitru/git-aliases"
         "wfxr/forgit"
+
+        "nix-community/nix-zsh-completions"
 
         "Aloxaf/fzf-tab"
         "zdharma/fast-syntax-highlighting"
@@ -154,6 +157,7 @@
       export BAT_THEME="ansi"
       export MANROFFOPT="-c"
       export MANPAGER="sh -c 'col -bx | bat -l man -p --color=always'"
+      export PAGER="less -RF"
 
       # Prevent zoxide from storing inaccurate PWDs (i.e., wrong caps)
       export _ZO_RESOLVE_SYMLINKS=1
@@ -190,6 +194,7 @@
       alias l="eza -1 -F --git --group-directories-first --icons=auto"
       alias ll="eza -l -F --git --group-directories-first --icons=auto"
       alias lll="ll --git -g --header -a"
+      alias bathelp="bat --plain --language=help"
       alias tree="eza --tree"
       alias now="date --utc +%FT%TZ"
       alias rz="source ~/.zshrc && source ~/.zlogin && rehash"
@@ -217,6 +222,10 @@
       alias yst="yadm status"
 
       # eval "$(${pkgs.navi} widget zsh)"
+
+      function h() {
+        "$@" --help 2>&1 | bathelp
+      }
 
       function cd() {
         builtin cd $@
