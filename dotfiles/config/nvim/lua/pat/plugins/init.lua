@@ -40,7 +40,7 @@ return {
   },
 
   -- Indentation Guides
-  { 'shellRaining/hlchunk.nvim', dev = true },
+  'shellRaining/hlchunk.nvim',
 
   -- Which Key
   'folke/which-key.nvim',
@@ -65,14 +65,14 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   -- Treesitter interface
-  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
+  { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate',       lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
   'andersevenrud/nvim_context_vt',
   'HiPhish/rainbow-delimiters.nvim',
-  { 'Wansmer/treesj', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj',        dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
@@ -92,9 +92,18 @@ return {
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  { 'RaafatTurki/corn.nvim', dev = true },
+  { 'RaafatTurki/corn.nvim', dev = false },
   'icholy/lsplinks.nvim',
-  'folke/neodev.nvim',
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        'lazy.nvim',
+        'nvim-culprit',
+      },
+    },
+  },
   'folke/neoconf.nvim',
   {
     'folke/trouble.nvim',
@@ -125,10 +134,13 @@ return {
   'jose-elias-alvarez/nvim-lsp-ts-utils',
   'jose-elias-alvarez/typescript.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
-  { 'j-hui/fidget.nvim', tag = 'legacy' },
+  {
+    'j-hui/fidget.nvim',
+    -- tag = 'legacy'
+  },
   'simrat39/rust-tools.nvim',
   'simrat39/inlay-hints.nvim',
-  { 'tlindsay/go-gently.nvim', dev = true },
+  { 'tlindsay/go-gently.nvim',   dev = true },
   -- {
   --   'ray-x/go.nvim',
   --   dependencies = { -- optional packages
@@ -159,6 +171,8 @@ return {
       'petertriho/cmp-git',
       'ray-x/cmp-treesitter',
       'saadparwaiz1/cmp_luasnip',
+      'tzachar/cmp-ai',
+      'snikimonkd/cmp-go-pkgs',
     },
   },
   'rafamadriz/friendly-snippets',
@@ -236,7 +250,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },
@@ -289,6 +303,7 @@ return {
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
+  { 'glacambre/firenvim', build = ":call firenvim#install(0)" },
   {
     '9seconds/repolink.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -315,6 +330,20 @@ return {
         'penlight',
       },
     },
+  },
+
+  {
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- Optional
+      {
+        'stevearc/dressing.nvim',      -- Optional: Improves the default Neovim UI
+        opts = {},
+      },
+    },
+    -- config = true
   },
 
   { 'stevearc/profile.nvim', lazy = true },

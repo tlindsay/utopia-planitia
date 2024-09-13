@@ -16,7 +16,7 @@ local servers = {
   'html',
   'lua_ls',
   'rust_analyzer',
-  'tsserver',
+  'ts_ls',
   'vacuum',
   'yamlls',
 }
@@ -42,14 +42,6 @@ require('mason').setup({
 require('mason-lspconfig').setup({ ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({ text = { spinner = 'dots' } })
-require('neodev').setup({
-  library = {
-    plugins = {
-      'nvim-dap-ui',
-    },
-    types = true,
-  },
-})
 require('neoconf').setup({})
 
 lsp_links.setup()
@@ -101,31 +93,30 @@ vim.diagnostic.config({
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+-- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 capabilities.textDocument.completion.completionItem =
-  vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
-    documentationFormat = { 'markdown', 'plaintext' },
-    snippetSupport = true,
-    preselectSupport = true,
-    insertReplaceSupport = true,
-    labelDetailsSupport = true,
-    deprecatedSupport = true,
-    commitCharactersSupport = true,
-    tagSupport = { valueSet = { 1 } },
-    resolveSupport = {
-      properties = {
-        'documentation',
-        'detail',
-        'additionalTextEdits',
+    vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
+      documentationFormat = { 'markdown', 'plaintext' },
+      snippetSupport = true,
+      preselectSupport = true,
+      insertReplaceSupport = true,
+      labelDetailsSupport = true,
+      deprecatedSupport = true,
+      commitCharactersSupport = true,
+      tagSupport = { valueSet = { 1 } },
+      resolveSupport = {
+        properties = {
+          'documentation',
+          'detail',
+          'additionalTextEdits',
+        },
       },
-    },
-
-    -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
-    contextSupport = true,
-    dynamicRegistration = true,
-  })
+      -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
+      contextSupport = true,
+      dynamicRegistration = true,
+    })
 
 -- Autoformat on save
 require('format-on-save').setup({
@@ -157,7 +148,7 @@ local function on_attach(client, bufnr)
     })
   end
 
-  if vim.tbl_contains({ 'null-ls', 'gopls', 'tsserver', 'lua_ls' }, client.name) then
+  if vim.tbl_contains({ 'null-ls', 'gopls', 'ts_ls', 'lua_ls' }, client.name) then
     -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     inlay_hints.on_attach(client, bufnr)
   end

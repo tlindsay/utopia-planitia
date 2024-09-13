@@ -6,6 +6,7 @@
 -- url: https://github.com/nvim-treesitter/nvim-treesitter
 
 local ts = require('nvim-treesitter.configs')
+local ts_utils = require('nvim-treesitter.ts_utils')
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 local ctx = require('treesitter-context')
 local wk = require('which-key')
@@ -28,8 +29,48 @@ parser_config.vcl = {
   filetype = 'vcl',
 }
 
+local function run_treesitter_query()
+  -- Get the current buffer and its tree
+  local bufnr = vim.api.nvim_get_current_buf()
+  local parser = vim.treesitter.get_parser(bufnr, 'go')
+  local tree = parser:parse()[1] -- Get the first tree
+
+  -- Get the string under the cursor
+  local cursor_word = vim.fn.expand('<cword>')
+
+  -- Define your Tree-sitter query
+  local query_string = [[
+      (method_declaration
+        receiver: (parameter_list
+          (parameter_declaration
+            name: (identifier) @receiver_name
+          )
+        )
+        name: (identifier) @method_name
+      )
+    ]]
+
+  -- Create a query object
+  local query = vim.treesitter.query.parse('go', query_string)
+
+  -- Get the root node of the tree
+  local root = tree:root()
+
+  -- Iterate through matches
+  for id, node, metadata in query:iter_matches(root, bufnr) do
+    local receiver_name = ts_utils.get_node_text(node:field('receiver_name')[1], bufnr)
+
+    -- Check if the receiver name matches the cursor word
+    if receiver_name == cursor_word then
+      local method_name = ts_utils.get_node_text(node:field('method_name')[1], bufnr)
+      print('Method: ' .. method_name .. ' (Receiver: ' .. receiver_name .. ')')
+    end
+  end
+end
+
 wk.register({
   ['<leader>H'] = { ':TSHighlightCapturesUnderCursor<CR>', 'Display TS Highlight' },
+  ['<leader>Tq'] = { run_treesitter_query, 'Run Treesitter Query' },
 })
 
 require('treesj').setup({

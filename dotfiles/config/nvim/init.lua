@@ -28,6 +28,7 @@ require('lazy').setup(plugins, {
   ui = { border = 'rounded' },
   dev = { path = '~/Code/make' },
   -- defaults = { lazy = true },
+  lockfile = vim.fn.expand('~/Code/make/utopia-planitia/dotfiles/config/nvim/lazy-lock.json'),
   profiling = {
     loader = true,
     require = true,
@@ -66,6 +67,7 @@ vim.keymap.set('', '<leader><leader>P', toggle_profile)
 --------------------------------
 
 -- Import Lua modules
+require('pat.core/log')
 require('pat.utils')
 
 require('pat.core/autocmds')
@@ -82,6 +84,7 @@ require('pat.plugins/devdocs')
 require('pat.plugins/diffview')
 require('pat.plugins/dressing')
 require('pat.plugins/feline')
+require('pat.plugins/firenvim')
 require('pat.plugins/gitsigns')
 require('pat.plugins/global-note')
 require('pat.plugins/goplay')

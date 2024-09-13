@@ -2,10 +2,13 @@
 -- Autocomplete configuration file
 -----------------------------------------------------------
 
+local log = require('pat.core/log')
+
 -- Plugin: nvim-cmp
 -- url: https://github.com/hrsh7th/nvim-cmp
 
 local cmp = require('cmp')
+local compare = require('cmp.config.compare')
 local types = require('cmp.types')
 local luasnip = require('luasnip')
 local lspkind = require('lspkind')
@@ -58,6 +61,21 @@ cmp.setup({
 
   view = { entries = {} },
 
+  -- Source ranking
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      compare.offset,
+      compare.exact,
+      compare.score,
+      compare.recently_used,
+      compare.kind,
+      compare.sort_text,
+      compare.length,
+      compare.order,
+    },
+  },
+
   -- Key mapping
   mapping = cmp.mapping.preset.insert({
     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -103,8 +121,10 @@ cmp.setup({
   -- Load sources, see: https://github.com/topics/nvim-cmp
   sources = {
     { name = 'luasnip' },
+    { name = 'lazydev',                group_index = 0 },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'go_pkgs' },
     { name = 'treesitter' },
     { name = 'nvim_lua' },
     { name = 'path' },
@@ -135,18 +155,20 @@ cmp.setup({
         mode = 'symbol_text',
         maxwidth = 50,
         menu = {
-          buffer = '󰽘 ',
-          nvim_lsp = ' ',
-          nvim_lsp_signature_help = ' ',
-          luasnip = ' ',
-          treesitter = '󰐅 ',
-          nvim_lua = ' ',
-          spell = '󰓆 ',
+          buffer = '󰽘 Buf',
+          nvim_lsp = ' LSP',
+          nvim_lsp_signature_help = ' LSP',
+          luasnip = ' Snip',
+          treesitter = '󰐅 TS',
+          nvim_lua = ' Lua',
+          lazydev = ' Lua',
+          spell = '󰓆 Spell',
         },
       })(entry, vim_item)
-      local strings = vim.split(kind.kind, '%s', { trimempty = true })
-      kind.kind = ' ' .. (strings[1] or '') .. ' '
-      kind.menu = '    (' .. (strings[2] or '') .. ')'
+      -- log.debug('cmp formatting: ', { lspkind = kind, vim_item_kind = vim_item.kind })
+      -- local strings = vim.split(kind.kind, '%s', { trimempty = true })
+      -- kind.kind = ' ' .. (strings[1] or '') .. ' '
+      -- kind.menu = '    (' .. (strings[2] or '') .. ')'
 
       return kind
     end,
