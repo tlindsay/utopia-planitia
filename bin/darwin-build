@@ -17,7 +17,11 @@ cd $(dirname $(readlink -f $0))
 cd ..
 
 echo "${GREEN}Starting build ${SYSTEM}...${NC}"
-nix --experimental-features 'nix-command flakes' build .#$SYSTEM $@
+if [[ -x $(which nom) ]]; then
+	nom build --experimental-features 'nix-command flakes' .#$SYSTEM $@
+else
+	nix --experimental-features 'nix-command flakes' build .#$SYSTEM $@
+fi
 
 echo "${GREEN}Switching to new generation...${NC}"
 ./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE $@

@@ -3,6 +3,12 @@
   upkgs,
 }:
 with pkgs; [
+  # Nix shit
+  comma # Comma runs software without installing it. `$ , cowsay neato`
+  nh
+  nix-index
+  nix-output-monitor
+
   # General packages for development and system management
   _1password
   act
@@ -21,6 +27,7 @@ with pkgs; [
   bat-extras.prettybat
   bottom
   coreutils
+  doggo
   eza
   fzf
   home-manager
@@ -116,8 +123,6 @@ with pkgs; [
   lazygit
   kitty
   ncurses
-  nix-index
-  nix-output-monitor
   nushell
   procs
   ripgrep
