@@ -421,33 +421,3 @@ require('mason-lspconfig').setup_handlers({
     })
   end,
 })
-require('typescript').setup({
-  go_to_source_definition = { fallback = true },
-  server = {
-    handlers = handlers,
-    capabilities = capabilities,
-    filetypes = {
-      'typescript',
-      'typescriptreact',
-      'tsx',
-    },
-    on_attach = function(client, bufnr)
-      -- Use none-ls for formatting instead of builtin
-      client.server_capabilities.document_formatting = false
-      client.server_capabilities.document_range_formatting = false
-
-      on_attach(client, bufnr)
-
-      -- Mappings.
-      local opts = { buffer = bufnr, noremap = true, silent = true }
-      wk.register({
-        g = {
-          name = 'TS Utils',
-          s = { '<cmd>TypescriptOrganizeImports<CR>', 'Organize imports' },
-          rn = { '<cmd>TypescriptRenameFile<CR>', 'Rename file' },
-          m = { '<cmd>TypescriptAddMissingImports<CR>', 'Add missing imports' },
-        },
-      }, opts)
-    end,
-  },
-})

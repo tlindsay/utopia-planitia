@@ -131,27 +131,13 @@ return {
     },
   },
   'elentok/format-on-save.nvim',
-  'jose-elias-alvarez/nvim-lsp-ts-utils',
-  'jose-elias-alvarez/typescript.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
   {
     'j-hui/fidget.nvim',
-    -- tag = 'legacy'
   },
   'simrat39/rust-tools.nvim',
   'simrat39/inlay-hints.nvim',
   { 'tlindsay/go-gently.nvim',   dev = true },
-  -- {
-  --   'ray-x/go.nvim',
-  --   dependencies = { -- optional packages
-  --     'ray-x/guihua.lua',
-  --     'neovim/nvim-lspconfig',
-  --     'nvim-treesitter/nvim-treesitter',
-  --   },
-  --   event = { 'CmdlineEnter' },
-  --   ft = { 'go', 'gomod' },
-  --   build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
-  -- },
 
   -- Syntax Definitions
   'fladson/vim-kitty',
