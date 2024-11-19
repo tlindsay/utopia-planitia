@@ -56,6 +56,10 @@
       url = "github:daveshanley/homebrew-vacuum";
       flake = false;
     };
+    homebrew-dagger = {
+      url = "github:dagger/homebrew-tap";
+      flake = false;
+    };
     # jnv is an interactive filter builder for jq
     # homebrew-dbui = {
     #   url = "github:kenanbek/dbui";
@@ -144,10 +148,13 @@
           mosquitto
           openscad
         ];
-        fastbook = with p; [
+        fastbook = with u; [
+          fluxcd
           google-cloud-sdk
           openapi-tui
+          terraform
           tilt
+          vault
         ];
       };
     in {
@@ -179,6 +186,7 @@
                   "tako8ki/tap" = homebrew-tako8ki;
                   "lucaspickering/tap" = homebrew-slumber;
                   "daveshanley/vacuum" = homebrew-vacuum;
+                  "dagger/tap" = homebrew-dagger;
                   # "kenanbek/dbui" = homebrew-dbui;
                 };
                 mutableTaps = true;

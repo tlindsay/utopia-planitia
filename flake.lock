@@ -395,6 +395,22 @@
         "type": "github"
       }
     },
+    "homebrew-dagger": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726867174,
+        "narHash": "sha256-fHdFX721lDCV5uaaUnal8xFCbFxJV8PUAAdVUGOMwMk=",
+        "owner": "dagger",
+        "repo": "homebrew-tap",
+        "rev": "c6ff046c150df308749c70e96cd0a1e72a29c943",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dagger",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "homebrew-infra": {
       "flake": false,
       "locked": {
@@ -802,6 +818,7 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-dagger": "homebrew-dagger",
         "homebrew-infra": "homebrew-infra",
         "homebrew-slumber": "homebrew-slumber",
         "homebrew-tako8ki": "homebrew-tako8ki",

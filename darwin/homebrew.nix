@@ -9,6 +9,7 @@
       "tako8ki/tap/gobang"
       "LucasPickering/tap/slumber"
       "daveshanley/vacuum/vacuum"
+      "dagger/tap/dagger"
     ];
     casks = [
       # Development Tools
