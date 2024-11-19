@@ -80,40 +80,7 @@ in {
       ### STYLING, PROFILING
       #############################
 
-      # Vertical Separator Char: "▍"
-      set -g status-fg black
-      set -g status-bg brightmagenta
-      set -g status-left "#[fg=black,bg=green,bold] #S "
-      set-option -g status-position bottom
-      set -g status-left-length 100
-      set -g status-right-length 140
-      set -g status-right ""
-      set -ag status-right "#[reverse,blink]#{?pane_synchronized,#{@prefix_highlight_sync_prompt},}#[default]"
-      # set -ag status-right "#[bold]#{prefix_highlight}"
-      set -ag status-right "#[bold,fg=#{@prefix_highlight_fg},bg=#{@prefix_highlight_bg}]#{?client_prefix, #{@prefix_highlight_prefix_prompt},#{@prefix_highlight_empty_prompt}}"
-      set -ag status-right "#[fg=black,bg=green,nobold]#(now-playing)"
-      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
-      set -ag status-right "#[fg=black,bg=cyan]#(check-vpn && echo '󰌘 ' || echo '󰌙 ') #(ifconfig en0 inet | grep 'inet ' | awk '{print $2}') "
-      set -ag status-right "#[fg=brightmagenta,bg=cyan]▍"
-      set -ag status-right "#[fg=black]%a %m/%d %l:%M %p "
-
-      setw -g window-status-format "#[fg=black,bg=brightmagenta] #I: #W "
-      setw -g window-status-current-format "#[fg=cyan,bg=black] #I: #W "
-
-      set -g clock-mode-style 12
-
-      set -g pane-border-status off
-      set -g pane-border-status bottom
-      set -g pane-border-format ""
-      set -g pane-border-style fg=magenta
-      set -g pane-active-border-style fg=cyan
-
-      set -g monitor-activity on
-      set -g window-status-activity-style bg=red,fg=white
-      set -g window-status-bell-style bg=default,fg=red,blink
-
       set -g popup-border-lines rounded
-
 
       #############################
       ### SMART SPLITS
@@ -189,6 +156,44 @@ in {
     '';
 
     plugins = [
+      {
+        plugin = plugins.tokyo-night-tmux;
+        extraConfig = ''
+          set -g status-left-length 100
+          set -g status-right-length 140
+
+          set -g @tokyo-night-tmux_theme moon
+
+          set -g @tokyo-night-tmux_window_id_style digital
+          set -g @tokyo-night-tmux_pane_id_style hsquare
+          set -g @tokyo-night-tmux_zoom_id_style dsquare
+
+          set -g @tokyo-night-tmux_show_datetime 1
+          set -g @tokyo-night-tmux_date_format MDY
+          set -g @tokyo-night-tmux_time_format 12H
+
+          set -g @tokyo-night-tmux_show_music 1
+          set -g @tokyo-night-tmux_show_music__artist 1
+          set -g @tokyo-night-tmux_show_music__time 0
+
+          set -g @tokyo-night-tmux_show_path 1
+          set -g @tokyo-night-tmux_path_format relative     # 'relative' or 'full'
+
+          set -g @tokyo-night-tmux_show_netspeed 1
+          set -g @tokyo-night-tmux_netspeed_iface "en0"     # Detected via default route
+          set -g @tokyo-night-tmux_netspeed_showip 0        # Display IPv4 address (default 0)
+          set -g @tokyo-night-tmux_netspeed_refresh 1       # Update interval in seconds (default 1)
+
+          set -g @tokyo-night-tmux_show_git 1
+          set -g @tokyo-night-tmux_show_wbg 0
+
+          set -g @tokyo-night-tmux_show_path 0
+          set -g @tokyo-night-tmux_path_format relative     # 'relative' or 'full'
+
+          set -g @tokyo-night-tmux_show_battery_widget 0
+          set -g @tokyo-night-tmux_battery_low_threshold 51 # default
+        '';
+      }
       {
         plugin = plugins.resurrect;
         extraConfig = ''
