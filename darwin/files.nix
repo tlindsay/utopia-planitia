@@ -21,6 +21,9 @@ in {
       hi, ${user}! this is from darwin/files.nix
        your hostname is ${config.networking.hostName}'';
   };
+  ".default-golang-pkgs" = {
+    text = (builtins.readFile ../dotfiles/default-golang-pkgs);
+  };
   "${xdg_configHome}/kitty/kitty.app.icns".source = kitty_icon;
   "${xdg_configHome}/direnv/lib/oprc.sh".source = direnv_oprc;
 }
