@@ -17,92 +17,123 @@ in {
     #   # ./nvim
     ./tmux
   ];
-  programs.atuin = {
-    enable = true;
-    enableZshIntegration = true;
-    package = upkgs.atuin;
-    settings = {
-      auto_sync = true;
-      sync_frequency = "5m";
-      sync_address = "https://atuin.ds1.federation.space";
-    };
-  };
 
-  programs.bat = {
-    enable = true;
-    config = {
-      theme = "tokyonight_moon";
+  programs = {
+    atuin = {
+      enable = true;
+      enableZshIntegration = true;
+      package = upkgs.atuin;
+      settings = {
+        auto_sync = true;
+        sync_frequency = "5m";
+        sync_address = "https://atuin.ds1.federation.space";
+      };
     };
-    syntaxes = {
-      jq = {
-        src = pkgs.fetchFromGitHub {
-          owner = "zogwarg";
-          repo = "SublimeJQ";
-          rev = "master";
+
+    bat = {
+      enable = true;
+      config = {
+        theme = "tokyonight_moon";
+      };
+      syntaxes = {
+        jq = {
+          src = pkgs.fetchFromGitHub {
+            owner = "zogwarg";
+            repo = "SublimeJQ";
+            rev = "master";
+            hash = null;
+          };
+          file = "JQ.sublime-syntax";
+        };
+      };
+      themes = let
+        tokyo = pkgs.fetchFromGitHub {
+          owner = "folke";
+          repo = "tokyonight.nvim";
+          rev = "main";
           hash = null;
         };
-        file = "JQ.sublime-syntax";
+      in {
+        tokyonight_moon = {
+          src = tokyo;
+          file = "extras/sublime/tokyonight_moon.tmTheme";
+        };
       };
     };
-    themes = let
-      tokyo = pkgs.fetchFromGitHub {
-        owner = "folke";
-        repo = "tokyonight.nvim";
-        rev = "main";
-        hash = null;
+
+    navi = {
+      enable = true;
+      enableZshIntegration = true;
+      package = pkgs.navi;
+    };
+
+    nushell = {
+      enable = true;
+    };
+
+    k9s = {
+      enable = true;
+      settings = {
+        k9s = {
+          liveViewAutoRefresh = true;
+        };
       };
-    in {
-      tokyonight_moon = {
-        src = tokyo;
-        file = "extras/sublime/tokyonight_moon.tmTheme";
+      plugin = {
+        plugins = {
+          # Sends logs over to jq for processing. This leverages kubectl plugin kubectl-jq.
+          jqlogs = {
+            shortCut = "Shift-J";
+            confirm = false;
+            description = "Logs (jq)";
+            scopes = ["container"];
+            background = false;
+            command = "sh";
+            args = [
+              "-c"
+              "kubectl logs -f $POD -c $NAME -n $NAMESPACE --context $CONTEXT | jq -SR '. as $line | try (fromjson) catch $line'"
+            ];
+          };
+          nicelogs = {
+            shortCut = "Shift-L";
+            description = "Nice Logs (hl)";
+            background = false;
+            confirm = false;
+            command = "bash";
+            scopes = [
+              "all"
+            ];
+            args = ["-c" "hl -F --tail 200 <(kubectl logs -f $POD -c $NAME -n $NAMESPACE --context $CONTEXT)"];
+          };
+        };
       };
     };
-  };
 
-  programs.navi = {
-    enable = true;
-    enableZshIntegration = true;
-    package = pkgs.navi;
-  };
+    pet = {
+      enable = true;
+      selectcmdPackage = pkgs.fzf;
+      settings = {};
+      snippets = [];
+    };
 
-  programs.nushell = {
-    enable = true;
-  };
-
-  programs.k9s = {
-    enable = true;
-    settings = {
-      k9s = {
-        liveViewAutoRefresh = true;
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+      config = {
+        global = {
+          load_dotenv = true;
+        };
+        whitelist = {
+          prefix = ["~/Code/"];
+        };
       };
     };
-  };
 
-  programs.pet = {
-    enable = true;
-    selectcmdPackage = pkgs.fzf;
-    settings = {};
-    snippets = [];
-  };
-
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-    config = {
-      global = {
-        load_dotenv = true;
-      };
-      whitelist = {
-        prefix = ["~/Code/"];
-      };
+    nix-index = {
+      enable = true;
     };
+    command-not-found.enable = false;
   };
-
-  programs.nix-index = {
-    enable = true;
-  };
-  programs.command-not-found.enable = false;
 
   # git = {
   #   enable = false;

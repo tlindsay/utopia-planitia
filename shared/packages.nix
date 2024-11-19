@@ -36,6 +36,7 @@ with pkgs; [
   moreutils
   mosh
   mprocs
+  upkgs.mqttui
   mysql-shell
   navi # zsh cheatsheet auto substitutions!!!
   neofetch
@@ -44,6 +45,7 @@ with pkgs; [
   qmk
   sqlite
   upkgs.tailscale
+  tailspin # Log tailer
   usql
   wget
   xh # better curl https://github.com/ducaale/xh
@@ -97,7 +99,7 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
-  (nerdfonts.override {fonts = ["FantasqueSansMono"];})
+  (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
 
   # Still using asdf for tool versioning
   mise
@@ -112,7 +114,9 @@ with pkgs; [
   nodePackages_latest.fkill-cli
   fx
   gh
-  git
+  upkgs.git
+  git-lfs
+  upkgs.git-town
   glow
   gum
   hub
@@ -134,4 +138,7 @@ with pkgs; [
   unzip
   yq
   zoxide
+
+  # Put `ton` executable on PATH
+  (pkgs.callPackage ./home-manager/tmux/custom-plugins.nix {inherit lib pkgs upkgs;}).open-nvim
 ]
