@@ -4,15 +4,15 @@ trouble.setup({
   auto_preview = false,
   follow = false,
   keys = {
-    ['<c-s>'] = function()
+    ['<C-s>'] = function()
       trouble.jump_split()
       trouble.close()
     end,
-    ['<c-v>'] = function()
+    ['<C-v>'] = function()
       trouble.jump_vsplit()
       trouble.close()
     end,
-    ['<c-t>'] = function(_, ctx)
+    ['<C-t>'] = function(_, ctx)
       local bufnr = ctx.item.buf
       if not vim.fn.buflisted(bufnr) then
         vim.api.nvim_set_option_value('buflisted', true, { buf = bufnr })
@@ -43,8 +43,8 @@ trouble.setup({
         end,
       },
       keys = {
-        ['<space>'] = 'fold_toggle',
-        ['<s-space>'] = 'fold_toggle_recursive',
+        ['<Space>'] = 'fold_toggle',
+        ['<S-space>'] = 'fold_toggle_recursive',
       },
     },
 
@@ -60,9 +60,9 @@ trouble.setup({
         border = 'rounded',
       },
       keys = {
-        ['<cr>'] = 'jump_close',
-        ['<esc>'] = 'close',
-        ['<space>'] = 'preview',
+        ['<CR>'] = 'jump_close',
+        ['<ESC>'] = 'close',
+        ['<Space>'] = 'preview',
       },
     },
 

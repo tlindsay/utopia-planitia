@@ -65,14 +65,14 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   -- Treesitter interface
-  { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate',       lazy = false },
+  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
   'andersevenrud/nvim_context_vt',
   'HiPhish/rainbow-delimiters.nvim',
-  { 'Wansmer/treesj',        dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj', lazy = true, dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
@@ -80,7 +80,6 @@ return {
   -- Color schemes
   {
     'folke/tokyonight.nvim',
-    -- dir = '~/Code/make/tokyonight.nvim',
     lazy = false,
     priority = 1000,
   },
@@ -236,7 +235,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },
@@ -260,7 +259,6 @@ return {
 
   -- Playgrounds
   'rafcamlet/nvim-luapad',
-  'jeniasaigak/goplay.nvim',
 
   -- Notifications
   'rcarriga/nvim-notify',
@@ -289,7 +287,7 @@ return {
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
-  { 'glacambre/firenvim', build = ":call firenvim#install(0)" },
+  { 'glacambre/firenvim', build = ':call firenvim#install(0)' },
   {
     '9seconds/repolink.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -306,7 +304,17 @@ return {
     },
   },
   'backdround/global-note.nvim',
-
+  {
+    'cenk1cenk2/jq.nvim',
+    dependencies = {
+      -- https://github.com/nvim-lua/plenary.nvim
+      'nvim-lua/plenary.nvim',
+      -- https://github.com/MunifTanjim/nui.nvim
+      'MunifTanjim/nui.nvim',
+      -- https://github.com/grapp-dev/nui-components.nvim
+      'grapp-dev/nui-components.nvim',
+    },
+  },
   {
     'camspiers/luarocks',
     lazy = true,
@@ -325,7 +333,7 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'nvim-telescope/telescope.nvim', -- Optional
       {
-        'stevearc/dressing.nvim',      -- Optional: Improves the default Neovim UI
+        'stevearc/dressing.nvim', -- Optional: Improves the default Neovim UI
         opts = {},
       },
     },

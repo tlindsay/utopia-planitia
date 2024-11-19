@@ -59,8 +59,6 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
 
-  view = { entries = {} },
-
   -- Source ranking
   sorting = {
     priority_weight = 2,
@@ -84,11 +82,26 @@ cmp.setup({
     ['<C-u>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      -- behavior = cmp.ConfirmBehavior.Replace,
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    }),
+    -- ['<CR>'] = cmp.mapping.confirm({
+    --   behavior = cmp.ConfirmBehavior.Insert,
+    --   select = true,
+    -- }),
+    ['<CR>'] = function(fallback)
+      if not cmp.visible() then
+        fallback()
+      elseif cmp.get_selected_entry() ~= nil and cmp.get_selected_entry().source.name == 'nvim_lsp_signature_help' then
+        -- Don't block <CR> if signature help is active
+        -- https://github.com/hrsh7th/cmp-nvim-lsp-signature-help/issues/13
+        fallback()
+      else
+        cmp.confirm({
+          -- Replace word if completing in the middle of a word
+          -- https://github.com/hrsh7th/nvim-cmp/issues/664
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        })
+      end
+    end,
 
     -- Tab mapping
     -- ['<Tab>'] = function(fallback)
@@ -103,6 +116,8 @@ cmp.setup({
     ['<Tab>'] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -121,7 +136,7 @@ cmp.setup({
   -- Load sources, see: https://github.com/topics/nvim-cmp
   sources = {
     { name = 'luasnip' },
-    { name = 'lazydev',                group_index = 0 },
+    { name = 'lazydev' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'go_pkgs' },
@@ -149,6 +164,7 @@ cmp.setup({
 
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#how-to-get-types-on-the-left-and-offset-the-menu
   formatting = {
+    expandable_indicator = true,
     fields = { 'kind', 'abbr', 'menu' },
     format = function(entry, vim_item)
       local kind = require('lspkind').cmp_format({

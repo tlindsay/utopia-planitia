@@ -1,5 +1,6 @@
 -----------------------------------------------------------
 -- Autocommands
+-- Event Type overview: https://gist.github.com/dtr2300/2f867c2b6c051e946ef23f92bd9d1180
 -----------------------------------------------------------
 
 -- Remove whitespace on save
