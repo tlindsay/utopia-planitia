@@ -230,12 +230,18 @@ in {
         '';
       }
       {
-        plugin = plugins.session-wizard;
+        plugin = plugins.tmux-fzf;
         extraConfig = ''
-          set -g @session-wizard 'C-s'
+          setenv TMUX_FZF_LAUNCH_KEY "C-s"
         '';
       }
-      plugins.open-nvim
+      {
+        plugin = plugins.open-nvim;
+        extraConfig = ''
+          set -g @ton-open-strategy ":tabnew"
+          set -g @open-strategy ":tabnew"
+        '';
+      }
       {
         plugin = plugins.fingers;
         extraConfig = ''
