@@ -2,8 +2,10 @@
 # UI behavior
 ##
 mouse-hide-while-typing = true
+mouse-shift-capture = true
+
 shell-integration = zsh
-shell-integration-features = cursor
+shell-integration-features = true
 
 # custom-shader = ./crt.glsl
 custom-shader-animation = false
@@ -13,7 +15,7 @@ custom-shader-animation = false
 ##
 # Trying out new config with macOS on top/tmux on bottom
 # macos-non-native-fullscreen = true
-macos-non-native-fullscreen = visible-menu 
+macos-non-native-fullscreen = visible-menu
 macos-option-as-alt = true
 
 window-theme = dark
@@ -39,7 +41,10 @@ font-style-bold = Bold
 font-style-italic = Italic
 font-style-bold-italic = Bold Italic
 
-font-size = 20
+# Fallback for most missing symbols
+font-family = Apple Symbols
+
+font-size = 22
 
 font-feature = -liga
 font-feature = +calt
@@ -59,9 +64,11 @@ adjust-underline-thickness = -50%
 # U+21E1 ⇡
 # U+21E2 ⇢
 # U+21E3 ⇣
+# U+1FBF0-U+1FBF9 🯰🯱🯲🯳🯴🯵🯶🯷🯸🯹
 ##
-# font-codepoint-map = U+29C6=Apple Symbols
+font-codepoint-map = U+1FBF0-U+1FBF9=Iosevka Nerd Font Mono
 font-codepoint-map = U+21E0-U+21E3,U+29C6=Menlo
+font-codepoint-map = U+29C6=Menlo
 
 ##
 # Color scheme
