@@ -42,6 +42,7 @@ with pkgs; [
   navi # zsh cheatsheet auto substitutions!!!
   neofetch
   upkgs.neovim
+  upkgs.pam-reattach
   pet # Shell snippet mgr
   qmk
   sqlite

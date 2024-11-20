@@ -20,6 +20,7 @@
       # Utility Tools
       "betterdisplay"
       "qmk-toolbox"
+      "linearmouse"
       # "setapp"
 
       # Productivity Tools

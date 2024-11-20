@@ -145,8 +145,10 @@
           avrdude
           esphome
           esptool
+          lmstudio
           mosquitto
           openscad
+          utm
         ];
         fastbook = with u; [
           fluxcd
