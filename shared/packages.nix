@@ -30,6 +30,7 @@ with pkgs; [
   doggo
   eza
   fzf
+  gettext
   home-manager
   llvmPackages_latest.llvm
   killall
@@ -53,6 +54,7 @@ with pkgs; [
 
   # Lang specific runtimes
   go
+  upkgs.golangci-lint
   lua
   nodePackages.nodejs
   nodePackages.yarn
@@ -89,7 +91,7 @@ with pkgs; [
   docker-buildx
   docker-credential-helpers
   docker-compose
-  fastly
+  upkgs.fastly
   k9s
   kubectl
   kubernetes-helm
