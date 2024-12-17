@@ -65,14 +65,14 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   -- Treesitter interface
-  { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate', lazy = false },
+  { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate',       lazy = false },
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
   'RRethy/nvim-treesitter-endwise',
   'andersevenrud/nvim_context_vt',
   'HiPhish/rainbow-delimiters.nvim',
-  { 'Wansmer/treesj', lazy = true, dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  { 'Wansmer/treesj',       lazy = true, dependencies = { 'nvim-treesitter/nvim-treesitter' } },
 
   -- More textobjects
   'chrisgrieser/nvim-various-textobjs',
@@ -91,7 +91,7 @@ return {
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  { 'RaafatTurki/corn.nvim', dev = false },
+  { 'RaafatTurki/corn.nvim' },
   'icholy/lsplinks.nvim',
   {
     'folke/lazydev.nvim',
@@ -139,7 +139,6 @@ return {
   { 'tlindsay/go-gently.nvim',   dev = true },
 
   -- Syntax Definitions
-  'fladson/vim-kitty',
   'direnv/direnv.vim',
 
   -- Autocomplete
@@ -235,7 +234,7 @@ return {
   {
     'mfussenegger/nvim-dap',
     dependencies = {
-      { 'microsoft/vscode-chrome-debug', run = 'npm install && npm run build' },
+      { 'microsoft/vscode-chrome-debug',         run = 'npm install && npm run build' },
       { 'firefox-devtools/vscode-firefox-debug', run = 'npm install && npm run build' },
     },
   },
@@ -286,8 +285,8 @@ return {
 
   -- Miscellaneous,
   'christoomey/vim-tmux-navigator',
-  { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
-  { 'glacambre/firenvim', build = ':call firenvim#install(0)' },
+  { 'ellisonleao/glow.nvim', config = true,                      cmd = 'Glow' },
+  { 'glacambre/firenvim',    build = ':call firenvim#install(0)' },
   {
     '9seconds/repolink.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -333,7 +332,7 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'nvim-telescope/telescope.nvim', -- Optional
       {
-        'stevearc/dressing.nvim', -- Optional: Improves the default Neovim UI
+        'stevearc/dressing.nvim',      -- Optional: Improves the default Neovim UI
         opts = {},
       },
     },
