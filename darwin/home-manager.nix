@@ -85,7 +85,6 @@ in {
           # gh = {};
           # go = {};
           # gpg = {};
-          # kitty = {};
           # k9s = {};
           # lazygit = {};
           # neovim = {};

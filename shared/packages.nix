@@ -127,7 +127,6 @@ with pkgs; [
   jq
   jnv
   lazygit
-  kitty
   ncurses
   nushell
   procs
