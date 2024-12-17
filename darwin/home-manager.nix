@@ -54,7 +54,7 @@ in {
           packages = pkgs.callPackage ./packages.nix {inherit upkgs;};
           file = lib.mkMerge [sharedFiles additionalFiles];
 
-          stateVersion = "24.05";
+          stateVersion = "24.11";
         };
 
         xdg = {
