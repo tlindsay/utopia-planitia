@@ -13,8 +13,6 @@ custom-shader-animation = false
 ##
 # Window settings
 ##
-# Trying out new config with macOS on top/tmux on bottom
-# macos-non-native-fullscreen = true
 macos-non-native-fullscreen = visible-menu
 macos-option-as-alt = true
 
