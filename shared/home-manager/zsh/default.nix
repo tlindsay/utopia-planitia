@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  user,
-  ...
-}: {
+{ config, pkgs, lib, user, ... }: {
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -18,7 +12,23 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    cdpath = ["~/.local/share/src"];
+    autosuggestion = {
+      enable = true;
+      strategy = [ "history" "completion" ];
+    };
+    cdpath = [ "~/.local/share/src" ];
+    defaultKeymap = "viins";
+    history = {
+      append = true;
+      expireDuplicatesFirst = true;
+      extended = true;
+      ignoreDups = true;
+      ignorePatterns = [ "pwd *" "ls *" "cd *" ];
+      ignoreSpace = true;
+      size = 50000;
+      share = true;
+    };
+
     initExtraFirst = ''
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
       	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -36,23 +46,6 @@
       	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       fi
 
-      ## History file configuration
-      [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
-      HISTSIZE=50000
-      SAVEHIST=10000
-
-      # Remove history data we don't want to see
-      export HISTIGNORE="pwd:ls:cd"
-
-      ## History command configuration
-      setopt extended_history       # record timestamp of command in HISTFILE
-      setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-      setopt hist_ignore_dups       # ignore duplicated commands history list
-      setopt hist_ignore_space      # ignore commands that start with space
-      setopt hist_verify            # show command with history expansion to user before running it
-      setopt inc_append_history     # add commands to HISTFILE in order of execution
-      setopt share_history          # share command history data
-
       # load asdf
       export ASDF_CONFIG_FILE=$HOME/.config/asdfrc
       . ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh
@@ -66,6 +59,7 @@
         ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
       }
     '';
+
     initExtraBeforeCompInit = ''
       # asdf shell completions
       fpath=($ASDF_DIR/completions $fpath)
@@ -78,6 +72,7 @@
       autoload -Uz compinit && compinit
       autoload -Uz compaudit && compaudit
     '';
+
     antidote = {
       enable = true;
       plugins = [
@@ -95,6 +90,7 @@
         "junegunn/fzf path:shell/key-bindings.zsh"
       ];
     };
+
     completionInit = ''
       # Set up tab-completions
       compinit -i -C -d ~/.zcompdump*
@@ -120,6 +116,7 @@
       # switch group using `,` and `.`
       zstyle ':fzf-tab:*' switch-group ',' '.'
     '';
+
     initExtra = ''
       # Use nix-index for command-not-found
       source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
@@ -294,5 +291,6 @@
         PATH="$PATH:$HOME/.cargo/bin"
       fi
     '';
+
   };
 }
