@@ -10,7 +10,7 @@ with pkgs; [
   nix-output-monitor
 
   # General packages for development and system management
-  _1password
+  _1password-cli
   act
   amber # A code search-and-replace tool
   aspell
@@ -66,7 +66,7 @@ with pkgs; [
   cargo
   python311Packages.pip
   nixd
-  nixfmt
+  nixfmt-classic
   statix
   alejandra
   air # live reload for go apps
