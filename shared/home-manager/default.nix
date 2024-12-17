@@ -1,11 +1,5 @@
-{
-  config,
-  pkgs,
-  upkgs,
-  lib,
-  user,
-  ...
-}: let
+{ config, pkgs, upkgs, lib, user, ... }:
+let
   name = "Patrick Lindsay";
   email = "pat@thatdarnpat.com";
 in {
@@ -31,9 +25,7 @@ in {
 
     bat = {
       enable = true;
-      config = {
-        theme = "tokyonight_moon";
-      };
+      config = { theme = "tokyonight_moon"; };
       syntaxes = {
         jq = {
           src = pkgs.fetchFromGitHub {
@@ -66,17 +58,11 @@ in {
       package = pkgs.navi;
     };
 
-    nushell = {
-      enable = true;
-    };
+    nushell = { enable = true; };
 
     k9s = {
       enable = true;
-      settings = {
-        k9s = {
-          liveViewAutoRefresh = true;
-        };
-      };
+      settings = { k9s = { liveViewAutoRefresh = true; }; };
       plugin = {
         plugins = {
           # Sends logs over to jq for processing. This leverages kubectl plugin kubectl-jq.
@@ -84,7 +70,7 @@ in {
             shortCut = "Shift-J";
             confirm = false;
             description = "Logs (jq)";
-            scopes = ["container"];
+            scopes = [ "container" ];
             background = false;
             command = "sh";
             args = [
@@ -98,10 +84,11 @@ in {
             background = false;
             confirm = false;
             command = "bash";
-            scopes = [
-              "all"
+            scopes = [ "all" ];
+            args = [
+              "-c"
+              "hl -F --tail 200 <(kubectl logs -f $POD -c $NAME -n $NAMESPACE --context $CONTEXT)"
             ];
-            args = ["-c" "hl -F --tail 200 <(kubectl logs -f $POD -c $NAME -n $NAMESPACE --context $CONTEXT)"];
           };
         };
       };
@@ -110,8 +97,8 @@ in {
     pet = {
       enable = true;
       selectcmdPackage = pkgs.fzf;
-      settings = {};
-      snippets = [];
+      settings = { };
+      snippets = [ ];
     };
 
     direnv = {
@@ -119,18 +106,21 @@ in {
       enableZshIntegration = true;
       nix-direnv.enable = true;
       config = {
-        global = {
-          load_dotenv = true;
-        };
-        whitelist = {
-          prefix = ["~/Code/"];
-        };
+        global = { load_dotenv = true; };
+        whitelist = { prefix = [ "~/Code/" ]; };
       };
+      stdlib = ''
+        function use_op() {
+          if [[ $# -ne 2 ]]; then
+            echo "invalid arguments for use_op"
+          fi
+
+          export "$1=$(op read "$2")"
+        }
+      '';
     };
 
-    nix-index = {
-      enable = true;
-    };
+    nix-index = { enable = true; };
     command-not-found.enable = false;
   };
 
