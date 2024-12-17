@@ -187,6 +187,9 @@
 
       export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
+      export GOTESTSUM_FORMAT="short"
+      export GOTESTSUM_FORMAT_ICONS="octicons"
+
       function zvm_after_init() {
         bindkey -M main '^R' atuin-search
       }
