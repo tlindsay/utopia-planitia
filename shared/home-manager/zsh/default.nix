@@ -1,4 +1,10 @@
-{ config, pkgs, lib, user, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}: {
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -14,16 +20,16 @@
     autocd = true;
     autosuggestion = {
       enable = true;
-      strategy = [ "history" "completion" ];
+      strategy = ["history" "completion"];
     };
-    cdpath = [ "~/.local/share/src" ];
+    cdpath = ["~/.local/share/src"];
     defaultKeymap = "viins";
     history = {
       append = true;
       expireDuplicatesFirst = true;
       extended = true;
       ignoreDups = true;
-      ignorePatterns = [ "pwd *" "ls *" "cd *" ];
+      ignorePatterns = ["pwd *" "ls *" "cd *"];
       ignoreSpace = true;
       size = 50000;
       share = true;
@@ -291,6 +297,5 @@
         PATH="$PATH:$HOME/.cargo/bin"
       fi
     '';
-
   };
 }

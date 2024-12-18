@@ -1,10 +1,14 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   user = "plindsay";
   xdg_configHome = "/home/${user}/.config";
   shared-programs =
-    import ../shared/home-manager.nix { inherit config pkgs lib; };
-  shared-files = import ../shared/files.nix { inherit config pkgs; };
+    import ../shared/home-manager.nix {inherit config pkgs lib;};
+  shared-files = import ../shared/files.nix {inherit config pkgs;};
 
   polybar-user_modules = builtins.readFile (pkgs.substituteAll {
     src = ./config/polybar/user_modules.ini;
@@ -28,8 +32,8 @@ in {
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = pkgs.callPackage ./packages.nix { };
-    file = shared-files // import ./files.nix { inherit user; };
+    packages = pkgs.callPackage ./packages.nix {};
+    file = shared-files // import ./files.nix {inherit user;};
     stateVersion = "21.05";
   };
 
@@ -59,7 +63,10 @@ in {
   services.polybar = {
     enable = true;
     config = polybar-config;
-    extraConfig = polybar-bars + polybar-colors + polybar-modules
+    extraConfig =
+      polybar-bars
+      + polybar-colors
+      + polybar-modules
       + polybar-user_modules;
     package = pkgs.polybarFull;
     script = "polybar main &";
@@ -112,5 +119,5 @@ in {
     };
   };
 
-  programs = shared-programs // { gpg.enable = true; };
+  programs = shared-programs // {gpg.enable = true;};
 }

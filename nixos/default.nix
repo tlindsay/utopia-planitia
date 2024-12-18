@@ -1,8 +1,15 @@
-{ config, inputs, pkgs, agenix, ... }:
-
-let user = "plindsay";
-    keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p" ]; in
 {
+  config,
+  inputs,
+  pkgs,
+  agenix,
+  ...
+}: let
+  user = "plindsay";
+  keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p"
+  ];
+in {
   imports = [
     # ./secrets.nix
     ./disk-config.nix
@@ -15,7 +22,7 @@ let user = "plindsay";
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 42;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Set your time zone.
@@ -26,17 +33,17 @@ let user = "plindsay";
   # replicates the default behaviour.
   networking.hostName = "%HOST%"; # Define your hostname.
   networking.useDHCP = false;
-  networking.interfaces.%INTERFACE%.useDHCP = true;
+  networking.interfaces."%INTERFACE%".useDHCP = true;
 
   # Turn on flag for proprietary software
   nix = {
-    nixPath = [ "nixos-config=/home/${user}/.local/share/src/nixos-config:/etc/nixos" ];
-    settings.allowed-users = [ "${user}" ];
+    nixPath = ["nixos-config=/home/${user}/.local/share/src/nixos-config:/etc/nixos"];
+    settings.allowed-users = ["${user}"];
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-   };
+  };
 
   # Manages keys and such
   programs.gnupg.agent.enable = true;
@@ -68,9 +75,7 @@ let user = "plindsay";
   };
 
   # Tiling window manager
-  services.xserver.windowManager.bspwm = {
-    enable = true;
-  };
+  services.xserver.windowManager.bspwm = {enable = true;};
 
   # Turn Caps Lock into Ctrl
   services.xserver.layout = "us";
@@ -96,7 +101,7 @@ let user = "plindsay";
 
   # Better support for general peripherals
   services.xserver.libinput.enable = true;
-  boot.kernelModules = [ "uinput" ];
+  boot.kernelModules = ["uinput"];
 
   # Sync state between machines
   services.syncthing = {
@@ -115,13 +120,13 @@ let user = "plindsay";
         id = "P2FYLQW-PKDFJGZ-EUGI2T7-OW4AH4I-KI462HD-U2VL3X3-GN55PP2-VNRE5AH";
         autoAcceptFolders = true;
         allowedNetwork = "192.168.0.0/16";
-        addresses = [ "tcp://192.168.0.99:51820" ];
+        addresses = ["tcp://192.168.0.99:51820"];
       };
       "Home Lab" = {
         id = "WW5O366-THBBBA3-HKQAYCP-EWADS4I-4KDDC5Z-3JCO42M-RLBZ3DY-NM7PEQA";
         allowedNetwork = "192.168.0.0/16";
         autoAcceptFolders = true;
-        addresses = [ "tcp://192.168.0.103:51820" ];
+        addresses = ["tcp://192.168.0.103:51820"];
       };
     };
 
@@ -129,7 +134,7 @@ let user = "plindsay";
       "XDG Share" = {
         id = "ukrub-quh7k";
         path = "/home/${user}/.local/share";
-        devices = [ "Macbook Pro" "Home Lab" ];
+        devices = ["Macbook Pro" "Home Lab"];
       };
     };
 
@@ -166,10 +171,7 @@ let user = "plindsay";
       animation-for-menu-window = "none";
       animation-for-transient-window = "slide-down";
       corner-radius = 12;
-      rounded-corners-exclude = [
-        "class_i = 'polybar'"
-        "class_g = 'i3lock'"
-      ];
+      rounded-corners-exclude = ["class_i = 'polybar'" "class_g = 'i3lock'"];
       round-borders = 3;
       round-borders-exclude = [];
       round-borders-rule = [];
@@ -183,8 +185,7 @@ let user = "plindsay";
       frame-opacity = 0.7;
       inactive-opacity-override = false;
       active-opacity = 1.0;
-      focus-exclude = [
-      ];
+      focus-exclude = [];
 
       opacity-rule = [
         "100:class_g = 'i3lock'"
@@ -203,13 +204,9 @@ let user = "plindsay";
         kern = "3x3box";
       };
 
-      shadow-exclude = [
-        "class_g = 'Dunst'"
-      ];
+      shadow-exclude = ["class_g = 'Dunst'"];
 
-      blur-background-exclude = [
-        "class_g = 'Dunst'"
-      ];
+      blur-background-exclude = ["class_g = 'Dunst'"];
 
       backend = "glx";
       vsync = false;
@@ -223,12 +220,21 @@ let user = "plindsay";
       log-level = "info";
 
       wintypes = {
-        normal = { fade = true; shadow = false; };
-        tooltip = { fade = true; shadow = false; opacity = 0.75; focus = true; full-shadow = false; };
-        dock = { shadow = false; };
-        dnd = { shadow = false; };
-        popup_menu = { opacity = 1.0; };
-        dropdown_menu = { opacity = 1.0; };
+        normal = {
+          fade = true;
+          shadow = false;
+        };
+        tooltip = {
+          fade = true;
+          shadow = false;
+          opacity = 0.75;
+          focus = true;
+          full-shadow = false;
+        };
+        dock = {shadow = false;};
+        dnd = {shadow = false;};
+        popup_menu = {opacity = 1.0;};
+        dropdown_menu = {opacity = 1.0;};
       };
     };
   };
@@ -245,22 +251,22 @@ let user = "plindsay";
   };
 
   # Root user
-  users.users.root = {
-    openssh.authorizedKeys.keys = keys;
-  };
+  users.users.root = {openssh.authorizedKeys.keys = keys;};
 
   # Don't require password for users in `wheel` group for these commands
   security.sudo = {
     enable = true;
-    extraRules = [{
-      commands = [
-       {
-         command = "${pkgs.systemd}/bin/reboot";
-         options = [ "NOPASSWD" ];
-        }
-      ];
-      groups = [ "wheel" ];
-    }];
+    extraRules = [
+      {
+        commands = [
+          {
+            command = "${pkgs.systemd}/bin/reboot";
+            options = ["NOPASSWD"];
+          }
+        ];
+        groups = ["wheel"];
+      }
+    ];
   };
 
   # Let's be able to SSH into this machine
@@ -287,5 +293,4 @@ let user = "plindsay";
   services.tumbler.enable = true; # Thumbnail support for images
 
   system.stateVersion = "21.05"; # Don't change this
-
 }

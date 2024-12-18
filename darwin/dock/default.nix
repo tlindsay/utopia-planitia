@@ -1,6 +1,10 @@
-{ config, pkgs, lib, ... }:
-with lib;
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
   cfg = config.local.dock;
   inherit (pkgs) stdenv dockutil;
 in {
@@ -16,7 +20,7 @@ in {
       type = with types;
         listOf (submodule {
           options = {
-            path = lib.mkOption { type = str; };
+            path = lib.mkOption {type = str;};
             section = lib.mkOption {
               type = str;
               default = "apps";
@@ -32,10 +36,13 @@ in {
   };
 
   config = mkIf cfg.enable (let
-    normalize = path: if hasSuffix ".app" path then path + "/" else path;
+    normalize = path:
+      if hasSuffix ".app" path
+      then path + "/"
+      else path;
     entryURI = path:
       "file://"
-      + (builtins.replaceStrings [ " " "!" ''"'' "#" "$" "%" "&" "'" "(" ")" ] [
+      + (builtins.replaceStrings [" " "!" ''"'' "#" "$" "%" "&" "'" "(" ")"] [
         "%20"
         "%21"
         "%22"
@@ -47,12 +54,16 @@ in {
         "%28"
         "%29"
       ] (normalize path));
-    wantURIs = concatMapStrings (entry: ''
-      ${entryURI entry.path}
-    '') cfg.entries;
-    createEntries = concatMapStrings (entry: ''
-      ${dockutil}/bin/dockutil --no-restart --add '${entry.path}' --section ${entry.section} ${entry.options}
-    '') cfg.entries;
+    wantURIs =
+      concatMapStrings (entry: ''
+        ${entryURI entry.path}
+      '')
+      cfg.entries;
+    createEntries =
+      concatMapStrings (entry: ''
+        ${dockutil}/bin/dockutil --no-restart --add '${entry.path}' --section ${entry.section} ${entry.options}
+      '')
+      cfg.entries;
   in {
     system.activationScripts.postUserActivation.text = ''
       echo >&2 "Setting up the Dock..."

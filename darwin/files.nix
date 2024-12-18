@@ -13,7 +13,7 @@
   };
 in {
   ".default-golang-pkgs" = {
-    text = (builtins.readFile ../dotfiles/default-golang-pkgs);
+    text = builtins.readFile ../dotfiles/default-golang-pkgs;
   };
   "${xdg_configHome}/direnv/lib/oprc.sh".source = direnv_oprc;
 }
