@@ -65,8 +65,6 @@ with pkgs; [
   luarocks
   cargo
   python311Packages.pip
-  nixd
-  nixfmt-classic
   statix
   alejandra
   air # live reload for go apps
