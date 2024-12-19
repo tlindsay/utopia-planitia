@@ -99,6 +99,6 @@
         allowUnsupportedSystem = true;
       };
       src = ./.;
-      snowfall = { namespace = "replicator"; };
+      snowfall = {namespace = "replicator";};
     };
 }

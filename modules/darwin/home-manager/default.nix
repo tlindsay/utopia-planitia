@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   home-manager = {
     backupFileExtension = "nix.bak";
     useGlobalPkgs = true;

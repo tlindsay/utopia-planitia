@@ -1,4 +1,8 @@
-{ pkgs, namespace, ... }: {
+{
+  pkgs,
+  namespace,
+  ...
+}: {
   programs.tmux = {
     enable = true;
     sensibleOnTop = false;
@@ -204,7 +208,7 @@
           set -g @prefix_highlight_show_sync_mode 'on'
         '';
       }
-      { plugin = pkgs.tmuxPlugins.better-mouse-mode; }
+      {plugin = pkgs.tmuxPlugins.better-mouse-mode;}
       pkgs."${namespace}".tmux-cowboy
       {
         plugin = pkgs."${namespace}".tmux-menus;

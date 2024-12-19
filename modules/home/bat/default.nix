@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.bat = {
     enable = true;
-    config = { theme = "tokyonight_moon"; };
+    config = {theme = "tokyonight_moon";};
     syntaxes = {
       jq = {
         src = pkgs.fetchFromGitHub {
@@ -28,4 +28,3 @@
     };
   };
 }
-
