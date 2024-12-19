@@ -1,5 +1,10 @@
-{ config, pkgs, lib, ... }:
-let user = config.snowfallorg.user.name;
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  user = config.snowfallorg.user.name;
 in {
   programs.starship = {
     enable = true;
@@ -16,16 +21,16 @@ in {
     autocd = true;
     autosuggestion = {
       enable = true;
-      strategy = [ "history" "completion" ];
+      strategy = ["history" "completion"];
     };
-    cdpath = [ "~/.local/share/src" ];
+    cdpath = ["~/.local/share/src"];
     defaultKeymap = "viins";
     history = {
       append = true;
       expireDuplicatesFirst = true;
       extended = true;
       ignoreDups = true;
-      ignorePatterns = [ "pwd *" "ls *" "cd *" ];
+      ignorePatterns = ["pwd *" "ls *" "cd *"];
       ignoreSpace = true;
       size = 50000;
       share = true;

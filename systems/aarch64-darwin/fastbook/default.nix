@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # snowfallorg.users.plindsay = {
   #   create = false;
   #   admin = true;

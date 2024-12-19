@@ -1,4 +1,4 @@
-{ pkgs }:
+{pkgs}:
 with pkgs; [
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`
@@ -83,7 +83,7 @@ with pkgs; [
   yubikey-manager
 
   # Cloud-related tools and SDKs
-  (docker.override (args: { buildxSupport = true; }))
+  (docker.override (args: {buildxSupport = true;}))
   docker-buildx
   docker-credential-helpers
   docker-compose
@@ -97,7 +97,7 @@ with pkgs; [
   ffmpeg
   fd
   harfbuzz
-  (nerdfonts.override { fonts = [ "FantasqueSansMono" "Iosevka" "Noto" ]; })
+  (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
 
   # Still using asdf for tool versioning
   mise
@@ -141,4 +141,3 @@ with pkgs; [
   #   inherit lib pkgs upkgs;
   # }).open-nvim
 ]
-

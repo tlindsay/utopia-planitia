@@ -1,9 +1,8 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.pet = {
     enable = true;
     selectcmdPackage = pkgs.fzf;
-    settings = { };
-    snippets = [ ];
+    settings = {};
+    snippets = [];
   };
 }
-

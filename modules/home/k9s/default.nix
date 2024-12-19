@@ -1,7 +1,7 @@
 {
   programs.k9s = {
     enable = true;
-    settings = { k9s = { liveViewAutoRefresh = true; }; };
+    settings = {k9s = {liveViewAutoRefresh = true;};};
     plugin = {
       plugins = {
         # Sends logs over to jq for processing. This leverages kubectl plugin kubectl-jq.
@@ -9,7 +9,7 @@
           shortCut = "Shift-J";
           confirm = false;
           description = "Logs (jq)";
-          scopes = [ "container" ];
+          scopes = ["container"];
           background = false;
           command = "sh";
           args = [
@@ -23,7 +23,7 @@
           background = false;
           confirm = false;
           command = "bash";
-          scopes = [ "all" ];
+          scopes = ["all"];
           args = [
             "-c"
             "hl -F --tail 200 <(kubectl logs -f $POD -c $NAME -n $NAMESPACE --context $CONTEXT)"
@@ -33,4 +33,3 @@
     };
   };
 }
-

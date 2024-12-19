@@ -4,8 +4,8 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
     config = {
-      global = { load_dotenv = true; };
-      whitelist = { prefix = [ "~/Code/" ]; };
+      global = {load_dotenv = true;};
+      whitelist = {prefix = ["~/Code/"];};
     };
     stdlib = ''
       function use_op() {
@@ -18,4 +18,3 @@
     '';
   };
 }
-

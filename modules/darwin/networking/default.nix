@@ -1,6 +1,6 @@
-{ ... }: {
+{...}: {
   networking = {
-    knownNetworkServices = [ "Wi-Fi" "Thunderbolt Ethernet Slot 0" ];
+    knownNetworkServices = ["Wi-Fi" "Thunderbolt Ethernet Slot 0"];
     dns = [
       # Tailscale
       "100.100.100.100"
@@ -13,5 +13,4 @@
       "9.9.9.9"
     ];
   };
-
 }

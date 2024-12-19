@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   home = config.snowfallorg.user.home.directory;
   xdg_configHome = "${home}/.config";
 in {

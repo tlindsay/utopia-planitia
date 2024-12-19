@@ -1,7 +1,6 @@
 {
   system = {
-
-    checks = { verifyNixPath = false; };
+    checks = {verifyNixPath = false;};
 
     defaults = {
       NSGlobalDomain = {
@@ -43,7 +42,7 @@
       };
     };
 
-    keyboard = { enableKeyMapping = true; };
+    keyboard = {enableKeyMapping = true;};
 
     stateVersion = 4;
   };
