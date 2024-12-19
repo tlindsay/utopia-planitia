@@ -137,6 +137,12 @@ return {
   'simrat39/rust-tools.nvim',
   'simrat39/inlay-hints.nvim',
   { 'tlindsay/go-gently.nvim',   dev = true },
+  {
+    'pcolladosoto/tinygo.nvim',
+    config = function()
+      require('tinygo').setup()
+    end,
+  },
 
   -- Syntax Definitions
   'direnv/direnv.vim',
