@@ -15,7 +15,6 @@
       # Development Tools
       "apparency"
       "bruno"
-      "linearmouse"
 
       # Utility Tools
       "betterdisplay"
