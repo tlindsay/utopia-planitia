@@ -31,46 +31,6 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
-    homebrew-infra = {
-      url = "github:infrahq/homebrew-tap";
-      flake = false;
-    };
-    homebrew-tako8ki = {
-      url = "github:TaKO8Ki/homebrew-tap";
-      flake = false;
-    };
-    # Slumber is a REST TUI
-    homebrew-slumber = {
-      url = "github:LucasPickering/homebrew-tap";
-      flake = false;
-    };
-    # Vacuum is an OpenAPI linter/toolkit
-    homebrew-vacuum = {
-      url = "github:daveshanley/homebrew-vacuum";
-      flake = false;
-    };
-    homebrew-dagger = {
-      url = "github:dagger/homebrew-tap";
-      flake = false;
-    };
-    # jnv is an interactive filter builder for jq
-    # homebrew-dbui = {
-    #   url = "github:kenanbek/dbui";
-    #   flake = false;
-    # };
     # nix-inspect is a ranger-like TUI for inspecting your nixos config and other arbitrary nix expressions.
     nix-inspect.url = "github:bluskript/nix-inspect";
     disko = {
