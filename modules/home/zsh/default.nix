@@ -6,6 +6,16 @@
 }: let
   user = config.snowfallorg.user.name;
 in {
+  home = {
+    sessionPath = [
+      "$HOME/.local/share/bin"
+      "$HOME/.bin"
+      "/usr/local/bin"
+      "/usr/local/sbin"
+      "$HOME/.nix-profile/sw/bin"
+      "$HOME/go/bin"
+    ];
+  };
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -43,13 +53,9 @@ in {
       fi
 
       # Define variables for directories
-      export PATH=$HOME/.local/share/bin:$PATH
-      export PATH=$HOME/bin:/usr/local/bin:$PATH
-      export PATH="/usr/local/sbin:$PATH"
-      export PATH="$HOME/.nix-profile/sw/bin:$PATH"
-      if [ -d "/opt/homebrew/bin" ]; then
+      if [ -x "/opt/homebrew/bin/brew" ]; then
       	eval "$(/opt/homebrew/bin/brew shellenv)"
-      elif [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
+      elif [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
       	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       fi
 
@@ -76,6 +82,10 @@ in {
       if [[ -e $HOME/.nix-profile ]]; then
         FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
       fi
+      if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
+        FPATH="$(antidote path 'wfxr/forgit')/completions:$FPATH"
+      fi
+
       autoload -Uz compinit && compinit
       autoload -Uz compaudit && compaudit
     '';
@@ -106,6 +116,10 @@ in {
       eval "$(kubectl completion zsh)"; compdef _kubectl kubectl
       eval "$(atuin gen-completions --shell zsh); compdef _atuin atuin"
       eval "$(tailscale completion zsh); compdef _tailscale tailscale"
+
+      if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
+        source $(antidote path 'wfxr/forgit')/completions/git-forgit.zsh
+      fi
 
       # Arrow key menu for completions
       zstyle ':completion:*' menu select
@@ -142,9 +156,6 @@ in {
       if [[ -a ~/.zprofile.local ]]; then
         source ~/.zprofile.local
       fi
-
-      # Add go binaries to PATH
-      export PATH="$PATH:$HOME/go/bin"
 
       # Use 1Password ssh-agent if available
       if [[ -S "/Users/${user}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
@@ -288,14 +299,6 @@ in {
       # Use nvim if available
       if type nvim > /dev/null 2>&1; then
         alias vim='nvim'
-      fi
-
-      # Add custom scripts
-      if [ -d "$HOME/.bin" ] ; then
-        PATH="$PATH:$HOME/.bin"
-      fi
-      if [ -d "$HOME/.cargo/bin" ]; then
-        PATH="$PATH:$HOME/.cargo/bin"
       fi
     '';
   };
