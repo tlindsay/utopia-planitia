@@ -3,13 +3,15 @@
 {channels, ...}: final: prev: {
   inherit
     (channels.nixpkgs-unstable)
+    astroterm
     atuin
-    mqttui
-    neovim
-    tailscale
-    golangci-lint
     fastly
     git
     git-town
+    golangci-lint
+    mqttui
+    neovim
+    tailscale
+    tinygo
     ;
 }

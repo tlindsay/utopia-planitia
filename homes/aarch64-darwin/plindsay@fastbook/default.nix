@@ -1,8 +1,6 @@
 {pkgs, ...}: {
-  fonts.fontconfig.enable = true;
-
-  home = {
-    enableNixpkgsReleaseCheck = true;
-    stateVersion = "24.11";
-  };
+  home.packages = with pkgs; [
+    mysql80
+    vault
+  ];
 }

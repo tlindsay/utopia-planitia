@@ -11,13 +11,10 @@ in
       colima
       lima-bin
       dockutil
-      iina # "Modern media player for macOS"
       imagemagick
-      karabiner-elements
       monitorcontrol
       nix-inspect
       qemu
       reattach-to-user-namespace
-      yadm
     ];
   }

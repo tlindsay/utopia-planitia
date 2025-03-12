@@ -1,4 +1,4 @@
-{pkgs}:
+{pkgs, ...}:
 with pkgs; [
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`
@@ -6,10 +6,17 @@ with pkgs; [
   nix-index
   nix-output-monitor
 
+  # Custom packages
+  replicator.hl
+  # replicator.loggo
+  replicator.tmux-open-nvim
+
   # General packages for development and system management
   _1password-cli
   act
   amber # A code search-and-replace tool
+  asciinema
+  asciinema-agg
   aspell
   aspellDicts.en
   atac
@@ -43,6 +50,7 @@ with pkgs; [
   pet # Shell snippet mgr
   qmk
   sqlite
+  sqruff # SQL formatter/linter
   tailscale
   tailspin # Log tailer
   usql
@@ -51,8 +59,8 @@ with pkgs; [
   zip
 
   # Lang specific runtimes
+  cue
   go
-  golangci-lint
   lua
   nodePackages.nodejs
   nodePackages.yarn
@@ -60,19 +68,22 @@ with pkgs; [
   rustc
 
   # Language Servers and other tools
-  luarocks
+  air # live reload for go apps
+  alejandra
   cargo
+  cuelsp
+  deadnix
+  eslint_d
+  golangci-lint
+  gomacro # golang repl
+  luarocks
+  nodePackages_latest.eslint
+  nodePackages_latest.typescript-language-server
+  prettierd
   python311Packages.pip
   statix
-  alejandra
-  air # live reload for go apps
-  gomacro # golang repl
-  ## TS/JS:
-  nodePackages_latest.typescript-language-server
-  nodePackages_latest.eslint
   typescript
-  eslint_d
-  prettierd
+  yamllint
 
   # Encryption and security tools
   age
@@ -113,6 +124,7 @@ with pkgs; [
   fx
   gh
   git
+  git-credential-oauth
   git-lfs
   git-town
   glow
@@ -135,9 +147,4 @@ with pkgs; [
   unzip
   yq
   zoxide
-
-  # # Put `ton` executable on PATH
-  # (pkgs.callPackage ./home-manager/tmux/custom-plugins.nix {
-  #   inherit lib pkgs upkgs;
-  # }).open-nvim
 ]
