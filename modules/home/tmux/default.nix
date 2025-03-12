@@ -83,24 +83,31 @@
       # Smart pane switching with awareness of Vim splits.
       # See: https://github.com/christoomey/vim-tmux-navigator
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?|fzf|gum|atuin)(diff)?$'"
-      bind-key -n C-h if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
-      bind-key -n C-j if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
-      bind-key -n C-k if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
-      bind-key -n C-l if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(n?vim?x?)(diff)?$'"
+      is_tui="ps -o state= -o comm= -t '#{pane_tty}' \
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(view|fzf|gum|atuin)$'"
+      bind-key -n -N "select-pane LEFT"  C-h if-shell "$is_vim"            'send-keys C-h' 'select-pane -L'
+      bind-key -n -N "select-pane DOWN"  C-j if-shell "$is_vim || $is_tui" 'send-keys C-j' 'select-pane -D'
+      bind-key -n -N "select-pane UP"    C-k if-shell "$is_vim || $is_tui" 'send-keys C-k' 'select-pane -U'
+      bind-key -n -N "select-pane RIGHT" C-l if-shell "$is_vim"            'send-keys C-l' 'select-pane -R'
 
-      bind-key -n M-h if-shell "$is_vim" 'send-keys M-h' 'resize-pane -L 10'
-      bind-key -n M-j if-shell "$is_vim" 'send-keys M-j' 'resize-pane -D 5'
-      bind-key -n M-k if-shell "$is_vim" 'send-keys M-k' 'resize-pane -U 5'
-      bind-key -n M-l if-shell "$is_vim" 'send-keys M-l' 'resize-pane -R 10'
+      bind-key -n -N "resize-pane LEFT 10"  M-h if-shell "$is_vim" 'send-keys M-h' 'resize-pane -L 10'
+      bind-key -n -N "resize-pane DOWN 5"   M-j if-shell "$is_vim || $is_tui" 'send-keys M-j' 'resize-pane -D 5'
+      bind-key -n -N "resize-pane UP 5"     M-k if-shell "$is_vim || $is_tui" 'send-keys M-k' 'resize-pane -U 5'
+      bind-key -n -N "resize-pane RIGHT 10" M-l if-shell "$is_vim" 'send-keys M-l' 'resize-pane -R 10'
 
-      bind-key -n M-H if-shell "$is_vim" 'send-keys M-H' 'resize-pane -L 2'
-      bind-key -n M-J if-shell "$is_vim" 'send-keys M-J' 'resize-pane -D 2'
-      bind-key -n M-K if-shell "$is_vim" 'send-keys M-K' 'resize-pane -U 2'
-      bind-key -n M-L if-shell "$is_vim" 'send-keys M-L' 'resize-pane -R 2'
+      bind-key -n -N "resize-pane LEFT 2"  M-H if-shell "$is_vim" 'send-keys M-H' 'resize-pane -L 2'
+      bind-key -n -N "resize-pane DOWN 2"  M-J if-shell "$is_vim || $is_tui" 'send-keys M-J' 'resize-pane -D 2'
+      bind-key -n -N "resize-pane UP 2"    M-K if-shell "$is_vim || $is_tui" 'send-keys M-K' 'resize-pane -U 2'
+      bind-key -n -N "resize-pane RIGHT 2" M-L if-shell "$is_vim" 'send-keys M-L' 'resize-pane -R 2'
 
-      bind-key -n PgUp if-shell "$is_vim" 'send-keys PgUp' 'copy-mode; send-keys -X halfpage-up'
-      bind-key -n PgDn if-shell "$is_vim" 'send-keys PgDn' 'copy-mode; send-keys -X halfpage-down'
+      bind-key -n PgUp if-shell "$is_vim || $is_tui" 'send-keys PgUp' 'copy-mode -e; send-keys -X halfpage-up'
+      bind-key -n PgDn if-shell "$is_vim || $is_tui" 'send-keys PgDn' 'copy-mode -e; send-keys -X halfpage-down'
+
+      bind-key -N "Force select-pane LEFT"  C-h 'select-pane -L'
+      bind-key -N "Force select-pane DOWN"  C-j 'select-pane -D'
+      bind-key -N "Force select-pane UP"    C-k 'select-pane -U'
+      bind-key -N "Force select-pane RIGHT" C-l 'select-pane -R'
 
       tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
       if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
@@ -112,6 +119,26 @@
       bind-key -T copy-mode-vi 'C-j' select-pane -D
       bind-key -T copy-mode-vi 'C-k' select-pane -U
       bind-key -T copy-mode-vi 'C-l' select-pane -R
+
+      bind y copy-mode-vi; \
+        send-keys -X previous-prompt; \
+        send-keys -X start-of-line; \
+        send-keys -X next-word; \
+        send-keys -X begin-selection; \
+        send-keys -X next-prompt; \
+        send-keys -X -N 1 cursor-up; \
+        send-keys -X end-of-line; \
+        send-keys -X copy-pipe-and-cancel 'xargs echo "$"';
+
+      bind Y copy-mode-vi; \
+        send-keys -X previous-prompt -o; \
+        send-keys -X start-of-line; \
+        send-keys -X next-word; \
+        send-keys -X begin-selection; \
+        send-keys -X next-prompt; \
+        send-keys -X -N 1 cursor-up; \
+        send-keys -X end-of-line; \
+        send-keys -X copy-pipe-and-cancel 'xargs echo "$"';
 
       bind-key -n M-> 'swap-window -t +1; select-window -t +1'
       bind-key -n M-< 'swap-window -t -1; select-window -t -1'
@@ -232,6 +259,7 @@
         plugin = pkgs."${namespace}".tmux-open-nvim;
         extraConfig = ''
           set -g @ton-open-strategy ":tabnew"
+          set -g @ton-prioritize-window true
           set -g @open-strategy ":tabnew"
         '';
       }
@@ -241,8 +269,7 @@
           # Overrides matching file paths with :[line]:[col] at the end
           set -g @fingers-pattern-0 "((^|^\.|[[:space:]]|[[:space:]]\.|[[:space:]]\.\.|^\.\.)[[:alnum:]~_-]*/[][[:alnum:]_.#$%&+=/@-]+)(:[[:digit:]]*:[[:digit:]]*)?"
 
-          # Launches helper script on Ctrl+[key] in fingers mode
-          set -g @fingers-ctrl-action "xargs -I {} tmux run-shell 'cd #{pane_current_path}; ~/.tmux/plugins/tmux-open-nvim/scripts/ton {} > ~/.tmux/plugins/tmux-open-nvim/ton.log'"s
+          set -g @fingers-ctrl-action ":open:"
         '';
       }
     ];
