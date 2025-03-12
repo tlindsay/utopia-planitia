@@ -79,7 +79,8 @@ map('', 'j', 'gj')
 
 -- Fast saving with <leader> and s
 map('n', '<leader>w', ':w<CR>')
-map('n', '<leader>W', ':wall<CR>')
+map('n', '<leader>W', ':w!<CR>')
+map('n', '<leader><leader>W', ':wall!<CR>')
 map('n', '<leader>e', ':e %<CR>')
 map('n', '<leader>E', ':e! %<CR>')
 
@@ -126,4 +127,4 @@ map('n', '&', ':Telescope grep_string<CR>')
 
 -- Terminal mappings
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>') -- exit
+map('t', '<Esc>', '<C-\\><C-n>')                   -- exit

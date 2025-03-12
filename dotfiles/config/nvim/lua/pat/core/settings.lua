@@ -20,6 +20,7 @@ g.tmux_navigator_no_mappings = 1
 g.tmux_navigator_no_wrap = 1
 g.sleuth_go_tabstop = 2
 g.sleuth_go_shiftwidth = 2
+g.lazyvim_blink_main = true
 
 -----------------------------------------------------------
 -- General

@@ -119,20 +119,15 @@ telescope.load_extension('gh')
 telescope.load_extension('command_palette')
 telescope.load_extension('lsp_handlers')
 telescope.load_extension('emoji')
-wk.register({
-  ['<C-b>'] = { '<C-o>:Telescope emoji<CR>', 'Open emoji picker' },
-}, { mode = 'i' })
-wk.register({
-  ['<C-p>'] = { get_files, 'Open file picker' },
-  ['<leader>'] = {
-    g = { builtins.live_grep, 'Open LiveGrep' },
-    p = { ':Telescope command_palette<CR>', 'Show Command Palette' },
-    ['?'] = { builtins.help_tags, 'Search vim-help' },
-    ['<leader>'] = {
-      -- ['.'] = { M.edit_neovim, 'Dotfiles' },
-      ['.'] = { builtins.reloader, 'Reload Lua Modules' },
-    },
-  },
+wk.add({
+  { '<C-b>', '<C-o>:Telescope emoji<CR>', desc = 'Open emoji picker', mode = 'i' },
+})
+wk.add({
+  { '<C-p>',             get_files,                        desc = 'Open file picker' },
+  { '<leader>G',         builtins.live_grep,               desc = 'Open LiveGrep' },
+  { '<leader>p',         ':Telescope command_palette<CR>', desc = 'Show Command Palette' },
+  { '<leader>?',         builtins.help_tags,               desc = 'Search vim-help' },
+  { '<leader><leader>.', builtins.reloader,                desc = 'Reload Lua Modules' },
 })
 
 return M

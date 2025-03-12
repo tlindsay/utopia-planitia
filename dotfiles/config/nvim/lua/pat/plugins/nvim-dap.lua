@@ -91,10 +91,10 @@ dapui.setup({
 })
 local dapui_augroup = vim.api.nvim_create_augroup('dapui_ft_overrides', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'dapui_*',
+  pattern = 'dapui_*,dap-repl',
   desc = 'Suppress modified flags for DAPUI bufs',
   callback = function(ev)
-    vim.api.nvim_buf_set_option(ev.buf, 'buftype', 'nofile')
+    vim.api.nvim_set_option_value('buftype', 'nofile', { buf = ev.buf })
   end,
   group = dapui_augroup,
 })
@@ -207,55 +207,55 @@ dap.configurations.javascript = { -- change to typescript if needed
 --   { type = 'go' },
 -- }
 --
-wk.register({
-  ['<leader>d'] = {
-    d = { dapui.toggle, 'Toggle DAP UI' },
-    b = { dap.toggle_breakpoint, 'Toggle breakpoint' },
-    B = {
-      function()
-        vim.ui.select({ 'log', 'condition', 'exception' }, {
-          prompt = 'Set (l)og message, (c)onditional breakpoint or e(x)ception filters?',
-        }, function(choice)
-          if choice == 'log' then
-            vim.ui.input({ prompt = 'Log point message: ' }, function(input)
-              dap.set_breakpoint(nil, nil, input)
-            end)
-          elseif choice == 'condition' then
-            vim.ui.input({ prompt = 'Breakpoint condition: ' }, function(input)
-              dap.set_breakpoint(input)
-            end)
-          elseif choice == 'exception' then
-            print('TODO')
-          else
-            vim.notify('Invalid choice', vim.log.levels.ERROR)
-          end
-        end)
-      end,
-      'Set special breakpoint',
-    },
-    X = { dap.clear_breakpoints, 'DAP Clear all breakpoints' },
-    c = { dap.continue, 'DAP Continue' },
-    C = { dap.reverse_continue, 'DAP Reverse continue' },
-    i = { dap.step_into, 'DAP Step into' },
-    o = { dap.step_over, 'DAP Step over' },
-    O = { dap.step_out, 'DAP Step out' },
-    r = { dap.restart_frame, 'DAP Restart frame' },
-    R = { dap.restart, 'DAP Restart execution' },
-    S = { dap.terminate, 'DAP Stop' },
-    h = { require('dap.ui.widgets').hover, 'DAP Hover' },
-    p = { require('dap.ui.widgets').preview, 'DAP Preview' },
-    t = {
-      function()
-        local success = dapgo.debug_test()
-        if success == false then
-          success = dapgo.debug_last_test()
+wk.add({
+  { '<leader>dd', dapui.toggle,          desc = 'Toggle DAP UI' },
+  { '<leader>db', dap.toggle_breakpoint, desc = 'Toggle breakpoint' },
+  {
+    '<leader>dB',
+    function()
+      vim.ui.select({ 'log', 'condition', 'exception' }, {
+        prompt = 'Set (l)og message, (c)onditional breakpoint or e(x)ception filters?',
+      }, function(choice)
+        if choice == 'log' then
+          vim.ui.input({ prompt = 'Log point message: ' }, function(input)
+            dap.set_breakpoint(nil, nil, input)
+          end)
+        elseif choice == 'condition' then
+          vim.ui.input({ prompt = 'Breakpoint condition: ' }, function(input)
+            dap.set_breakpoint(input)
+          end)
+        elseif choice == 'exception' then
+          print('TODO')
+        else
+          vim.notify('Invalid choice', vim.log.levels.ERROR)
         end
-        if success == false then
-          ---@diagnostic disable-next-line: undefined-global
-          vim.notify('Could not find Go test to debug', vim.log.levels.ERROR)
-        end
-      end,
-      'DAP-Go Debug Test',
-    },
+      end)
+    end,
+    desc = 'Set special breakpoint',
+  },
+  { '<leader>dX', dap.clear_breakpoints,             desc = 'DAP Clear all breakpoints' },
+  { '<leader>dc', dap.continue,                      desc = 'DAP Continue' },
+  { '<leader>dC', dap.reverse_continue,              desc = 'DAP Reverse continue' },
+  { '<leader>di', dap.step_into,                     desc = 'DAP Step into' },
+  { '<leader>do', dap.step_over,                     desc = 'DAP Step over' },
+  { '<leader>dO', dap.step_out,                      desc = 'DAP Step out' },
+  { '<leader>dr', dap.restart_frame,                 desc = 'DAP Restart frame' },
+  { '<leader>dR', dap.restart,                       desc = 'DAP Restart execution' },
+  { '<leader>dS', dap.terminate,                     desc = 'DAP Stop' },
+  { '<leader>dh', require('dap.ui.widgets').hover,   desc = 'DAP Hover' },
+  { '<leader>dp', require('dap.ui.widgets').preview, desc = 'DAP Preview' },
+  {
+    '<leader>dt',
+    function()
+      local success = dapgo.debug_test()
+      if success == false then
+        success = dapgo.debug_last_test()
+      end
+      if success == false then
+        ---@diagnostic disable-next-line: undefined-global
+        vim.notify('Could not find Go test to debug', vim.log.levels.ERROR)
+      end
+    end,
+    desc = 'DAP-Go Debug Test',
   },
 })

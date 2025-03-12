@@ -31,6 +31,7 @@ local nvim_lsp = require('lspconfig')
 local lsp_links = require('lsplinks')
 local inlay_hints = require('inlay-hints')
 local corn = require('corn')
+local lsp_lines = require('lsp_lines')
 local navic = require('nvim-navic')
 local navbuddy = require('nvim-navbuddy')
 local wk = require('which-key')
@@ -39,11 +40,12 @@ require('mason').setup({
     border = border,
   },
 })
-require('mason-lspconfig').setup({ ensure_installed = servers })
+require('mason-lspconfig').setup({ automatic_installation = false, ensure_installed = servers })
 require('lspconfig.ui.windows').default_options.border = border
-require('fidget').setup({ text = { spinner = 'dots' } })
+require('fidget').setup({})
 require('neoconf').setup({})
 
+lsp_lines.setup()
 lsp_links.setup()
 inlay_hints.setup({
   -- possible options are dynamic, eol, virtline and custom
@@ -84,17 +86,13 @@ corn.setup({
 
 vim.diagnostic.config({
   virtual_text = false,
-  -- underline = function(...)
-  --   P('UNDERLINE?')
-  --   P(...)
-  --   return false
-  -- end,
+  virtual_lines = false,
+  float = false,
 })
 
--- Add additional capabilities supported by nvim-cmp
+-- Add additional capabilities supported by blink-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
--- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
 capabilities.textDocument.completion.completionItem =
     vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
@@ -241,13 +239,6 @@ local function on_attach(client, bufnr)
       x = { lsp_links.gx, 'Open file or documentLink' },
     },
   }, opts)
-  -- wk.register(
-  --   {
-  --     ['<leader>f'] = { function() vim.lsp.buf.code_action({ range = "" }) end, "Fix Diagnostic" },
-  --     ['<leader>F'] = { function() vim.lsp.buf.format({ range = "" }) end, "Fix Diagnostic" },
-  --   },
-  --   { mode = 'v' }
-  -- )
 end
 
 local handlers = {
@@ -255,13 +246,7 @@ local handlers = {
   ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
   ['textDocument/typeDefinition'] = vim.lsp.with(function(_, result, ctx, config)
     local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
-
-    -- if not vim.islist(result) then
-    --   result = { result }
-    -- end
-
     local items = vim.lsp.util.locations_to_items(result, client.offset_encoding)
-    P('type def: ', result[1])
 
     if #result == 1 then
       vim.lsp.util.preview_location(result[1], { border = border })
@@ -294,7 +279,9 @@ require('mason-lspconfig').setup_handlers({
         gopls = {
           experimentalPostfixCompletions = true,
           analyses = {
+            modernize = true,
             useany = true,
+            unusedfunc = true,
             unusedwrite = true,
             unusedvariable = true,
             -- fieldalignment = true,
@@ -302,7 +289,6 @@ require('mason-lspconfig').setup_handlers({
           },
           codelenses = {
             generate = true,
-            gc_details = false,
             regenerate_cgo = true,
             tidy = true,
             test = true,
@@ -324,8 +310,7 @@ require('mason-lspconfig').setup_handlers({
           linksInHover = 'gopls',
           hoverKind = 'FullDocumentation',
 
-          semanticTokens = true,
-          noSemanticString = true, -- disable semantic string tokens so we can use treesitter highlight injections
+          semanticTokenTypes = { string = false }, -- disable semantic string tokens so we can use treesitter highlight injections
         },
       },
     })
