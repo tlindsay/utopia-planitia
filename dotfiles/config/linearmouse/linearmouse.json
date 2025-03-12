@@ -1,64 +1,121 @@
 {
-  "schemes" : [
+  "$schema": "https:\/\/schema.linearmouse.app\/0.10.0",
+  "schemes": [
     {
-      "if" : {
-        "device" : {
-          "productID" : "0xc52b",
-          "productName" : "USB Receiver",
-          "vendorID" : "0x46d",
-          "category" : "mouse"
-        }
-      },
-      "scrolling" : {
-        "reverse" : {
-          "vertical" : true
-        },
-        "speed" : {
-          "vertical" : 16.38
-        }
-      },
-      "buttons" : {
-        "mappings" : [
+      "buttons": {
+        "mappings": [
           {
-            "option" : false,
-            "control" : false,
-            "action" : {
-              "keyPress" : [
+            "option": false,
+            "control": false,
+            "button": 3,
+            "shift": false,
+            "command": false,
+            "action": {
+              "keyPress": [
                 "control",
                 "arrowDown"
               ]
-            },
-            "shift" : false,
-            "button" : 3,
-            "command" : false
+            }
           },
           {
-            "shift" : false,
-            "option" : false,
-            "control" : false,
-            "command" : true,
-            "action" : "mouse.button.back",
-            "button" : 3
+            "command": true,
+            "button": 3,
+            "action": "mouse.button.back",
+            "option": false,
+            "control": false,
+            "shift": false
           },
           {
-            "button" : 4,
-            "option" : false,
-            "shift" : false,
-            "action" : "missionControl",
-            "command" : false,
-            "control" : false
+            "command": false,
+            "control": false,
+            "shift": false,
+            "action": "missionControl",
+            "button": 4,
+            "option": false
           },
           {
-            "command" : true,
-            "shift" : false,
-            "action" : "mouse.button.forward",
-            "button" : 4,
-            "option" : false,
-            "control" : false
+            "control": false,
+            "action": "mouse.button.forward",
+            "option": false,
+            "button": 4,
+            "command": true,
+            "shift": false
           }
         ]
+      },
+      "scrolling": {
+        "speed": {
+          "vertical": 16.38
+        },
+        "reverse": {
+          "vertical": true
+        }
+      },
+      "if": {
+        "device": {
+          "vendorID": "0x46d",
+          "category": "mouse",
+          "productID": "0xc52b",
+          "productName": "USB Receiver"
+        }
+      }
+    },
+    {
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productName": "USB Receiver",
+          "productID": "0xc548",
+          "vendorID": "0x46d"
+        }
+      },
+      "scrolling": {
+        "acceleration": {
+          "vertical": 1
+        }
+      },
+      "buttons": {
+        "mappings": [
+          {
+            "shift": false,
+            "command": false,
+            "control": false,
+            "button": 3,
+            "option": false,
+            "action": {
+              "keyPress": [
+                "control",
+                "arrowDown"
+              ]
+            }
+          },
+          {
+            "option": false,
+            "shift": false,
+            "command": true,
+            "action": "mouse.button.back",
+            "control": false,
+            "button": 3
+          },
+          {
+            "control": false,
+            "action": "missionControl",
+            "command": false,
+            "button": 4,
+            "shift": false,
+            "option": false
+          },
+          {
+            "control": false,
+            "button": 4,
+            "action": "mouse.button.forward",
+            "command": true,
+            "shift": false,
+            "option": false
+          }
+        ],
+        "universalBackForward": false
       }
     }
-  ],
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0"
+  ]
 }
