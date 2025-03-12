@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  home = config.snowfallorg.user.home.directory;
-  xdg_configHome = "${home}/.config";
-in {
+{pkgs, ...}: {
   xdg = {
     enable = true;
     configFile = {
@@ -15,15 +8,13 @@ in {
         recursive = true;
         target = "./";
       };
-      ".default-golang-pkgs" = {
-        text = builtins.readFile ../../../dotfiles/default-golang-pkgs;
-      };
-      "${xdg_configHome}/direnv/lib/oprc.sh".source =
+      "direnv/lib/oprc.sh".source =
         pkgs.replicator.direnv-oprc;
-      "bins" = {
+    };
+    dataFile = {
+      "bin" = {
         source = ../../../dotfiles/bin;
         recursive = true;
-        target = ".bin/";
       };
     };
   };
