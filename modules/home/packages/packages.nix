@@ -80,7 +80,6 @@ with pkgs; [
   nodePackages_latest.eslint
   nodePackages_latest.typescript-language-server
   prettierd
-  python311Packages.pip
   statix
   typescript
   yamllint
@@ -107,11 +106,9 @@ with pkgs; [
   # Media-related packages
   ffmpeg
   fd
-  harfbuzz
   (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
 
   # Still using asdf for tool versioning
-  mise
   asdf-vm
 
   # Text and terminal utilities
@@ -120,7 +117,6 @@ with pkgs; [
   direnv
   du-dust
   figlet
-  nodePackages_latest.fkill-cli
   fx
   gh
   git
@@ -130,7 +126,6 @@ with pkgs; [
   glow
   gum
   hub
-  hunspell
   iftop
   jq
   jnv
