@@ -1,120 +1,123 @@
 {
-  "$schema": "https:\/\/schema.linearmouse.app\/0.10.0",
-  "schemes": [
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0",
+  "schemes" : [
     {
-      "buttons": {
-        "mappings": [
+      "if" : {
+        "device" : {
+          "vendorID" : "0x46d",
+          "productID" : "0xc52b",
+          "category" : "mouse",
+          "productName" : "USB Receiver"
+        }
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : true
+        },
+        "speed" : {
+          "vertical" : 16.38
+        }
+      },
+      "buttons" : {
+        "mappings" : [
           {
-            "option": false,
-            "control": false,
-            "button": 3,
-            "shift": false,
-            "command": false,
-            "action": {
-              "keyPress": [
+            "control" : false,
+            "option" : false,
+            "action" : {
+              "keyPress" : [
                 "control",
                 "arrowDown"
               ]
-            }
+            },
+            "command" : false,
+            "button" : 3,
+            "shift" : false
           },
           {
-            "command": true,
-            "button": 3,
-            "action": "mouse.button.back",
-            "option": false,
-            "control": false,
-            "shift": false
+            "action" : "mouse.button.back",
+            "control" : false,
+            "button" : 3,
+            "shift" : false,
+            "command" : true,
+            "option" : false
           },
           {
-            "command": false,
-            "control": false,
-            "shift": false,
-            "action": "missionControl",
-            "button": 4,
-            "option": false
+            "option" : false,
+            "button" : 4,
+            "shift" : false,
+            "command" : false,
+            "control" : false,
+            "action" : "missionControl"
           },
           {
-            "control": false,
-            "action": "mouse.button.forward",
-            "option": false,
-            "button": 4,
-            "command": true,
-            "shift": false
+            "button" : 4,
+            "control" : false,
+            "option" : false,
+            "action" : "mouse.button.forward",
+            "shift" : false,
+            "command" : true
           }
         ]
-      },
-      "scrolling": {
-        "speed": {
-          "vertical": 16.38
-        },
-        "reverse": {
-          "vertical": true
-        }
-      },
-      "if": {
-        "device": {
-          "vendorID": "0x46d",
-          "category": "mouse",
-          "productID": "0xc52b",
-          "productName": "USB Receiver"
-        }
       }
     },
     {
-      "if": {
-        "device": {
-          "category": "mouse",
-          "productName": "USB Receiver",
-          "productID": "0xc548",
-          "vendorID": "0x46d"
+      "if" : {
+        "device" : {
+          "vendorID" : "0x46d",
+          "category" : "mouse",
+          "productName" : "USB Receiver",
+          "productID" : "0xc548"
         }
       },
-      "scrolling": {
-        "acceleration": {
-          "vertical": 1
+      "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "reverse" : {
+          "vertical" : true
         }
       },
-      "buttons": {
-        "mappings": [
+      "buttons" : {
+        "mappings" : [
           {
-            "shift": false,
-            "command": false,
-            "control": false,
-            "button": 3,
-            "option": false,
-            "action": {
-              "keyPress": [
+            "command" : false,
+            "shift" : false,
+            "control" : false,
+            "option" : false,
+            "action" : {
+              "keyPress" : [
                 "control",
                 "arrowDown"
               ]
-            }
+            },
+            "button" : 3
           },
           {
-            "option": false,
-            "shift": false,
-            "command": true,
-            "action": "mouse.button.back",
-            "control": false,
-            "button": 3
+            "shift" : false,
+            "control" : false,
+            "action" : "mouse.button.back",
+            "option" : false,
+            "button" : 3,
+            "command" : true
           },
           {
-            "control": false,
-            "action": "missionControl",
-            "command": false,
-            "button": 4,
-            "shift": false,
-            "option": false
+            "option" : false,
+            "action" : "missionControl",
+            "control" : false,
+            "command" : false,
+            "button" : 4,
+            "shift" : false
           },
           {
-            "control": false,
-            "button": 4,
-            "action": "mouse.button.forward",
-            "command": true,
-            "shift": false,
-            "option": false
+            "button" : 4,
+            "shift" : false,
+            "option" : false,
+            "control" : false,
+            "action" : "mouse.button.forward",
+            "command" : true
           }
         ],
-        "universalBackForward": false
+        "universalBackForward" : false
       }
     }
   ]
