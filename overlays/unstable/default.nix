@@ -6,8 +6,6 @@
     astroterm
     atuin
     fastly
-    git
-    git-town
     golangci-lint
     mqttui
     neovim

@@ -13,4 +13,5 @@
 - [ ] Use more [snacks](https://github.com/folke/snacks.nvim)
     - [ ] Replace alpha with snacks dashboard
     - [ ] Use animations???
+- [ ] Replace `unstable` overlay with `environmentPackages = [ … pkgs-unstable.git … ];` or whatever
 
