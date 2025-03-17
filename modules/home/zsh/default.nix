@@ -164,6 +164,11 @@ in {
     '';
 
     loginExtra = ''
+      setopt CHASE_DOTS
+      setopt CHASE_LINKS
+      setopt EXTENDED_GLOB
+      setopt INTERACTIVE_COMMENTS
+
       export VISUAL=nvim
       export EDITOR="$VISUAL"
 
@@ -190,8 +195,8 @@ in {
         --bind='alt-s:toggle-sort'
         --bind='alt-w:toggle-preview-wrap'
       "
-      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-      export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always {} | head -500'"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --hidden"
+      export FZF_CTRL_T_OPTS="--preview 'bat --style=header,changes,numbers --color=always {} | head -500'"
 
       export FORGIT_FZF_DEFAULT_OPTS="
         --ansi
