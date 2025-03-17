@@ -1,15 +1,30 @@
-{...}: {
+_: {
   homebrew = {
     enable = true;
+    onActivation = {
+      cleanup = "none";
+      autoUpdate = true;
+      upgrade = true;
+      extraFlags = [
+        "--verbose"
+      ];
+    };
+    taps = [
+      "infrahq/homebrew-tap"
+      "TaKO8Ki/homebrew-tap" # gobang - DBMS TUI
+      "LucasPickering/homebrew-tap" # slumber - REST client TUI
+      "daveshanley/homebrew-vacuum" # vacuum - OpenAPI linter
+      "dagger/homebrew-tap" # dagger build pipelines
+    ];
     brews = [
       "blueutil"
       "fileicon"
       "otree"
-      "infrahq/tap/infra"
-      "tako8ki/tap/gobang"
-      "LucasPickering/tap/slumber"
-      "daveshanley/vacuum/vacuum"
-      "dagger/tap/dagger"
+      "infra"
+      "gobang"
+      "slumber"
+      "vacuum"
+      "dagger"
     ];
     casks = [
       # Development Tools
@@ -20,16 +35,9 @@
       "betterdisplay"
       "qmk-toolbox"
       "linearmouse"
-      # "setapp"
 
-      # Productivity Tools
-      # "raycast"
-
-      # Browsers
-      # "arc"
-      # "google-chrome"
-      # "firefox"
-      # "homebrew/cask-versions/firefox-developer-edition"
+      # Entertainment
+      "radiola"
     ];
     masApps = {
       "wireguard" = 1451685025;
