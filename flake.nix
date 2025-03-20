@@ -57,13 +57,6 @@
         allowBroken = true;
         allowInsecure = false;
         allowUnsupportedSystem = true;
-        packageOverrides = pkgs: rec {
-          python312Packages = pkgs.python312Packages // {
-            hypothesis = pkgs.python312Packages.hypothesis.overrideAttrs (oldAttrs: {
-              disabledTests = oldAttrs.disabledTests ++ ["test_can_run_with_no_db"];
-            });
-          };
-        };
       };
       src = ./.;
       snowfall = {namespace = "replicator";};
