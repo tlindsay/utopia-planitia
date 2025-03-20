@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, upkgs, ...}:
 with pkgs; [
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`
@@ -10,6 +10,14 @@ with pkgs; [
   replicator.hl
   # replicator.loggo
   replicator.tmux-open-nvim
+
+  # Unstable packages
+  upkgs.fastly
+  upkgs.golangci-lint
+  upkgs.mqttui
+  upkgs.neovim
+  upkgs.tailscale
+  (upkgs.tinygo.override {tinygoTests = null;})
 
   # General packages for development and system management
   _1password-cli
@@ -41,17 +49,14 @@ with pkgs; [
   moreutils
   mosh
   mprocs
-  mqttui
   mysql-shell
   navi # zsh cheatsheet auto substitutions!!!
   neofetch
-  neovim
   pam-reattach
   pet # Shell snippet mgr
   qmk
   sqlite
   sqruff # SQL formatter/linter
-  tailscale
   tailspin # Log tailer
   usql
   wget
@@ -74,7 +79,6 @@ with pkgs; [
   cuelsp
   deadnix
   eslint_d
-  golangci-lint
   gomacro # golang repl
   luarocks
   nodePackages_latest.eslint
@@ -97,7 +101,6 @@ with pkgs; [
   docker-buildx
   docker-credential-helpers
   docker-compose
-  fastly
   k9s
   kubectl
   kubernetes-helm
@@ -134,6 +137,7 @@ with pkgs; [
   nushell
   procs
   ripgrep
+  spotify-player
   starship
   tealdeer
   tree
