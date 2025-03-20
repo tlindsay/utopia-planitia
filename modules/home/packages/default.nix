@@ -1,4 +1,11 @@
-{pkgs, inputs, system, ...}: let upkgs = inputs.nixpkgs-unstable.legacyPackages."${system}"; in {
+{
+  pkgs,
+  inputs,
+  system,
+  ...
+}: let
+  upkgs = inputs.nixpkgs-unstable.legacyPackages."${system}";
+in {
   home = {
     enableNixpkgsReleaseCheck = true;
     stateVersion = "24.11";

@@ -1,4 +1,8 @@
-{pkgs, upkgs, ...}:
+{
+  pkgs,
+  upkgs,
+  ...
+}:
 with pkgs; [
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`

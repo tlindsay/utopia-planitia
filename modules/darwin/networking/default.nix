@@ -1,4 +1,4 @@
-{...}: {
+_: {
   networking = {
     knownNetworkServices = ["Wi-Fi" "Thunderbolt Ethernet Slot 0"];
     dns = [

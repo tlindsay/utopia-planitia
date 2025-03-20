@@ -37,7 +37,7 @@
 
     extraConfig = {
       # EXPERIMENTAL
-      commit = { verbose = true; };
+      commit = {verbose = true;};
       diff = {
         colorMoved = "plain";
         algorithm = "histogram";
@@ -49,7 +49,7 @@
         prune = true;
         pruneTags = true;
       };
-      help = { autocorrect = "prompt"; };
+      help = {autocorrect = "prompt";};
       rebase = {
         autoSquash = true;
         autoStash = true;
@@ -58,7 +58,7 @@
       tag = {sort = "refname";};
       # END EXPERIMENTS
 
-      checkout = { defaultRemote = "origin"; };
+      checkout = {defaultRemote = "origin";};
       core = {
         pager = "diff-so-fancy | bat --style=numbers";
         fsmonitor = false;
