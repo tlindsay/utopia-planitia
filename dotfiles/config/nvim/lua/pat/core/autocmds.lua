@@ -3,18 +3,15 @@
 -- Event Type overview: https://gist.github.com/dtr2300/2f867c2b6c051e946ef23f92bd9d1180
 -----------------------------------------------------------
 
--- Remove whitespace on save
-vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
-
--- local focusGroup = vim.api.nvim_create_augroup('PatFocusEvents', { clear = true })
--- vim.api.nvim_create_autocmd('FocusLost', {
---   command = 'set norelativenumber',
---   group = focusGroup,
--- })
--- vim.api.nvim_create_autocmd('FocusGained', {
---   command = 'set relativenumber',
---   group = focusGroup,
--- })
+local focusGroup = vim.api.nvim_create_augroup('PatFocusEvents', { clear = true })
+vim.api.nvim_create_autocmd('FocusLost', {
+  command = 'set norelativenumber',
+  group = focusGroup,
+})
+vim.api.nvim_create_autocmd('FocusGained', {
+  command = 'set relativenumber',
+  group = focusGroup,
+})
 
 local yankGroup = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {

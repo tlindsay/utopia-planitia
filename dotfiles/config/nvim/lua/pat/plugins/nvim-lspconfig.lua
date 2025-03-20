@@ -30,6 +30,7 @@ local utils = require('pat.utils')
 local nvim_lsp = require('lspconfig')
 local lsp_links = require('lsplinks')
 local inlay_hints = require('inlay-hints')
+local conform = require('conform')
 local corn = require('corn')
 local lsp_lines = require('lsp_lines')
 local navic = require('nvim-navic')
@@ -44,6 +45,26 @@ require('mason-lspconfig').setup({ automatic_installation = false, ensure_instal
 require('lspconfig.ui.windows').default_options.border = border
 require('fidget').setup({})
 require('neoconf').setup({})
+
+local toggleAutoformat = function()
+  vim.g.disable_autoformat = not vim.g.disable_autoformat
+end
+conform.setup({
+  formatters_by_ft = {
+    go = { 'goimports', 'goimports-reviser', 'gofmt' },
+    lua = { 'stylua' },
+    sql = { 'sqruff' },
+    nix = { 'alejandra' },
+    yaml = { 'yamlfmt' },
+    javascript = { 'prettierd' },
+  },
+  format_after_save = function(bufnr)
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return
+    end
+    return { async = true, lsp_format = 'fallback' }
+  end,
+})
 
 lsp_lines.setup()
 lsp_links.setup()
@@ -82,6 +103,14 @@ corn.setup({
     end
     return item
   end,
+  scope = 'line',
+  on_toggle = function(is_visible)
+    if not is_visible then
+      vim.diagnostic.config({ virtual_lines = { highlight_whole_line = false, only_current_line = true } })
+    else
+      vim.diagnostic.config({ virtual_lines = false })
+    end
+  end,
 })
 
 vim.diagnostic.config({
@@ -95,33 +124,27 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
 capabilities.textDocument.completion.completionItem =
-    vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
-      documentationFormat = { 'markdown', 'plaintext' },
-      snippetSupport = true,
-      preselectSupport = true,
-      insertReplaceSupport = true,
-      labelDetailsSupport = true,
-      deprecatedSupport = true,
-      commitCharactersSupport = true,
-      tagSupport = { valueSet = { 1 } },
-      resolveSupport = {
-        properties = {
-          'documentation',
-          'detail',
-          'additionalTextEdits',
-        },
+  vim.tbl_extend('force', capabilities.textDocument.completion.completionItem, {
+    documentationFormat = { 'markdown', 'plaintext' },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+      properties = {
+        'documentation',
+        'detail',
+        'additionalTextEdits',
       },
-      -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
-      contextSupport = true,
-      dynamicRegistration = true,
-    })
+    },
+    -- 3/11/24 - Trying these out. Stolen from ray-x/go.nvim readme
+    contextSupport = true,
+    dynamicRegistration = true,
+  })
 
--- Autoformat on save
-require('format-on-save').setup({
-  error_notifier = require('format-on-save.error-notifiers.vim-notify'),
-  experiments = { disable_restore_cursors = true, partial_update = 'diff' },
-  fallback_formatter = { require('format-on-save.formatters').lsp },
-})
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local function on_attach(client, bufnr)
@@ -132,8 +155,8 @@ local function on_attach(client, bufnr)
   if client.server_capabilities.codeLensProvider then
     local lenses = vim.lsp.codelens.get(bufnr)
     vim.lsp.codelens.display(lenses, bufnr, client.id)
-    wk.register({
-      ['<leader><leader>a'] = { vim.lsp.codelens.run, 'Run codelens for current line' },
+    wk.add({
+      { '<leader><leader>a', vim.lsp.codelens.run, { group = 'LSP', desc = 'Run codelens for current line' } },
     })
 
     local lens_group = vim.api.nvim_create_augroup('lsp_document_codelens', { clear = true })
@@ -178,65 +201,147 @@ local function on_attach(client, bufnr)
   -- Mappings.
   local opts = { buffer = bufnr, noremap = true, silent = true, mode = { 'n', 'v' } }
 
-  wk.register({
-    ['<space>'] = { vim.lsp.buf.hover, 'Show Inline Documentation' },
-    ['<leader>'] = {
-      ['<leader>v'] = { navbuddy.open, 'Open symbol outline' },
-      a = {
-        function()
-          vim.diagnostic.goto_next({ float = { border = border } })
-        end,
-        'Go to next issue',
-      },
-      A = {
-        function()
-          vim.diagnostic.goto_prev({ float = { border = border } })
-        end,
-        'Go to previous issue',
-      },
-      D = { vim.lsp.buf.type_definition, 'Show Type Definition' },
-      rn = { vim.lsp.buf.rename, 'Rename Symbol' },
-      k = { vim.lsp.buf.signature_help, 'Show Signature Help' },
-      f = { vim.lsp.buf.code_action, 'Fix Diagnostic' },
-      F = {
-        function()
-          vim.lsp.buf.format({ async = true })
-        end,
-        'Autoformat',
-      },
-      -- F = {
-      --   require('format-on-save').format,
-      --   'Autoformat',
-      -- },
-      l = { corn.scope_cycle, 'Toggle line/file diagnostics' },
-      x = {
-        x = { '<cmd>Trouble diagnostics toggle<cr>', 'Toggle Trouble' },
-        w = { '<cmd>Trouble diagnostics open<cr>', 'Workspace Diagnostics' },
-        d = { '<cmd>Trouble diagnostics open filter.buf=0<cr>', 'Document Diagnostics' },
-        q = { '<cmd>Trouble quickfix<cr>', 'Quickfix' },
-        l = { '<cmd>Trouble loclist<cr>', 'Loclist' },
-      },
-      s = {
-        '<cmd>Trouble symbols toggle<cr>',
-        'Symbol list',
-      },
+  wk.add({
+    {
+      '<space>',
+      vim.lsp.buf.hover,
+      { group = 'LSP', desc = 'Show Inline Documentation' },
     },
-    g = {
-      ['<space>'] = { '<cmd>Trouble inspect toggle pinned=true focus=true<cr>', 'Open symbol inspector' },
-      d = { '<cmd>Trouble lsp_definitions<cr>', 'Go to Definition' },
-      D = { '<cmd>Trouble lsp_definitions open auto_jump=false<cr>', 'List Definitions in Trouble' },
-      i = { '<cmd>Trouble lsp_implementations<cr>', 'Go to Implementation' },
-      I = { '<cmd>Trouble lsp_implementations open auto_jump=false<cr>', 'List Implementations in Trouble' },
-      r = { '<cmd>Trouble lsp_references<cr>', 'List References in Trouble' },
-      R = { '<cmd>Trouble lsp_references open auto_jump=false<cr>', 'List References in Trouble' },
-      C = {
-        i = { '<cmd>Trouble lsp_incoming_calls<cr>', 'List call sites of the symbol under the cursor' },
-        o = {
-          '<cmd>Trouble lsp_outgoing_calls<cr>',
-          'List the items that are called by the symbol under the cursor',
-        },
-      },
-      x = { lsp_links.gx, 'Open file or documentLink' },
+    {
+      '<leader><leader>v',
+      navbuddy.open,
+      { group = 'LSP', desc = 'Open symbol outline' },
+    },
+    {
+      '<leader>a',
+      function()
+        vim.diagnostic.goto_next({ float = { border = border } })
+      end,
+      { group = 'LSP', desc = 'Go to next issue' },
+    },
+    {
+      '<leader>A',
+      function()
+        vim.diagnostic.goto_prev({ float = { border = border } })
+      end,
+      { group = 'LSP', desc = 'Go to previous issue' },
+    },
+    {
+      '<leader>D',
+      vim.lsp.buf.type_definition,
+      { group = 'LSP', desc = 'Show Type Definition' },
+    },
+    {
+      '<leader>rn',
+      vim.lsp.buf.rename,
+      { group = 'LSP', desc = 'Rename Symbol' },
+    },
+    {
+      '<leader>k',
+      vim.lsp.buf.signature_help,
+      { group = 'LSP', desc = 'Show Signature Help' },
+    },
+    {
+      '<leader>f',
+      vim.lsp.buf.code_action,
+      { group = 'LSP', desc = 'Fix Diagnostic' },
+    },
+    {
+      '<leader>F',
+      function()
+        conform.format({ async = true, lsp_format = 'fallback' })
+      end,
+      { group = 'LSP', desc = 'Autoformat' },
+    },
+    {
+      '<leader><leader>f',
+      toggleAutoformat,
+      { group = 'LSP', desc = 'Toggle format-on-save' },
+    },
+    {
+      '<leader>l',
+      corn.toggle,
+      { group = 'LSP', desc = 'Toggle line/floating diagnostics' },
+    },
+    {
+      '<leader>xx',
+      '<cmd>Trouble diagnostics toggle<cr>',
+      { group = 'LSP', desc = 'Toggle Trouble' },
+    },
+    {
+      '<leader>xw',
+      '<cmd>Trouble diagnostics open<cr>',
+      { group = 'LSP', desc = 'Workspace Diagnostics' },
+    },
+    {
+      '<leader>xd',
+      '<cmd>Trouble diagnostics open filter.buf=0<cr>',
+      { group = 'LSP', desc = 'Document Diagnostics' },
+    },
+    {
+      '<leader>xq',
+      '<cmd>Trouble quickfix<cr>',
+      { group = 'LSP', desc = 'Quickfix' },
+    },
+    {
+      '<leader>xl',
+      '<cmd>Trouble loclist<cr>',
+      { group = 'LSP', desc = 'Loclist' },
+    },
+    {
+      '<leader>s',
+      '<cmd>Trouble symbols toggle<cr>',
+      { group = 'LSP', desc = 'Symbol list' },
+    },
+    {
+      'g<space>',
+      '<cmd>Trouble inspect toggle pinned=true focus=true<cr>',
+      { group = 'LSP', desc = 'Open symbol inspector' },
+    },
+    {
+      'gd',
+      '<cmd>Trouble lsp_definitions<cr>',
+      { group = 'LSP', desc = 'Go to Definition' },
+    },
+    {
+      'gD',
+      '<cmd>Trouble lsp_definitions open auto_jump=false<cr>',
+      { group = 'LSP', desc = 'List Definitions in Trouble' },
+    },
+    {
+      'gi',
+      '<cmd>Trouble lsp_implementations<cr>',
+      { group = 'LSP', desc = 'Go to Implementation' },
+    },
+    {
+      'gI',
+      '<cmd>Trouble lsp_implementations open auto_jump=false<cr>',
+      { group = 'LSP', desc = 'List Implementations in Trouble' },
+    },
+    {
+      'gr',
+      '<cmd>Trouble lsp_references<cr>',
+      { group = 'LSP', desc = 'List References in Trouble' },
+    },
+    {
+      'gR',
+      '<cmd>Trouble lsp_references open auto_jump=false<cr>',
+      { group = 'LSP', desc = 'List References in Trouble' },
+    },
+    {
+      'gCi',
+      '<cmd>Trouble lsp_incoming_calls<cr>',
+      { group = 'LSP', desc = 'List call sites of the symbol under the cursor' },
+    },
+    {
+      'gCo',
+      '<cmd>Trouble lsp_outgoing_calls<cr>',
+      { group = 'LSP', desc = 'List the items that are called by the symbol under the cursor' },
+    },
+    {
+      'gx',
+      lsp_links.gx,
+      { group = 'LSP', desc = 'Open file or documentLink' },
     },
   }, opts)
 end
@@ -385,6 +490,37 @@ require('mason-lspconfig').setup_handlers({
       handlers = handlers,
       on_attach = on_attach,
       capabilities = capabilities,
+      on_init = function(client)
+        if client.workspace_folders then
+          local path = client.workspace_folders[1].name
+          if
+            path ~= vim.fn.stdpath('config')
+            and (vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc'))
+          then
+            return
+          end
+        end
+
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+          runtime = {
+            -- Tell the language server which version of Lua you're using
+            -- (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+          },
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME,
+              -- Depending on the usage, you might want to add additional paths here.
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            },
+            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+            -- library = vim.api.nvim_get_runtime_file("", true)
+          },
+        })
+      end,
       settings = {
         Lua = {
           completion = { callSnippet = 'Replace' },

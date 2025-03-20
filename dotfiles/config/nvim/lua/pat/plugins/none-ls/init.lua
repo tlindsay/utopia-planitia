@@ -1,5 +1,5 @@
 local null = require('null-ls')
-local customSources = require('pat.plugins/none-ls.custom')
+-- local customSources = require('pat.plugins/none-ls.custom')
 local sevs = vim.diagnostic.severity
 
 null.setup({
@@ -11,10 +11,6 @@ null.setup({
     null.builtins.code_actions.refactoring,
     null.builtins.code_actions.gitrebase,
     null.builtins.code_actions.gitsigns,
-
-    -- Shell
-    null.builtins.formatting.shellharden,
-    null.builtins.formatting.shfmt,
 
     -- Golang
     -- extra_args doesn't work with staticcheck
@@ -58,22 +54,13 @@ null.setup({
         return d
       end,
     }),
-    null.builtins.formatting.gofmt,
-    null.builtins.formatting.goimports_reviser.with({
-      extra_args = { '-company-prefixes', 'github.com/fastly', '-set-alias', '-use-cache' },
-    }),
     null.builtins.code_actions.gomodifytags,
     null.builtins.code_actions.impl,
 
     -- SQL
     null.builtins.diagnostics.sqruff,
-    null.builtins.formatting.sqruff,
-
-    -- Lua
-    null.builtins.formatting.stylua,
 
     -- Nix
-    null.builtins.formatting.alejandra,
     null.builtins.code_actions.statix,
     null.builtins.diagnostics.deadnix,
     null.builtins.diagnostics.statix,
@@ -85,7 +72,6 @@ null.setup({
         '{extends: relaxed, rules: {line-length: {max: 120}, document-start: disable}}',
       },
     }),
-    null.builtins.formatting.yamlfmt,
 
     -- JS/TS
     require('none-ls.code_actions.eslint_d'),
@@ -100,11 +86,6 @@ null.setup({
         return not vim.iter(shouldSkip):any(function(r)
           return r
         end)
-      end,
-    }),
-    null.builtins.formatting.prettierd.with({
-      condition = function(utils)
-        return utils.root_has_file('node_modules/.bin/prettier')
       end,
     }),
   },

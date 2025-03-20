@@ -40,7 +40,6 @@ local navic = require('nvim-navic')
 local component = {}
 component.format_on_save = {
   provider = 'format_on_save',
-  update = { 'User ToggleFormatOnSave' },
   hl = { fg = colors.bg, bg = colors.pink },
 }
 -- vi_mode -> NORMAL, INSERT..
@@ -260,9 +259,9 @@ local custom_providers = {
     end
   end,
   format_on_save = function()
-    local var = require('format-on-save.config').enabled
+    local enabled = not vim.g.disable_autoformat
     local label = ''
-    if var == 1 or var == true then
+    if enabled then
       label = ' 󰉼 '
     end
     return label

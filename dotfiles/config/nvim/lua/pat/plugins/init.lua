@@ -135,6 +135,7 @@ return {
       return vim.fn.executable('rg') and 1
     end,
   },
+  'stevearc/conform.nvim',
   {
     'nvimtools/none-ls.nvim',
     dependencies = {
@@ -150,7 +151,6 @@ return {
       'nvimtools/none-ls.nvim',
     },
   },
-  'elentok/format-on-save.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
   {
     'j-hui/fidget.nvim',
