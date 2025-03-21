@@ -48,6 +48,7 @@ with pkgs; [
   fzf
   gettext
   home-manager
+  just
   llvmPackages_latest.llvm
   killall
   moreutils

@@ -138,6 +138,10 @@ in {
       zstyle ':fzf-tab:*' switch-group ',' '.'
     '';
 
+    envExtra = ''
+      export PLAYDATE_SDK_PATH=~/Developer/PlaydateSDK
+    '';
+
     initExtra = ''
       # Use nix-index for command-not-found
       source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
