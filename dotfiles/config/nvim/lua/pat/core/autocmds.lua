@@ -3,18 +3,15 @@
 -- Event Type overview: https://gist.github.com/dtr2300/2f867c2b6c051e946ef23f92bd9d1180
 -----------------------------------------------------------
 
--- Remove whitespace on save
-vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
-
--- local focusGroup = vim.api.nvim_create_augroup('PatFocusEvents', { clear = true })
--- vim.api.nvim_create_autocmd('FocusLost', {
---   command = 'set norelativenumber',
---   group = focusGroup,
--- })
--- vim.api.nvim_create_autocmd('FocusGained', {
---   command = 'set relativenumber',
---   group = focusGroup,
--- })
+local focusGroup = vim.api.nvim_create_augroup('PatFocusEvents', { clear = true })
+vim.api.nvim_create_autocmd('FocusLost', {
+  command = 'set norelativenumber',
+  group = focusGroup,
+})
+vim.api.nvim_create_autocmd('FocusGained', {
+  command = 'set relativenumber',
+  group = focusGroup,
+})
 
 local yankGroup = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -75,7 +72,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
   desc = 'Easy exits',
   callback = function(evt)
-    local filetypes = { 'list', 'fugitiveblame', 'tsplayground', 'option-window' }
+    local filetypes = { 'godoc', 'list', 'fugitiveblame', 'tsplayground', 'option-window' }
     local buftypes = { 'help' }
     local bt = vim.api.nvim_get_option_value('buftype', { buf = evt.buf })
     local ft = vim.api.nvim_get_option_value('filetype', { buf = evt.buf })
@@ -102,8 +99,11 @@ end
 vim.api.nvim_create_autocmd('TermOpen', {
   desc = 'Enter insert mode when switching to terminal',
   callback = function(cmd_args)
-    startinsert()
     vim.cmd('setlocal listchars = nonumber norelativenumber nocursorline')
+    if not vim.api.nvim_get_option_value('modifiable', { buf = cmd_args.buf }) then
+      return
+    end
+    startinsert()
 
     -- Thereafter, any `BufEnter` events into this buffer should also trigger insert mode
     vim.api.nvim_create_autocmd('BufEnter', {

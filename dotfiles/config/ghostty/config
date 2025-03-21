@@ -2,7 +2,7 @@
 # UI behavior
 ##
 mouse-hide-while-typing = true
-mouse-shift-capture = true
+mouse-shift-capture = false
 
 shell-integration = zsh
 shell-integration-features = true

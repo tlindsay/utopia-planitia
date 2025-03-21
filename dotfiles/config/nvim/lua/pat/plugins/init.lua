@@ -1,6 +1,27 @@
 return {
   'nvim-lua/plenary.nvim',
   'smartpde/debuglog', -- Logging plugin for debugging lua configs
+  {
+    'folke/snacks.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = { debug = { enabled = true } },
+    init = function()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'VeryLazy',
+        callback = function()
+          -- Setup some globals for debugging (lazy-loaded)
+          _G.dd = function(...)
+            Snacks.debug.inspect(...)
+          end
+          _G.bt = function()
+            Snacks.debug.backtrace()
+          end
+          vim.print = _G.dd -- Override print to use snacks for `:=` command
+        end,
+      })
+    end,
+  },
   -- {
   --   'folke/noice.nvim',
   --   event = 'VeryLazy',
@@ -114,6 +135,7 @@ return {
       return vim.fn.executable('rg') and 1
     end,
   },
+  'stevearc/conform.nvim',
   {
     'nvimtools/none-ls.nvim',
     dependencies = {
@@ -129,7 +151,6 @@ return {
       'nvimtools/none-ls.nvim',
     },
   },
-  'elentok/format-on-save.nvim',
   { 'LuaLS/lua-language-server', submodules = false },
   {
     'j-hui/fidget.nvim',
@@ -149,25 +170,30 @@ return {
 
   -- Autocomplete
   {
-    'hrsh7th/nvim-cmp',
+    'saghen/blink.cmp',
     dependencies = {
       'L3MON4D3/LuaSnip',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lua',
-      'petertriho/cmp-git',
-      'ray-x/cmp-treesitter',
-      'saadparwaiz1/cmp_luasnip',
-      'tzachar/cmp-ai',
-      'snikimonkd/cmp-go-pkgs',
+      'rafamadriz/friendly-snippets',
     },
+    version = '*',
   },
-  'rafamadriz/friendly-snippets',
 
   -- Docs Browser
+  {
+    "fredrikaverpil/godoc.nvim",
+    version = "*",
+    dependencies = {
+      { "nvim-telescope/telescope.nvim" }, -- optional
+      {
+        "nvim-treesitter/nvim-treesitter",
+        opts = {
+          ensure_installed = { "go" },
+        },
+      },
+    },
+    build = "go install github.com/lotusirous/gostdsym/stdsym@latest", -- optional
+    cmd = { "GoDoc" },                                                 -- optional
+  },
   {
     'luckasRanarison/nvim-devdocs',
     dependencies = {

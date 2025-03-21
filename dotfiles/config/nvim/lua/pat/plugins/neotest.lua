@@ -11,6 +11,7 @@ vim.diagnostic.config({
   },
 }, neotest_ns)
 
+---@diagnostic disable-next-line: missing-fields
 neotest.setup({
   adapters = {
     -- require('neotest-vitest'),
@@ -29,7 +30,12 @@ neotest.setup({
     severity = vim.log.levels.ERROR,
   },
   output = {
-    open_on_run = false,
+    enabled = true,
+    open_on_run = true,
+  },
+  output_panel = {
+    enabled = true,
+    open = "botright split | resize 15",
   },
   icons = {
     passed = '󰗠 ',
