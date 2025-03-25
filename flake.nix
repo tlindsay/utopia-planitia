@@ -31,6 +31,10 @@
       url = "github:LnL7/nix-darwin/nix-darwin-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # nix-inspect is a ranger-like TUI for inspecting your nixos config and other arbitrary nix expressions.
     nix-inspect.url = "github:bluskript/nix-inspect";
     disko = {

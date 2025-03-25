@@ -471,15 +471,23 @@ require('mason-lspconfig').setup_handlers({
       handlers = handlers,
       capabilities = rustCapabilities,
       on_attach = on_attach,
-      checkOnSave = {
-        allFeatures = true,
-        overrideCommand = {
-          'cargo',
-          'clippy',
-          '--workspace',
-          '--message-format=json',
-          '--all-targets',
-          '--all-features',
+      settings = {
+        ['rust-analyzer'] = {
+          diagnostics = {
+            enable = true,
+            styleLints = { enable = true },
+          },
+          checkOnSave = true,
+          check = {
+            overrideCommand = {
+              'cargo',
+              'clippy',
+              '--workspace',
+              '--message-format=json',
+              '--all-targets',
+              '--all-features',
+            },
+          },
         },
       },
     })

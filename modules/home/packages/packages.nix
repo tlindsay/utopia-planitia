@@ -16,6 +16,15 @@ with pkgs; [
   # replicator.loggo
   replicator.tmux-open-nvim
 
+  # Use nix-community/fenix for rust toolchains
+  (fenix.stable.withComponents [
+    "cargo"
+    "clippy"
+    "rust-src"
+    "rustc"
+    "rustfmt"
+  ])
+
   # Unstable packages
   upkgs.fastly
   upkgs.golangci-lint
@@ -76,12 +85,10 @@ with pkgs; [
   nodePackages.nodejs
   nodePackages.yarn
   python3
-  rustc
 
   # Language Servers and other tools
   air # live reload for go apps
   alejandra
-  cargo
   cuelsp
   deadnix
   eslint_d
