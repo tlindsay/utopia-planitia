@@ -4,6 +4,7 @@
   ...
 }:
 with pkgs; [
+  rpi-imager
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`
   nh
@@ -145,6 +146,7 @@ with pkgs; [
   spotify-player
   starship
   tealdeer
+  timg # tmux img viewer
   tree
   tmux
   unrar
