@@ -92,6 +92,7 @@ require('pat.plugins/hlchunk')
 require('pat.plugins/iswap')
 require('pat.plugins/neotest')
 require('pat.plugins/neotree')
+require('pat.plugins/octo')
 require('pat.plugins/nvim-lspconfig')
 require('pat.plugins/luasnip') -- Needs to be after lspconfig, since that's where go.nvim is bootstrapped
 require('pat.plugins/none-ls')

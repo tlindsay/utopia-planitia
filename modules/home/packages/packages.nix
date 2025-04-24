@@ -8,12 +8,11 @@ with pkgs; [
   # Nix shit
   comma # Comma runs software without installing it. `$ , cowsay neato`
   nh
-  nix-index
+  # nix-index
   nix-output-monitor
 
   # Custom packages
   replicator.hl
-  # replicator.loggo
   replicator.tmux-open-nvim
 
   # Use nix-community/fenix for rust toolchains
@@ -26,12 +25,17 @@ with pkgs; [
   ])
 
   # Unstable packages
+  upkgs.atuin
+  upkgs.claude-code
   upkgs.fastly
   upkgs.golangci-lint
+  upkgs.k9s
   upkgs.mqttui
   upkgs.neovim
+  (upkgs.spotify-player.override {withMediaControl = false;})
   upkgs.tailscale
   (upkgs.tinygo.override {tinygoTests = null;})
+  upkgs.wgpu-utils
 
   # General packages for development and system management
   _1password-cli
@@ -42,7 +46,6 @@ with pkgs; [
   aspell
   aspellDicts.en
   atac
-  atuin
   bash-completion
   bat
   bat-extras.batdiff
@@ -114,7 +117,6 @@ with pkgs; [
   docker-buildx
   docker-credential-helpers
   docker-compose
-  k9s
   kubectl
   kubernetes-helm
   lazydocker
@@ -150,7 +152,6 @@ with pkgs; [
   nushell
   procs
   ripgrep
-  spotify-player
   starship
   tealdeer
   timg # tmux img viewer

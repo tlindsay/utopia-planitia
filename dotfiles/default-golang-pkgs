@@ -9,5 +9,4 @@ github.com/cortesi/modd/cmd/modd@latest
 github.com/cweill/gotests/...@latest
 
 github.com/fastly/op-utils/cmd/...@latest
-github.com/fastly/starfox/cmd/jira@latest
 github.com/ysugimoto/falco/cmd/falco@latest
