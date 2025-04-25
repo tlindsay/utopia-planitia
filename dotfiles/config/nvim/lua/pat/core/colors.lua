@@ -52,6 +52,6 @@ tokyonight.setup({
 -- Load nvim color scheme:
 vim.cmd([[colorscheme tokyonight]])
 
-local_hl.setup({ hlgroup = 'CursorLine' })
+local_hl.setup({ hlgroup = 'DiagnosticUnderlineOk' })
 
 return M
