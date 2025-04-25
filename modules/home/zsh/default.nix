@@ -71,23 +71,9 @@ in {
       function zvm_config() {
         ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
       }
-    '';
 
-    initExtraBeforeCompInit = ''
-      # asdf shell completions
-      fpath=($ASDF_DIR/completions $fpath)
-      if type brew &>/dev/null && [[ -e $(brew --prefix)/share/zsh/site-functions ]]; then
-        FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
-      fi
-      if [[ -e $HOME/.nix-profile ]]; then
-        FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
-      fi
-      if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
-        FPATH="$(antidote path 'wfxr/forgit')/completions:$FPATH"
-      fi
-
+      # Load compinit widget BEFORE antidote plugins
       autoload -Uz compinit && compinit
-      autoload -Uz compaudit && compaudit
     '';
 
     antidote = {
@@ -107,6 +93,23 @@ in {
         "junegunn/fzf path:shell/key-bindings.zsh"
       ];
     };
+
+    initExtraBeforeCompInit = ''
+      # asdf shell completions
+      fpath=($ASDF_DIR/completions $fpath)
+      if type brew &>/dev/null && [[ -e $(brew --prefix)/share/zsh/site-functions ]]; then
+        FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+      fi
+      if [[ -e $HOME/.nix-profile ]]; then
+        FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
+      fi
+      if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
+        FPATH="$(antidote path 'wfxr/forgit')/completions:$FPATH"
+      fi
+
+      autoload -Uz compinit && compinit
+      autoload -Uz compaudit && compaudit
+    '';
 
     completionInit = ''
       # Set up tab-completions
