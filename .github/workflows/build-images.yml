@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        system: ["unimatrix01", "unimatrix02", "unimatrix03", "unimatrix04", "subspace-relay"]
+        system: ["unimatrix01", "unimatrix02", "unimatrix03", "unimatrix04"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,6 +25,9 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+            system-features = nixos-test kvm benchmark big-parallel
+            # Enable cross-compilation for ARM systems
+            extra-platforms = aarch64-linux armv7l-linux
       - name: Set up Cachix
         uses: cachix/cachix-action@v14
         with:
@@ -40,8 +43,17 @@ jobs:
             ARCH="aarch64-linux"
           fi
 
-          # Build the image
-          nix build ".#nixosConfigurations.${{ matrix.system }}.config.system.build.sdImage" -v --option builders-use-substitutes true
+          # Set up QEMU to handle cross-compilation
+          sudo apt-get update -y
+          sudo apt-get install -y qemu-user-static binfmt-support
+
+          # Build the image with explicit cross-compilation options
+          nix build ".#nixosConfigurations.${{ matrix.system }}.config.system.build.sdImage" \
+            --option system x86_64-linux \
+            --option extra-platforms "$ARCH" \
+            --option sandbox-fallback true \
+            --option builders-use-substitutes true \
+            -v
 
           # Find the image path
           IMAGE_PATH=$(find result/sd-image -name "*.img" -o -name "*.img.zst" | head -n 1)
@@ -72,4 +84,3 @@ jobs:
           tag_name: ${{ github.ref_name }}
           draft: false
           prerelease: false
-
