@@ -33,6 +33,8 @@ in {
     };
 
     settings = {
+      experimental-features = ["nix-command" "flakes"];
+
       trusted-users = ["@admin" "${user}"];
 
       trusted-substituters = [

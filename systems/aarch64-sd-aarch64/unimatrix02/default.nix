@@ -1,6 +1,8 @@
 {
   pkgs,
   modulesPath,
+  lib,
+  config,
   ...
 }: {
   imports = [
@@ -29,9 +31,23 @@
     vim
     git
   ];
+  
+  # Disable problematic kernel modules/features
+  boot.supportedFilesystems = lib.mkForce [ "vfat" "ext4" ];
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
+  
+  # Disable services that cause bpftools dependencies
+  services.bpftrace.enable = lib.mkForce false;
+  programs.bcc.enable = lib.mkForce false;
 
   # This sets the /boot/firmware partition which the Raspberry Pi needs
   sdImage.compressImage = true;
 
   system.stateVersion = "24.11";
+  
+  # Make sure nix knows this is cross-compiled
+  nixpkgs.crossSystem = {
+    system = "aarch64-linux";
+    config = "aarch64-unknown-linux-gnu";
+  };
 }

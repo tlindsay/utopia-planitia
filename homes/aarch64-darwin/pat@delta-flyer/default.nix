@@ -8,6 +8,7 @@
 in {
   home.packages = with pkgs; [
     upkgs.claude-code
-    rpi-imager
+    # rpi-imager
+    tpi
   ];
 }
