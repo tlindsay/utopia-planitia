@@ -38,6 +38,9 @@
       # set -ga terminal-features '*ghostty*:usstyle'
 
       # Use extended keys (CSI u)
+      # 5/20/25: Disabling to fix pasting within nvim
+      # https://github.com/ghostty-org/ghostty/discussions/5924
+      set -ga terminal-features 'xterm*:extkeys'
       set extended-keys on
       set-option -g extended-keys on
 
@@ -66,6 +69,7 @@
       #############################
 
       bind r source-file ~/.config/tmux/tmux.conf \; display-message "~/.config/tmux/tmux.conf reloaded"
+      bind C display-popup -T "Choose directory:" -E "zoxide query -i | xargs tmux new-window -c"
       # bind C-s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
       # bind C-s display-popup -E  "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
 
@@ -120,25 +124,27 @@
       bind-key -T copy-mode-vi 'C-k' select-pane -U
       bind-key -T copy-mode-vi 'C-l' select-pane -R
 
-      bind y copy-mode-vi; \
-        send-keys -X previous-prompt; \
-        send-keys -X start-of-line; \
-        send-keys -X next-word; \
-        send-keys -X begin-selection; \
-        send-keys -X next-prompt; \
-        send-keys -X -N 1 cursor-up; \
-        send-keys -X end-of-line; \
-        send-keys -X copy-pipe-and-cancel 'xargs echo "$"';
+      # bind-key y copy-mode;
+      #   send-keys -X previous-prompt;
+      #   send-keys -X previous-prompt;
+      #   send-keys -X -N 1 cursor-down;
+      #   send-keys -X start-of-line;
+      #   send-keys -X next-word;
+      #   send-keys -X begin-selection;
+      #   send-keys -X next-prompt;
+      #   send-keys -X -N 1 cursor-up;
+      #   send-keys -X end-of-line;
+      #   send-keys -X copy-pipe-and-cancel 'sed "1s/^.*?\K\s+󰅐 (\d{1,2}:?){3}$//" | xargs echo "$" | reattach-to-user-namespace pbcopy'
+      bind-key y copy-mode \; send-keys -X previous-prompt \; send-keys -X previous-prompt \; send-keys -X -N 1 cursor-down \; send-keys -X start-of-line \; send-keys -X next-word \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'sed "1s/^.*?\K\s+󰅐 (\d{1,2}:?){3}$//" | xargs echo "$" | reattach-to-user-namespace pbcopy'
 
-      bind Y copy-mode-vi; \
-        send-keys -X previous-prompt -o; \
-        send-keys -X start-of-line; \
-        send-keys -X next-word; \
-        send-keys -X begin-selection; \
-        send-keys -X next-prompt; \
-        send-keys -X -N 1 cursor-up; \
-        send-keys -X end-of-line; \
-        send-keys -X copy-pipe-and-cancel 'xargs echo "$"';
+      # bind-key Y copy-mode
+      #   send-keys -X previous-prompt -o;
+      #   send-keys -X begin-selection;
+      #   send-keys -X next-prompt;
+      #   send-keys -X -N 1 cursor-up;
+      #   send-keys -X end-of-line;
+      #   send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
+      bind-key Y copy-mode \; send-keys -X previous-prompt -o \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
 
       bind-key -n M-> 'swap-window -t +1; select-window -t +1'
       bind-key -n M-< 'swap-window -t -1; select-window -t -1'
@@ -169,6 +175,10 @@
       bind-key -T copy-mode-vi v send-keys -X begin-selection
       bind-key -T copy-mode-vi C-v send-keys -X rectangle-selection
       bind-key -T copy-mode-vi y send-keys -X copy-pipe "reattach-to-user-namespace pbcopy"
+      bind-key -T copy-mode-vi Y send-keys -X copy-pipe-end-of-line "reattach-to-user-namespace pbcopy"
+
+      bind-key -T copy-mode-vi [ send-keys -X previous-prompt
+      bind-key -T copy-mode-vi ] send-keys -X next-prompt
 
       # Update default binding of `Enter` to also use copy-pipe
       unbind -T copy-mode-vi Enter
@@ -199,12 +209,14 @@
           set -g @tokyo-night-tmux_show_path 1
           set -g @tokyo-night-tmux_path_format relative     # 'relative' or 'full'
 
-          set -g @tokyo-night-tmux_show_netspeed 1
+          set -g @tokyo-night-tmux_show_netspeed 0
+          # set -g @tokyo-night-tmux_show_netspeed 1
           set -g @tokyo-night-tmux_netspeed_iface "en0"     # Detected via default route
           set -g @tokyo-night-tmux_netspeed_showip 0        # Display IPv4 address (default 0)
           set -g @tokyo-night-tmux_netspeed_refresh 1       # Update interval in seconds (default 1)
 
-          set -g @tokyo-night-tmux_show_git 1
+          set -g @tokyo-night-tmux_show_git 0
+          # set -g @tokyo-night-tmux_show_git 1
           set -g @tokyo-night-tmux_show_wbg 0
 
           set -g @tokyo-night-tmux_show_path 0
@@ -251,9 +263,9 @@
       }
       {
         plugin = pkgs.tmuxPlugins.tmux-fzf;
-        extraConfig = ''
-          setenv TMUX_FZF_LAUNCH_KEY "C-s"
-        '';
+        # extraConfig = ''
+        #   set-env TMUX_FZF_LAUNCH_KEY "C-s"
+        # '';
       }
       {
         plugin = pkgs."${namespace}".tmux-open-nvim;

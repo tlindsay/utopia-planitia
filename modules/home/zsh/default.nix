@@ -47,6 +47,11 @@ in {
     };
 
     initExtraFirst = ''
+      # Ghostty shell integration for zsh. This should be at the top of your zshrc!
+      if [ -n "$GHOSTTY_RESOURCES_DIR" ]; then
+        builtin source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+      fi
+
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
       	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
       	. /nix/var/nix/profiles/default/etc/profile.d/nix.sh
@@ -79,18 +84,18 @@ in {
     antidote = {
       enable = true;
       plugins = [
-        "jeffreytse/zsh-vi-mode"
+        "jeffreytse/zsh-vi-mode kind:defer"
 
-        "mdumitru/git-aliases"
-        "wfxr/forgit"
+        "mdumitru/git-aliases kind:defer"
+        "wfxr/forgit kind:defer"
 
-        "nix-community/nix-zsh-completions"
+        "nix-community/nix-zsh-completions kind:defer"
 
-        "Aloxaf/fzf-tab"
-        "zdharma/fast-syntax-highlighting"
-        "zsh-users/zsh-autosuggestions"
-        "zsh-users/zsh-completions"
-        "junegunn/fzf path:shell/key-bindings.zsh"
+        "Aloxaf/fzf-tab kind:defer"
+        "zdharma/fast-syntax-highlighting kind:defer"
+        "zsh-users/zsh-autosuggestions kind:defer"
+        "zsh-users/zsh-completions kind:defer"
+        "junegunn/fzf path:shell/key-bindings.zsh kind:defer"
       ];
     };
 
@@ -143,6 +148,7 @@ in {
 
     envExtra = ''
       export PLAYDATE_SDK_PATH=~/Developer/PlaydateSDK
+      export TMUX_FZF_LAUNCH_KEY="C-s"
     '';
 
     initExtra = ''
@@ -183,8 +189,8 @@ in {
 
       export BAT_THEME="ansi"
       export MANROFFOPT="-c"
-      export MANPAGER="sh -c 'col -bx | bat -l man -p --color=always'"
-      export PAGER="less -RF"
+      export MANPAGER="moar"
+      export PAGER="moar"
 
       # Prevent zoxide from storing inaccurate PWDs (i.e., wrong caps)
       export _ZO_RESOLVE_SYMLINKS=1
@@ -217,6 +223,8 @@ in {
       export GOTESTSUM_FORMAT="short"
       export GOTESTSUM_FORMAT_ICONS="octicons"
 
+      export COMMA_PICKER="fzf"
+
       function zvm_after_init() {
         bindkey -M main '^R' atuin-search
       }
@@ -232,7 +240,6 @@ in {
       alias forgit='alias | fzf -q forgit::'
       alias update-neovim='asdf uninstall neovim nightly && asdf install neovim nightly'
       forgit_checkout_commit='gcco'
-      alias grom="git reset origin/$(git_main_branch)"
 
       alias tableflip="echo '(╯°□°)╯︵ ┻━┻' && yarn cache clean && rm -rf ./node_modules && yarn --check-files && yarn test --clearCache"
       alias vpn="(toggle-vpn && tmux refresh-client -S) &"
