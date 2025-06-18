@@ -1,5 +1,11 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 add_newline = false
 continuation_prompt = "[ ](bold bright-black)"
+format = """
+$username$hostname$localip$shlvl$singularity$nats$directory$vcsh$fossil_branch$fossil_metrics$git_branch$git_commit$git_state$git_metrics$git_status$hg_branch$pijul_channel$kubernetes$docker_context$package$bun$c$cmake$cobol$daml$dart$deno$dotnet$elixir$elm$erlang$fennel$gleam$golang$gradle$haskell$haxe$helm$java$julia$kotlin$lua$mojo$nim$nodejs$ocaml$odin$opa$perl$php$pulumi$purescript$python$quarto$raku$rlang$red$ruby$rust$scala$solidity$swift$terraform$typst$vlang$vagrant$zig$buf$guix_shell$nix_shell$conda$meson$spack$memory_usage$aws$gcloud$openstack$azure$direnv$env_var$crystal$custom$sudo$cmd_duration$line_break$jobs$battery$status$container$os$shell$character
+"""
+right_format = """$time"""
 
 # The following adds a right-aligned timestamp, but also causes char-width bugs
 # format = """
@@ -26,16 +32,6 @@ vimcmd_symbol = ""
 [directory]
 format = "[$path](bold cyan) "
 
-[git_status]
-diverged = "⇅"
-
-[nodejs]
-disabled = true
-symbol = " "
-
-[gcloud]
-disabled = true
-
 # NERDFont substitutions
 
 [aws]
@@ -49,8 +45,18 @@ discharging_symbol = "󰂃"
 [conda]
 symbol = " "
 
+[docker_context]
+symbol = "󰡨 "
+disabled = true
+
+[gcloud]
+disabled = true
+
 [git_branch]
 symbol = " "
+
+[git_status]
+diverged = "⇅"
 
 [golang]
 symbol = " "
@@ -61,11 +67,41 @@ symbol = " "
 [java]
 symbol = " "
 
+[kubernetes]
+disabled = false
+format = '[$symbol$context](dimmed green) '
+symbol = "󱃾 "
+detect_folders = ["elevation-data/"]
+detect_files = [".envrc.context"]
+
+[[kubernetes.contexts]]
+# "bold red" style + default symbol when Kubernetes current context is prod
+context_pattern = ".*prd-awsuse2"
+style = "bold red"
+context_alias = "PRD E"
+
+[[kubernetes.contexts]]
+# "bold red" style + default symbol when Kubernetes current context is prod
+context_pattern = ".*prd-awsusw2"
+style = "bold red"
+context_alias = "PRD W"
+
+[[kubernetes.contexts]]
+# "bold yellow" style + default symbol when Kubernetes current context is stg
+context_pattern = ".*stg-awsus.*"
+style = "bold yellow"
+context_alias = "STG"
+
+[nodejs]
+disabled = true
+symbol = " "
+
 [memory_usage]
-symbol = " "
+symbol = "󰍛 "
 
 [package]
-symbol = " "
+disabled = true
+symbol = "󰏗 "
 
 [php]
 symbol = " "
@@ -78,4 +114,9 @@ symbol = " "
 symbol = " "
 
 [rust]
-symbol = " "
+symbol = " "
+
+[time]
+disabled = false
+style = "dimmed"
+format = '[󰅐 $time]($style)'

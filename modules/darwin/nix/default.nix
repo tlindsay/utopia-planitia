@@ -4,13 +4,14 @@
   pkgs,
   ...
 }: let
-  user = builtins.head (builtins.attrNames config.snowfallorg.user);
+  user = builtins.head (builtins.attrNames config.snowfallorg.users);
 in {
   nix = {
     registry = {nixpkgs = {flake = inputs.nixpkgs;};};
 
     nixPath = [
       "nixpkgs=${inputs.nixpkgs.outPath}"
+      "nixpkgs-unstable=${inputs.nixpkgs-unstable.outPath}"
       "nixos-config=/etc/nixos/configuration.nix"
     ];
 
@@ -46,7 +47,6 @@ in {
     };
 
     gc = {
-      user = "root";
       automatic = true;
       interval = {
         Weekday = 0;

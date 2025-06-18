@@ -5,14 +5,13 @@
 }:
 with pkgs; [
   # Nix shit
-  comma # Comma runs software without installing it. `$ , cowsay neato`
-  nh
-  # nix-index
+  upkgs.nh
   nix-output-monitor
 
   # Custom packages
   replicator.hl
   replicator.tmux-open-nvim
+  replicator.mdns-scanner
 
   # Use nix-community/fenix for rust toolchains
   (fenix.stable.withComponents [
@@ -28,6 +27,7 @@ with pkgs; [
   upkgs.fastly
   upkgs.golangci-lint
   upkgs.k9s
+  upkgs.moar # Nicer pager
   upkgs.mqttui
   upkgs.neovim
   (upkgs.spotify-player.override {withMediaControl = false;})
@@ -51,7 +51,6 @@ with pkgs; [
   bat-extras.batman
   bat-extras.batpipe
   bat-extras.batwatch
-  bat-extras.prettybat
   bottom
   coreutils
   doggo
@@ -60,6 +59,7 @@ with pkgs; [
   gettext
   home-manager
   just
+  kdash # Another k8s TUI
   llvmPackages_latest.llvm
   killall
   moreutils
@@ -83,8 +83,6 @@ with pkgs; [
   cue
   go
   lua
-  nodePackages.nodejs
-  nodePackages.yarn
   python3
 
   # Language Servers and other tools
@@ -92,14 +90,10 @@ with pkgs; [
   alejandra
   cuelsp
   deadnix
-  eslint_d
   gomacro # golang repl
   luarocks
-  nodePackages_latest.eslint
-  nodePackages_latest.typescript-language-server
-  prettierd
   statix
-  typescript
+  vlang
   yamllint
 
   # Encryption and security tools
@@ -123,6 +117,10 @@ with pkgs; [
   ffmpeg
   fd
   (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
+  # 👆This will need to change to 👇this when upgrading to 25.05
+  # nerd-fonts.fantasque-sans-mono
+  # nerd-fonts.iosevka
+  # nerd-fonts.noto
 
   # Still using asdf for tool versioning
   asdf-vm
