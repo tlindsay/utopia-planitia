@@ -10,6 +10,26 @@
       };
       "direnv/lib/oprc.sh".source =
         pkgs.replicator.direnv-oprc;
+      "ghostty/shaders" = let
+        inherit (pkgs) stdenv fetchFromGitHub;
+      in {
+        recursive = true;
+        source = stdenv.mkDerivation {
+          name = "ghostty-shaders";
+          src = fetchFromGitHub {
+            owner = "hackr-sh";
+            repo = "ghostty-shaders";
+            rev = "main";
+            sha256 = null;
+          };
+
+          buildPhase = null;
+          installPhase = ''
+            mkdir -p $out
+            cp *.glsl $out
+          '';
+        };
+      };
     };
     dataFile = {
       "bin" = {
