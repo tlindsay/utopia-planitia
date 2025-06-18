@@ -134,7 +134,6 @@ ts.setup({
     },
     lsp_interop = {
       enable = true,
-      border = 'rounded',
       peek_definition_code = {
         ['<leader>gF'] = '@function.outer',
         ['<leader>gC'] = '@class.outer',

@@ -5,7 +5,55 @@ return {
     'folke/snacks.nvim',
     lazy = false,
     priority = 1000,
-    opts = { debug = { enabled = true } },
+    opts = {
+      debug = { enabled = true },
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ['<M-k>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+              ['<M-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+            },
+          },
+        },
+        sources = {
+          files = { layout = 'telescope' },
+          symbol_explorer = {
+            finder = 'lsp_symbols',
+            format = 'lsp_symbol',
+            sort = { fields = { 'sort' } },
+            supports_live = true,
+            tree = true,
+            focus = 'list',
+            auto_close = false,
+            auto_confirm = true,
+            jump = { tagstack = true, reuse_win = true, close = false },
+            layout = { preset = 'right', preview = true },
+            matcher = { sort_empty = false, fuzzy = false },
+            filter = {
+              default = {
+                'Class',
+                'Constructor',
+                'Enum',
+                'Field',
+                'Function',
+                'Interface',
+                'Method',
+                'Module',
+                'Namespace',
+                'Package',
+                'Property',
+                'Struct',
+                'Trait',
+              },
+              -- set to `true` to include all symbols
+              markdown = true,
+              help = true,
+            },
+          },
+        },
+      },
+    },
     init = function()
       vim.api.nvim_create_autocmd('User', {
         pattern = 'VeryLazy',
@@ -32,6 +80,13 @@ return {
   -- },
   'stevearc/dressing.nvim',
 
+  -- Build better Vim habits
+  {
+    'm4xshen/hardtime.nvim',
+    lazy = false,
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    opts = { disable_mouse = false },
+  },
   -- Pane Management
   'mrjones2014/smart-splits.nvim',
 
@@ -316,7 +371,6 @@ return {
 
   -- Tpope
   'tpope/vim-abolish',
-  'tpope/vim-eunuch',
   'tpope/vim-fugitive',
   'tpope/vim-surround',
   'tpope/vim-repeat',
@@ -333,12 +387,13 @@ return {
   },
   {
     'https://git.sr.ht/~thatdarnpat/nvim-culprit',
+    dev = true,
     config = function()
-      require('culprit').setup({ popupConfig = { anchor = 'NW' } })
+      require('culprit').setup({})
     end,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
+      'folke/snacks.nvim',
     },
   },
   'backdround/global-note.nvim',

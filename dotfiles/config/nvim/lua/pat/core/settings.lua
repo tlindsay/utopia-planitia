@@ -11,7 +11,7 @@
 -----------------------------------------------------------
 local cmd = vim.cmd -- Execute Vim commands
 local g = vim.g -- Global variables
-local opt = vim.opt -- Set options (global/buffer/windows-scoped)
+local opt = vim.opt
 
 -----------------------------------------------------------
 -- Custom
@@ -50,6 +50,7 @@ opt.cmdheight = 0 -- No dedicated cmd line
 opt.cursorline = true
 opt.termguicolors = true
 opt.scrolloff = 5 -- Keep 5 lines of padding when scrolling
+opt.winborder = 'rounded'
 
 -- Treesitter overrides
 opt.syntax = 'off'
@@ -112,14 +113,8 @@ end
 -- Diagnostic Styles
 -----------------------------------------------------------
 opt.signcolumn = 'auto:1-3'
--- cmd([[
---   sign define DiagnosticSignError text=┃ texthl=DiagnosticSignError linehl= numhl=
---   sign define DiagnosticSignWarn  text=┃ texthl=DiagnosticSignWarn linehl= numhl=
---   sign define DiagnosticSignInfo  text=┃ texthl=DiagnosticSignInfo linehl= numhl=
---   sign define DiagnosticSignHint  text=┃ texthl=DiagnosticSignHint linehl= numhl=
--- ]])
--- local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
 cmd([[
+  sign define CustomIconPath      text= 
   sign define DiagnosticSignError text=󰅙  texthl=DiagnosticSignError linehl= numhl=
   sign define DiagnosticSignWarn  text=󰀨  texthl=DiagnosticSignWarn  linehl= numhl=
   sign define DiagnosticSignInfo  text=󰋼  texthl=DiagnosticSignInfo  linehl= numhl=

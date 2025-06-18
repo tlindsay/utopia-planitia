@@ -13,7 +13,6 @@ devdocs.setup({
     relative = 'editor',
     height = 30,
     width = win_width,
-    border = 'rounded',
   },
   wrap = true,
   previewer_cmd = 'glow',
@@ -33,14 +32,14 @@ devdocs.setup({
   after_open = function(bufnr)
     wk.add({
       { '<Esc>', ':close<CR>', desc = 'Close DevDocs floating window', buffer = bufnr },
-      { 'q',     ':close<CR>', desc = 'Close DevDocs floating window', buffer = bufnr },
+      { 'q', ':close<CR>', desc = 'Close DevDocs floating window', buffer = bufnr },
     })
   end,
 })
 
 godoc.setup({
-  window = { type = "vsplit" },
-  picker = { type = "telescope" },
+  window = { type = 'vsplit' },
+  picker = { type = 'telescope' },
 })
 
 wk.add({

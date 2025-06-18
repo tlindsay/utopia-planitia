@@ -38,6 +38,14 @@ local navic = require('nvim-navic')
 
 -- My components
 local component = {}
+component.recording_macro = {
+  provider = 'recording_macro',
+  hl = { fg = colors.red, bg = colors.bg },
+  update = { 'RecordingEnter', 'RecordingLeave' },
+  enabled = function()
+    return vim.fn.reg_recording() ~= ''
+  end,
+}
 component.format_on_save = {
   provider = 'format_on_save',
   hl = { fg = colors.bg, bg = colors.pink },
@@ -266,9 +274,17 @@ local custom_providers = {
     end
     return label
   end,
+  recording_macro = function()
+    local reg_recording = vim.fn.reg_recording()
+    if reg_recording ~= '' then
+      return '󰑊 ' .. reg_recording .. ' '
+    end
+    return ''
+  end,
 }
 
 local left = {
+  component.recording_macro,
   component.format_on_save,
   component.vi_mode.left,
   component.file.info,

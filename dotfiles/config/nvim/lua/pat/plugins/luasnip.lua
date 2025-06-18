@@ -15,22 +15,23 @@ require('luasnip.loaders.from_vscode').lazy_load()
 --   require('snips.all')
 -- end
 
-wk.register({
-  ['<C-y>'] = {
-    n = {
-      function()
-        ls.jump(1)
-      end,
-      'Jump to next snippet node',
-    },
-    N = {
-      function()
-        ls.jump(-1)
-      end,
-      'Jump to previous snippet node',
-    },
+wk.add({
+  mode = { 'i', 'n', 's' },
+  {
+    '<C-y>n',
+    function()
+      ls.jump(1)
+    end,
+    desc = 'Jump to next snippet node',
   },
-}, { mode = { 'i', 'n', 's' } })
+  {
+    '<C-y>N',
+    function()
+      ls.jump(-1)
+    end,
+    desc = 'Jump to previous snippet node',
+  },
+})
 
 -- Get a list of  the property names given an `interface_declaration`
 -- treesitter *tsx* node.

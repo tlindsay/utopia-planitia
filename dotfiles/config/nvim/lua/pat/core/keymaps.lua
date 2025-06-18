@@ -1,130 +1,93 @@
 local wk = require('which-key')
+local colors = require('pat.core/colors')
 local utils = require('pat.utils')
 local fns = require('pat.core/functions')
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
 -----------------------------------------------------------
 
-local function map(target_mode, lhs, rhs, opts)
-  local options = { noremap = true, silent = true }
-  if opts then
-    options = vim.tbl_extend('force', options, opts)
-  end
-  vim.keymap.set(target_mode, lhs, rhs, options)
-  -- wk.register({[lhs] = rhs}, opts)
-end
-
 -- Change leader to a comma
 vim.g.mapleader = ','
 vim.g.maplocalleader = ' '
 
-wk.register({
-  ['?'] = { ':WhichKey ', 'Show WhichKey' },
-  ['<leader><leader>h'] = {
-    function()
-      fns.getHlGroup()
-    end,
-    'Get Highlight group under cursor',
-  },
-}, { noremap = false, silent = false })
-wk.register({
-  ['<A-S-Left>'] = { ':tabm -1<CR>', 'Move tab left' },
-  ['<A-S-Right>'] = { ':tabm +1<CR>', 'Move tab right' },
-  -- ['<C-w>='] = { fns.scrollbindPanes, 'Sync cursor line for open panes' },
-  ['<leader>'] = {
-    ['.'] = { ':set relativenumber!<CR>', 'Toggle Relative Line Numbers' },
-    ['rv'] = { _G.reload_config, 'Reload Vim config' },
-    ['<space>'] = { ':set wrap!<CR>', 'Toggle line wrapping' },
-    ['<Del>'] = { ':silent %bdelete | Alpha<CR>', 'Close all buffers' },
-    x = { ':tabclose<CR>', 'Close window' },
-    S = { ':mksession!<CR>', 'Save session' },
-    ['<leader>'] = {
-      ['.'] = { ':tabdo windo set relativenumber!<CR>', 'Toggle Relative Line Numbers (all buffers)' },
-      f = {
-        function()
-          local fos = require('format-on-save')
-          local enabled = require('format-on-save.config').enabled
-          if enabled == true then
-            vim.schedule(fos.disable)
-          else
-            vim.schedule(fos.enable)
-          end
-        end,
-        'Toggle format-on-save',
-      },
-      Q = { ':qall!<CR>', 'Force quit' },
+wk.add({
+  { '?', ':WhichKey ', desc = 'Show WhichKey' },
+  { '<leader><leader>h', fns.getHlGroup, desc = 'Get Highlight group under cursor' },
+  { '<A-S-Left>', ':tabm -1<CR>', desc = 'Move tab left' },
+  { '<A-S-Right>', ':tabm +1<CR>', desc = 'Move tab right' },
+  {
+    group = 'Neovim',
+    icon = { icon = '', color = colors.green },
+    { '<leader>=', fns.scrollbindPanes, desc = 'Sync cursor line for open panes' },
+    { '<leader>h', ':nohl<CR>', desc = 'Clear search highlight' },
+
+    { '<leader>S', ':mksession!<CR>', desc = 'Save session' },
+    { '<leader>w', ':w<CR>', desc = 'Write file' },
+    { '<leader>W', ':w!<CR>', desc = 'Force write file' },
+    { '<leader><leader>W', ':wall!<CR>', desc = 'Force write all open files' },
+    { '<leader>e', ':e %<CR>', desc = 'Reload file from disk' },
+    { '<leader>E', ':e! %<CR>', desc = 'Force reload file from disk' },
+
+    { '<leader>q', ':q<CR>', desc = 'Close file (and quit)' },
+    { '<leader>Q', ':q!<CR>', desc = 'Force close file (and quit)' },
+    { '<leader><leader>Q', ':qall!<CR>', desc = 'Force quit Neovim' },
+
+    { 'K', ':m .-2<CR>', desc = 'Move current line up' },
+    { 'K', ':m -2<cr>gv=gv', desc = 'Move selected lines up', mode = 'v' },
+    { 'J', ':m .+1<CR>', desc = 'Move current lines down' },
+    { 'J', ":m '>+<cr>gv=gv", desc = 'Move selected lines down', mode = 'v' },
+    { '<leader><space>', ':set wrap!<CR>', desc = 'Toggle line wrapping' },
+    {
+      '<leader><leader>.',
+      ':tabdo windo set relativenumber!<CR>',
+      desc = 'Toggle Relative Line Numbers (all buffers)',
+    },
+
+    -- Pane management
+    { '<leader>x', ':tabclose<CR>', desc = 'Close window' },
+    { '<leader><Del>', ':silent %bdelete | Alpha<CR>', desc = 'Close all buffers' },
+    { '<C-w>-', ':new<CR>', desc = 'Open new horizontal split' },
+    { '<C-w>\\', ':vnew<CR>', desc = 'Open new vertical split' },
+    {
+      '<C-w>,',
+      function()
+        vim.ui.input({
+          prompt = 'Tab name:',
+          default = utils.getVarWithDefault('t', 0, 'custom_tab_name', ''),
+        }, function(input)
+          vim.api.nvim_tabpage_set_var(0, 'custom_tab_name', input)
+        end)
+      end,
+      desc = 'Rename current tab',
+    },
+
+    {
+      '<leader><leader>f',
+      function()
+        local fos = require('format-on-save')
+        local enabled = require('format-on-save.config').enabled
+        if enabled == true then
+          vim.schedule(fos.disable)
+        else
+          vim.schedule(fos.enable)
+        end
+      end,
+      desc = 'Toggle format-on-save',
+    },
+
+    {
+      mode = 'nvo',
+      { '<C-c>', proxy = '<Esc>', hidden = true },
+
+      -- Don't use arrow keys
+      { '<up>', '<nop>', hidden = true },
+      { '<down>', '<nop>', hidden = true },
+      { '<left>', '<nop>', hidden = true },
+      { '<right>', '<nop>', hidden = true },
+
+      -- Sane navigation
+      { 'k', 'gk', desc = 'Up' },
+      { 'j', 'gj', desc = 'Down' },
     },
   },
 })
-
------------------------------------------------------------
--- Neovim shortcuts
------------------------------------------------------------
-
--- Prevent segfaults
-map('', '<C-c>', '<Esc>')
-
--- Clear search highlighting with <leader> and c
-map('n', '<leader>h', ':nohl<CR>')
-
--- Don't use arrow keys
-map('', '<up>', '<nop>')
-map('', '<down>', '<nop>')
-map('', '<left>', '<nop>')
-map('', '<right>', '<nop>')
-
--- Sane navigation
-map('', 'k', 'gk')
-map('', 'j', 'gj')
-
--- Fast saving with <leader> and s
-map('n', '<leader>w', ':w<CR>')
-map('n', '<leader>W', ':w!<CR>')
-map('n', '<leader><leader>W', ':wall!<CR>')
-map('n', '<leader>e', ':e %<CR>')
-map('n', '<leader>E', ':e! %<CR>')
-
--- Move around splits using Ctrl + {h,j,k,l}
--- map('n', '<C-h>', ':TmuxNavigateLeft<CR>')
--- map('n', '<C-j>', ':TmuxNavigateDown<CR>')
--- map('n', '<C-k>', ':TmuxNavigateUp<CR>')
--- map('n', '<C-l>', ':TmuxNavigateRight<CR>')
-
--- map('n', '<C-h>', '<C-w>h')
--- map('n', '<C-j>', '<C-w>j')
--- map('n', '<C-k>', '<C-w>k')
--- map('n', '<C-l>', '<C-w>l')
-
-map('n', 'K', ':m .-2<CR>')
-map('v', 'K', ':m -2<cr>gv=gv')
-map('v', 'J', ":m '>+<cr>gv=gv")
-map('n', 'J', ':m .+1<CR>')
-
--- Pane management
--- map('n', '<A-h>', ':SmartResizeLeft<CR>')
--- map('n', '<A-j>', ':SmartResizeDown<CR>')
--- map('n', '<A-k>', ':SmartResizeUp<CR>')
--- map('n', '<A-l>', ':SmartResizeRight<CR>')
-map('n', '<C-w>-', ':new<CR>')
-map('n', '<C-w>\\', ':vnew<CR>')
-map('n', '<C-w>,', function()
-  local var = utils.getVarWithDefault('t', 0, 'custom_tab_name', '')
-  local input = vim.fn.input('Tab name? ', var)
-
-  vim.api.nvim_tabpage_set_var(0, 'custom_tab_name', input)
-end)
-
--- Close all windows and exit from Neovim with <leader> and q
-map('n', '<leader>q', ':q<CR>')
-map('n', '<leader>Q', ':q!<CR>')
-
------------------------------------------------------------
--- Applications and Plugins shortcuts
------------------------------------------------------------
-
--- Telescope
-map('n', '&', ':Telescope grep_string<CR>')
-
--- Terminal mappings
-map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
