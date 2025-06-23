@@ -100,13 +100,14 @@ in {
     };
 
     initExtraBeforeCompInit = ''
-      # asdf shell completions
-      fpath=($ASDF_DIR/completions $fpath)
       if type brew &>/dev/null && [[ -e $(brew --prefix)/share/zsh/site-functions ]]; then
         FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
       fi
       if [[ -e $HOME/.nix-profile ]]; then
-        FPATH="$HOME/.nix-profile/share/zsh/site-functions:$FPATH"
+        FPATH="$HOME/.nix-profile/sw/share/zsh/site-functions:$FPATH"
+      fi
+      if [[ -e /etc/profiles/per-user/${user} ]]; then
+        FPATH="/etc/profiles/per-user/${user}/share/zsh/site-functions:$FPATH"
       fi
       if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
         FPATH="$(antidote path 'wfxr/forgit')/completions:$FPATH"
@@ -119,11 +120,6 @@ in {
     completionInit = ''
       # Set up tab-completions
       compinit -i -C -d ~/.zcompdump*
-      # set up app-specific completions
-      eval "$(op completion zsh)"; compdef _op op
-      eval "$(kubectl completion zsh)"; compdef _kubectl kubectl
-      eval "$(atuin gen-completions --shell zsh); compdef _atuin atuin"
-      eval "$(tailscale completion zsh); compdef _tailscale tailscale"
 
       if antidote path 'wfxr/forgit' > /dev/null 2>&1; then
         source $(antidote path 'wfxr/forgit')/completions/git-forgit.zsh
