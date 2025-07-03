@@ -202,146 +202,148 @@ local function on_attach(client, bufnr)
   local opts = { buffer = bufnr, noremap = true, silent = true, mode = { 'n', 'v' } }
 
   wk.add({
+    mode = { 'n', 'v' },
+    group = 'LSP',
     {
       '<space>',
       vim.lsp.buf.hover,
-      { group = 'LSP', desc = 'Show Inline Documentation' },
+      desc = 'Show Inline Documentation',
     },
     {
       '<leader><leader>v',
       navbuddy.open,
-      { group = 'LSP', desc = 'Open symbol outline' },
+      desc = 'Open symbol outline',
     },
     {
       '<leader>a',
       function()
-        vim.diagnostic.goto_next({ float = { border = border } })
+        vim.diagnostic.jump({ count = 1, float = { border = border } })
       end,
-      { group = 'LSP', desc = 'Go to next issue' },
+      desc = 'Go to next issue',
     },
     {
       '<leader>A',
       function()
-        vim.diagnostic.goto_prev({ float = { border = border } })
+        vim.diagnostic.jump({ count = -1, float = { border = border } })
       end,
-      { group = 'LSP', desc = 'Go to previous issue' },
+      desc = 'Go to previous issue',
     },
     {
       '<leader>D',
       vim.lsp.buf.type_definition,
-      { group = 'LSP', desc = 'Show Type Definition' },
+      desc = 'Show Type Definition',
     },
     {
       '<leader>rn',
       vim.lsp.buf.rename,
-      { group = 'LSP', desc = 'Rename Symbol' },
+      desc = 'Rename Symbol',
     },
     {
       '<leader>k',
       vim.lsp.buf.signature_help,
-      { group = 'LSP', desc = 'Show Signature Help' },
+      desc = 'Show Signature Help',
     },
     {
       '<leader>f',
       vim.lsp.buf.code_action,
-      { group = 'LSP', desc = 'Fix Diagnostic' },
+      desc = 'Fix Diagnostic',
     },
     {
       '<leader>F',
       function()
         conform.format({ async = true, lsp_format = 'fallback' })
       end,
-      { group = 'LSP', desc = 'Autoformat' },
+      desc = 'Autoformat',
     },
     {
       '<leader><leader>f',
       toggleAutoformat,
-      { group = 'LSP', desc = 'Toggle format-on-save' },
+      desc = 'Toggle format-on-save',
     },
     {
       '<leader>l',
       corn.toggle,
-      { group = 'LSP', desc = 'Toggle line/floating diagnostics' },
+      desc = 'Toggle line/floating diagnostics',
     },
     {
       '<leader>xx',
       '<cmd>Trouble diagnostics toggle<cr>',
-      { group = 'LSP', desc = 'Toggle Trouble' },
+      desc = 'Toggle Trouble',
     },
     {
       '<leader>xw',
       '<cmd>Trouble diagnostics open<cr>',
-      { group = 'LSP', desc = 'Workspace Diagnostics' },
+      desc = 'Workspace Diagnostics',
     },
     {
       '<leader>xd',
       '<cmd>Trouble diagnostics open filter.buf=0<cr>',
-      { group = 'LSP', desc = 'Document Diagnostics' },
+      desc = 'Document Diagnostics',
     },
     {
       '<leader>xq',
       '<cmd>Trouble quickfix<cr>',
-      { group = 'LSP', desc = 'Quickfix' },
+      desc = 'Quickfix',
     },
     {
       '<leader>xl',
       '<cmd>Trouble loclist<cr>',
-      { group = 'LSP', desc = 'Loclist' },
+      desc = 'Loclist',
     },
     {
       '<leader>s',
       '<cmd>Trouble symbols toggle<cr>',
-      { group = 'LSP', desc = 'Symbol list' },
+      desc = 'Symbol list',
     },
     {
       'g<space>',
       '<cmd>Trouble inspect toggle pinned=true focus=true<cr>',
-      { group = 'LSP', desc = 'Open symbol inspector' },
+      desc = 'Open symbol inspector',
     },
     {
       'gd',
       '<cmd>Trouble lsp_definitions<cr>',
-      { group = 'LSP', desc = 'Go to Definition' },
+      desc = 'Go to Definition',
     },
     {
       'gD',
       '<cmd>Trouble lsp_definitions open auto_jump=false<cr>',
-      { group = 'LSP', desc = 'List Definitions in Trouble' },
+      desc = 'List Definitions in Trouble',
     },
     {
       'gi',
       '<cmd>Trouble lsp_implementations<cr>',
-      { group = 'LSP', desc = 'Go to Implementation' },
+      desc = 'Go to Implementation',
     },
     {
       'gI',
       '<cmd>Trouble lsp_implementations open auto_jump=false<cr>',
-      { group = 'LSP', desc = 'List Implementations in Trouble' },
+      desc = 'List Implementations in Trouble',
     },
     {
       'gr',
       '<cmd>Trouble lsp_references<cr>',
-      { group = 'LSP', desc = 'List References in Trouble' },
+      desc = 'List References in Trouble',
     },
     {
       'gR',
       '<cmd>Trouble lsp_references open auto_jump=false<cr>',
-      { group = 'LSP', desc = 'List References in Trouble' },
+      desc = 'List References in Trouble',
     },
     {
       'gCi',
       '<cmd>Trouble lsp_incoming_calls<cr>',
-      { group = 'LSP', desc = 'List call sites of the symbol under the cursor' },
+      desc = 'List call sites of the symbol under the cursor',
     },
     {
       'gCo',
       '<cmd>Trouble lsp_outgoing_calls<cr>',
-      { group = 'LSP', desc = 'List the items that are called by the symbol under the cursor' },
+      desc = 'List the items that are called by the symbol under the cursor',
     },
     {
       'gx',
       lsp_links.gx,
-      { group = 'LSP', desc = 'Open file or documentLink' },
+      desc = 'Open file or documentLink',
     },
   }, opts)
 end
@@ -476,6 +478,9 @@ require('mason-lspconfig').setup_handlers({
           diagnostics = {
             enable = true,
             styleLints = { enable = true },
+            disabled = {
+              'unlinked-file',
+            },
           },
           checkOnSave = true,
           check = {

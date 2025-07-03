@@ -1,3 +1,6 @@
+local colors = require('pat.core/colors')
+vim.api.nvim_set_hl(0, 'BlinkCmpKindAvante', { default = false, fg = colors.pink })
+
 require('blink.cmp').setup({
   keymap = {
     preset = 'enter',
@@ -104,7 +107,17 @@ require('blink.cmp').setup({
   },
   snippets = { preset = 'luasnip' },
   sources = {
+    default = { 'avante', 'lsp', 'buffer', 'snippets', 'path' },
     providers = {
+      avante = {
+        module = 'blink-cmp-avante',
+        name = 'Avante',
+        opts = {
+          kind_icons = {
+            Avante = '󰧑',
+          },
+        },
+      },
       snippets = {
         -- https://cmp.saghen.dev/recipes.html#hide-snippets-after-trigger-character
         should_show_items = function(ctx)

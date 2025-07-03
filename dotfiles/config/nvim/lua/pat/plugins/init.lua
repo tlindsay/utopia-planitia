@@ -80,6 +80,25 @@ return {
   -- },
   'stevearc/dressing.nvim',
 
+  {
+    'yetone/avante.nvim',
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = 'BUILD_FROM_SOURCE=true make',
+    event = 'VeryLazy',
+    version = false, -- Never set this value to "*"! Never!
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below dependencies are optional,
+      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+      'stevearc/dressing.nvim', -- for input provider dressing
+      'folke/snacks.nvim', -- for input provider snacks
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+    },
+  },
+
   -- Build better Vim habits
   {
     'm4xshen/hardtime.nvim',
@@ -167,7 +186,7 @@ return {
   'williamboman/mason-lspconfig.nvim',
   'onsails/lspkind-nvim',
   'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-  { 'RaafatTurki/corn.nvim' },
+  { 'RaafatTurki/corn.nvim', dev = true },
   'icholy/lsplinks.nvim',
   {
     'folke/lazydev.nvim',
@@ -184,6 +203,7 @@ return {
     'folke/trouble.nvim',
     dependencies = 'nvim-tree/nvim-web-devicons',
   },
+  'smjonas/inc-rename.nvim',
   {
     'mangelozzi/nvim-rgflow.lua',
     cond = function()
@@ -226,6 +246,7 @@ return {
   {
     'saghen/blink.cmp',
     dependencies = {
+      'Kaiser-Yang/blink-cmp-avante',
       'L3MON4D3/LuaSnip',
       'rafamadriz/friendly-snippets',
     },
