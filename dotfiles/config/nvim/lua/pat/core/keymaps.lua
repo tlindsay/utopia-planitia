@@ -18,10 +18,11 @@ wk.add({
   {
     group = 'Neovim',
     icon = { icon = '', color = colors.green },
+    { '<leader>.', fns.togglePairingMode, desc = 'Toggle Pairing Mode' },
     { '<leader>=', fns.scrollbindPanes, desc = 'Sync cursor line for open panes' },
     { '<leader>h', ':nohl<CR>', desc = 'Clear search highlight' },
 
-    { '<leader>S', ':mksession!<CR>', desc = 'Save session' },
+    { '<leader><leader>s', ':mksession!<CR>', desc = 'Save session' },
     { '<leader>w', ':w<CR>', desc = 'Write file' },
     { '<leader>W', ':w!<CR>', desc = 'Force write file' },
     { '<leader><leader>W', ':wall!<CR>', desc = 'Force write all open files' },
