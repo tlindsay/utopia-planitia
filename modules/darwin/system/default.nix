@@ -1,5 +1,9 @@
-{
+{config, ...}: let
+  user = builtins.head (builtins.attrNames config.snowfallorg.users);
+in {
+  # environment.darwinConfig = "${config.system.primaryUserHome}/.nixpkgs/darwin-configuration.nix";
   system = {
+    primaryUser = "${user}";
     checks = {verifyNixPath = false;};
 
     defaults = {

@@ -9,11 +9,12 @@ in {
   nix = {
     registry = {nixpkgs = {flake = inputs.nixpkgs;};};
 
-    nixPath = [
-      "nixpkgs=${inputs.nixpkgs.outPath}"
-      "nixpkgs-unstable=${inputs.nixpkgs-unstable.outPath}"
-      "nixos-config=/etc/nixos/configuration.nix"
-    ];
+    # nixPath = [
+    #   {darwin-config = "${config.environment.darwinConfig}";}
+    #   "nixpkgs=${inputs.nixpkgs.outPath}"
+    #   "nixpkgs-unstable=${inputs.nixpkgs-unstable.outPath}"
+    #   "nixos-config=/etc/nixos/configuration.nix"
+    # ];
 
     package = pkgs.nixVersions.latest;
 

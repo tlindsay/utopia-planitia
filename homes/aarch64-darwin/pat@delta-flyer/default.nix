@@ -1,14 +1,6 @@
-{
-  pkgs,
-  inputs,
-  system,
-  ...
-}: let
-  upkgs = inputs.nixpkgs-unstable.legacyPackages."${system}";
-in {
+{pkgs, ...}: {
   home.packages = with pkgs; [
-    upkgs.claude-code
-    # rpi-imager
     tpi
+    rpi-imager
   ];
 }

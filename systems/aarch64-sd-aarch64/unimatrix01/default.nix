@@ -21,8 +21,14 @@
     ];
   };
 
-  # Enable SSH server
-  services.openssh.enable = true;
+  services = {
+    # Enable SSH server
+    openssh.enable = true;
+    homebox = {
+      enable = true;
+      database.createLocally = true;
+    };
+  };
 
   # Base system packages - minimal set to avoid cross-compilation issues
   environment.systemPackages = with pkgs; [
