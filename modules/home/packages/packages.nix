@@ -24,6 +24,9 @@ with pkgs; [
 
   # Unstable packages
   upkgs.atuin
+  upkgs.awscli2
+  upkgs.claude-code
+  upkgs.container
   upkgs.fastly
   upkgs.golangci-lint
   upkgs.k9s
@@ -53,11 +56,11 @@ with pkgs; [
   bat-extras.batwatch
   bottom
   coreutils
+  curl
   doggo
   eza
   fzf
   gettext
-  home-manager
   just
   kdash # Another k8s TUI
   llvmPackages_latest.llvm
@@ -71,6 +74,7 @@ with pkgs; [
   pam-reattach
   pet # Shell snippet mgr
   qmk
+  skate # System KV Store
   sqlite
   sqruff # SQL formatter/linter
   tailspin # Log tailer
@@ -83,7 +87,58 @@ with pkgs; [
   cue
   go
   lua
-  python3
+  (let
+    python = let
+      packageOverrides = _self: super: {
+        tenacity = super.tenacity.overridePythonAttrs (_old: rec {
+          pname = "tenacity";
+          version = "8.5.0";
+          src = fetchPypi {
+            inherit pname version;
+            hash = null;
+          };
+        });
+        google-cloud-aiplatform = super.buildPythonPackage {
+          pname = "google-cloud-aiplatform";
+          version = "1.99.0";
+
+          src = super.pkgs.fetchFromGitHub {
+            owner = "googleapis";
+            repo = "python-aiplatform";
+            rev = "v1.99.0";
+            hash = null;
+          };
+
+          propagatedBuildInputs = with super; [
+            docstring-parser
+            google-api-core
+            google-auth
+            google-cloud-bigquery
+            google-cloud-resource-manager
+            google-cloud-storage
+            packaging
+            proto-plus
+            protobuf
+            pydantic
+            shapely
+            typing-extensions
+          ];
+        };
+      };
+    in
+      python312.override {
+        inherit packageOverrides;
+        self = python;
+      };
+  in
+    python.withPackages (ps: [
+      (ps.aider-chat.withOptional {
+        withBedrock = true;
+        withBrowser = true;
+      })
+      ps.google-cloud-aiplatform
+      ps.tenacity
+    ]))
 
   # Language Servers and other tools
   air # live reload for go apps
@@ -116,11 +171,11 @@ with pkgs; [
   # Media-related packages
   ffmpeg
   fd
-  (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
+  # (nerdfonts.override {fonts = ["FantasqueSansMono" "Iosevka" "Noto"];})
   # 👆This will need to change to 👇this when upgrading to 25.05
-  # nerd-fonts.fantasque-sans-mono
-  # nerd-fonts.iosevka
-  # nerd-fonts.noto
+  nerd-fonts.fantasque-sans-mono
+  nerd-fonts.iosevka
+  nerd-fonts.noto
 
   # Still using asdf for tool versioning
   asdf-vm

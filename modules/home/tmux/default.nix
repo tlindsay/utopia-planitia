@@ -193,6 +193,7 @@
           set -g status-right-length 140
 
           set -g @tokyo-night-tmux_theme moon
+          set -g @tokyo-night-tmux_transparent 1
 
           set -g @tokyo-night-tmux_window_id_style digital
           set -g @tokyo-night-tmux_pane_id_style hsquare
@@ -204,15 +205,14 @@
 
           set -g @tokyo-night-tmux_show_music 1
           set -g @tokyo-night-tmux_show_music__artist 1
-          set -g @tokyo-night-tmux_show_music__time 0
+          set -g @tokyo-night-tmux_show_music__time 1
 
-          set -g @tokyo-night-tmux_show_path 1
+          set -g @tokyo-night-tmux_show_path 0
           set -g @tokyo-night-tmux_path_format relative     # 'relative' or 'full'
 
-          set -g @tokyo-night-tmux_show_netspeed 0
-          # set -g @tokyo-night-tmux_show_netspeed 1
+          set -g @tokyo-night-tmux_show_netspeed 1
           set -g @tokyo-night-tmux_netspeed_iface "en0"     # Detected via default route
-          set -g @tokyo-night-tmux_netspeed_showip 0        # Display IPv4 address (default 0)
+          set -g @tokyo-night-tmux_netspeed_showip 1        # Display IPv4 address (default 0)
           set -g @tokyo-night-tmux_netspeed_refresh 1       # Update interval in seconds (default 1)
 
           set -g @tokyo-night-tmux_show_git 0

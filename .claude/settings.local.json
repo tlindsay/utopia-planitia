@@ -4,7 +4,8 @@
       "Bash(rg:*)",
       "Bash(nix-env:*)",
       "Bash(true)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

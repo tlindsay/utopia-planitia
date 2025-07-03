@@ -16,4 +16,4 @@ INITIAL_QUERY="${*:-}"
 	--preview 'bat --color=always {1} --highlight-line {2}' \
 	--preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
 	--bind 'alt-enter:become(nvim {1} +{2})' \
-	--bind 'enter:execute(ton {1}:{2})'
+	--bind 'enter:execute-silent(ton {1}:{2})'

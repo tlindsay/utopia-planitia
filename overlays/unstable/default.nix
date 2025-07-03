@@ -1,7 +1,9 @@
 {channels, ...}: final: prev: {
   inherit
     (channels.nixpkgs-unstable)
+    aider-chat
     atuin
+    awscli2
     claude-code
     fastly
     golangci-lint

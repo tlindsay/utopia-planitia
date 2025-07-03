@@ -8,11 +8,11 @@ in
   buildTmuxPlugin {
     pluginName = "tokyo-night-tmux";
     rtpFilePath = "tokyo-night.tmux";
-    version = "1.5.5";
+    version = "1.6.6";
     src = pkgs.fetchFromGitHub {
-      owner = "tlindsay";
+      owner = "janoamaral";
       repo = "tokyo-night-tmux";
-      rev = "b45b742eb3fdc01983c21b1763594b549124d065";
+      rev = "v1.6.6";
 
       hash = null;
     };

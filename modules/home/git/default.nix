@@ -31,7 +31,8 @@
     ];
 
     diff-so-fancy = {
-      enable = false; # Manually enabled in extraConfig.core.pager for use with `bat`
+      # enable = false; # Manually enabled in extraConfig.core.pager for use with `bat`
+      enable = true;
       rulerWidth = 50;
     };
 
@@ -60,9 +61,12 @@
 
       checkout = {defaultRemote = "origin";};
       core = {
-        pager = "diff-so-fancy | bat --style=numbers";
+        # pager = "diff-so-fancy | bat --style=numbers";
         fsmonitor = false;
       };
+      # diff-so-fancy = {
+      #   rulerWidth = 50;
+      # };
       gui = {
         warndetachedcommit = true;
       };
@@ -70,7 +74,7 @@
         protocol = "https";
       };
       init = {defaultBranch = "main";};
-      interactive = {diffFilter = "diff-so-fancy --patch";};
+      # interactive = {diffFilter = "diff-so-fancy --patch";};
       maintenance = {
         repo = [
           "/Users/plindsay/Code/work/fastly/fst-observe-api"

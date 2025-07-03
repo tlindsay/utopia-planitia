@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
-VERSION=1.0
+ring_da_bell() {
+	tput bel
+}
+
+trap 'ring_da_bell' ERR
 
 GREEN='\033[1;32m'
 RED='\033[1;31m'
@@ -18,13 +22,14 @@ cd ..
 
 echo "${GREEN}Starting build ${SYSTEM}...${NC}"
 if [[ -x $(which nom) ]]; then
-	nom build --experimental-features 'nix-command flakes' .#$SYSTEM $@
+	NIXPKGS_ALLOW_UNFREE=1 nom build --experimental-features 'nix-command flakes' --impure .#$SYSTEM $@
 else
 	nix --experimental-features 'nix-command flakes' build .#$SYSTEM $@
 fi
 
 echo "${GREEN}Switching to new generation...${NC}"
-./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE $@
+ring_da_bell
+sudo NIXPKGS_ALLOW_UNFREE=1 ./result/sw/bin/darwin-rebuild switch --impure --flake .#$FLAKE $@
 
 echo "${GREEN}Cleaning up...${NC}"
 unlink ./result
