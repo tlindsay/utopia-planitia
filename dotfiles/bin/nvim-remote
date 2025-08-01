@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# nvim-remote: Connect to the window's nvim socket or start a new nvim instance
+
+exec tmux-nvim-socket connect "$@"

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# tmux-nvim-socket: Helper script for sharing nvim sockets across tmux panes
+
+case "$1" in
+    "register")
+        if [ -z "$2" ]; then
+            echo "Usage: $0 register <socket_path>"
+            exit 1
+        fi
+        
+        socket_path="$2"
+        window_id=$(tmux display-message -p "#{window_id}")
+        
+        # Set global environment variable for this window
+        tmux set-environment -g "NVIM_SOCKET_${window_id}" "$socket_path"
+        ;;
+        
+    "get")
+        window_id=$(tmux display-message -p "#{window_id}")
+        socket_path=$(tmux show-environment -g "NVIM_SOCKET_${window_id}" 2>/dev/null | cut -d= -f2-)
+        
+        if [ -n "$socket_path" ] && [ -S "$socket_path" ]; then
+            echo "$socket_path"
+        else
+            echo ""
+        fi
+        ;;
+        
+    "connect")
+        # Check if we have the environment variable (for new panes)
+        if [ -n "$NVIM_SOCKET_WINDOW" ]; then
+            socket_path="$NVIM_SOCKET_WINDOW"
+        else
+            # Fall back to looking up from global environment
+            window_id=$(tmux display-message -p "#{window_id}")
+            socket_path=$(tmux show-environment -g "NVIM_SOCKET_${window_id}" 2>/dev/null | cut -d= -f2-)
+        fi
+        
+        if [ -n "$socket_path" ] && [ -S "$socket_path" ]; then
+            shift
+            exec nvim --server "$socket_path" --remote "$@"
+        else
+            echo "No nvim socket found for this window"
+            exit 1
+        fi
+        ;;
+        
+    "clean")
+        window_id=$(tmux display-message -p "#{window_id}")
+        tmux set-environment -gu "NVIM_SOCKET_${window_id}"
+        ;;
+        
+    *)
+        echo "Usage: $0 {register|get|connect|clean} [args...]"
+        echo ""
+        echo "Commands:"
+        echo "  register <socket_path>  Register nvim socket for current window"
+        echo "  get                     Get socket path for current window"
+        echo "  connect [file...]       Connect to window's nvim socket"
+        echo "  clean                   Clean up socket environment"
+        exit 1
+        ;;
+esac
