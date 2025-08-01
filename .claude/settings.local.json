@@ -5,7 +5,13 @@
       "Bash(nix-env:*)",
       "Bash(true)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(nix eval:*)",
+      "Bash(find:*)",
+      "Bash(nix flake show:*)",
+      "Bash(ls:*)",
+      "Bash(tmux list-commands:*)",
+      "Bash(tmux show-options:*)"
     ],
     "deny": []
   }

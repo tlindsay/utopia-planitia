@@ -2,5 +2,15 @@
 	"env": {
 		"CLAUDE_CODE_ENABLE_TELEMETRY": "0"
 	},
+	"permissions": {
+		"allow": [
+			"Bash(ls:*)",
+			"Bash(rg:*)",
+			"Bash(grep:*)",
+			"Bash(fd:*)",
+			"Bash(find:*)"
+		],
+		"deny": []
+	},
 	"preferredNotifChannel": "terminal_bell"
 }
