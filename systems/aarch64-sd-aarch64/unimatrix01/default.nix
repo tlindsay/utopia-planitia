@@ -28,6 +28,14 @@
       enable = true;
       database.createLocally = true;
     };
+    home-assistant.config.homeassistant = {
+      name = "Alabama St";
+      temperature_unit = "F";
+      time_zone = "America/Chicago";
+      unit_system = "us_customary";
+      latitude = 34.79471;
+      longitude = 87.68087;
+    };
   };
 
   # Base system packages - minimal set to avoid cross-compilation issues

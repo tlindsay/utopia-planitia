@@ -31,6 +31,11 @@ echo "${GREEN}Switching to new generation...${NC}"
 ring_da_bell
 sudo NIXPKGS_ALLOW_UNFREE=1 ./result/sw/bin/darwin-rebuild switch --impure --flake .#$FLAKE $@
 
+if [[ -x $(which cachix) ]]; then
+	echo "${GREEN}Pushing build to Cachix...${NC}"
+	cachix push utopia-planitia result
+fi
+
 echo "${GREEN}Cleaning up...${NC}"
 unlink ./result
 

@@ -261,11 +261,15 @@ in {
         #     for f in $argv; do
         #       tmux send-keys :e Space `realpath $f` Enter
         #     done
-        #   elif [[ ( -x $(which ton) ) && $\{#argv[@]} -gt 0 ]]; then
+        #   elif [[ ( -x $(which ton) ) && #argv[@] -gt 0 ]]; then
         #     ton $argv
         #   else
         #     vim $argv
         #   fi
+        # }
+        #
+        # function o() {
+        #   local job=$(jobs | perl -ne 'print $1 if /\[(\d+)\].*vim/')
         # }
 
         function toggle_vpn() {

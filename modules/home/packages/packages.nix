@@ -4,22 +4,28 @@
   ...
 }:
 with pkgs; [
+  upkgs.opencode
+
   # Nix shit
   upkgs.nh
   nix-output-monitor
+  cachix
 
   # Custom packages
   replicator.hl
   replicator.tmux-open-nvim
   replicator.mdns-scanner
+  nur.repos.charmbracelet.crush
 
   # Use nix-community/fenix for rust toolchains
-  (fenix.stable.withComponents [
-    "cargo"
-    "clippy"
-    "rust-src"
-    "rustc"
-    "rustfmt"
+  (fenix.combine [
+    fenix.stable.cargo
+    fenix.stable.rustc
+    fenix.stable.clippy
+    fenix.stable.rustfmt
+    fenix.stable.rust-src # for rust-analyzer
+    fenix.targets.aarch64-apple-darwin.stable.rust-std
+    fenix.targets.wasm32-unknown-unknown.stable.rust-std
   ])
 
   # Unstable packages
@@ -32,6 +38,7 @@ with pkgs; [
   upkgs.k9s
   upkgs.moar # Nicer pager
   upkgs.mqttui
+  upkgs.ov # Even nicer pager
   upkgs.neovim
   (upkgs.spotify-player.override {withMediaControl = false;})
   upkgs.tailscale
@@ -78,6 +85,7 @@ with pkgs; [
   sqlite
   sqruff # SQL formatter/linter
   tailspin # Log tailer
+  thunderbird-latest
   usql
   wget
   xh # better curl https://github.com/ducaale/xh

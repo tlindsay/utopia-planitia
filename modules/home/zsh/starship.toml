@@ -4,22 +4,23 @@ add_newline = false
 continuation_prompt = "[ ](bold bright-black)"
 right_format = """$time"""
 
-# The following adds a right-aligned timestamp, but also causes char-width bugs
-# format = """
-# $all\
-# $fill\
-# $time\
-# $line_break\
-# $character
-# """
-#
-# [fill]
-# symbol = " "
-#
-# [time]
-# disabled = false
-# style = "bold bright-black"
-# format = "[$time]($style)"
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$buf\
+$nix_shell\
+$sudo\
+$cmd_duration\
+$line_break\
+$jobs\
+$battery\
+$character
+"""
 
 [character]
 success_symbol = "[](bold green)"

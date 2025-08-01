@@ -70,8 +70,30 @@
 
       bind r source-file ~/.config/tmux/tmux.conf \; display-message "~/.config/tmux/tmux.conf reloaded"
       bind C display-popup -T "Choose directory:" -E "zoxide query -i | xargs tmux new-window -c"
+
+      # bind-key y copy-mode;
+      #   send-keys -X previous-prompt;
+      #   send-keys -X previous-prompt;
+      #   send-keys -X -N 1 cursor-down;
+      #   send-keys -X start-of-line;
+      #   send-keys -X begin-selection;
+      #   send-keys -X next-prompt;
+      #   send-keys -X -N 1 cursor-up;
+      #   send-keys -X end-of-line;
+      #   send-keys -X copy-pipe-and-cancel 'sed -E "1s/^. /$ /; s/ *󰅐 ([[:digit:]]{1,2}:?){3}$//" | reattach-to-user-namespace pbcopy'
+      bind-key y copy-mode \; send-keys -X previous-prompt \; send-keys -X previous-prompt \; send-keys -X -N 1 cursor-down \; send-keys -X start-of-line \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'sed -E "1s/^. /$ /; s/ *󰅐 ([[:digit:]]{1,2}:?){3}$//" | reattach-to-user-namespace pbcopy'
+
+      # bind-key Y copy-mode
+      #   send-keys -X previous-prompt -o;
+      #   send-keys -X begin-selection;
+      #   send-keys -X next-prompt;
+      #   send-keys -X -N 1 cursor-up;
+      #   send-keys -X end-of-line;
+      #   send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
+      bind-key Y copy-mode \; send-keys -X previous-prompt -o \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
+
       # bind C-s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
-      # bind C-s display-popup -E  "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+      bind-key C-S display-popup -E  "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
 
       #############################
       ### STYLING, PROFILING
@@ -89,7 +111,7 @@
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
           | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(n?vim?x?)(diff)?$'"
       is_tui="ps -o state= -o comm= -t '#{pane_tty}' \
-          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(view|fzf|gum|atuin)$'"
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?(view|fzf|gum|atuin|claude|opencode)$'"
       bind-key -n -N "select-pane LEFT"  C-h if-shell "$is_vim"            'send-keys C-h' 'select-pane -L'
       bind-key -n -N "select-pane DOWN"  C-j if-shell "$is_vim || $is_tui" 'send-keys C-j' 'select-pane -D'
       bind-key -n -N "select-pane UP"    C-k if-shell "$is_vim || $is_tui" 'send-keys C-k' 'select-pane -U'
@@ -105,60 +127,32 @@
       bind-key -n -N "resize-pane UP 2"    M-K if-shell "$is_vim || $is_tui" 'send-keys M-K' 'resize-pane -U 2'
       bind-key -n -N "resize-pane RIGHT 2" M-L if-shell "$is_vim" 'send-keys M-L' 'resize-pane -R 2'
 
-      bind-key -n PgUp if-shell "$is_vim || $is_tui" 'send-keys PgUp' 'copy-mode -e; send-keys -X halfpage-up'
-      bind-key -n PgDn if-shell "$is_vim || $is_tui" 'send-keys PgDn' 'copy-mode -e; send-keys -X halfpage-down'
+      bind-key -n -N "scroll UP"   PgUp if-shell "$is_vim || $is_tui" 'send-keys PgUp' 'copy-mode -e; send-keys -X halfpage-up'
+      bind-key -n -N "scroll DOWN" PgDn if-shell "$is_vim || $is_tui" 'send-keys PgDn' 'copy-mode -e; send-keys -X halfpage-down'
 
       bind-key -N "Force select-pane LEFT"  C-h 'select-pane -L'
       bind-key -N "Force select-pane DOWN"  C-j 'select-pane -D'
       bind-key -N "Force select-pane UP"    C-k 'select-pane -U'
       bind-key -N "Force select-pane RIGHT" C-l 'select-pane -R'
 
-      tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
-      if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-          "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
-      if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-          "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
-
       bind-key -T copy-mode-vi 'C-h' select-pane -L
       bind-key -T copy-mode-vi 'C-j' select-pane -D
       bind-key -T copy-mode-vi 'C-k' select-pane -U
       bind-key -T copy-mode-vi 'C-l' select-pane -R
 
-      # bind-key y copy-mode;
-      #   send-keys -X previous-prompt;
-      #   send-keys -X previous-prompt;
-      #   send-keys -X -N 1 cursor-down;
-      #   send-keys -X start-of-line;
-      #   send-keys -X next-word;
-      #   send-keys -X begin-selection;
-      #   send-keys -X next-prompt;
-      #   send-keys -X -N 1 cursor-up;
-      #   send-keys -X end-of-line;
-      #   send-keys -X copy-pipe-and-cancel 'sed "1s/^.*?\K\s+󰅐 (\d{1,2}:?){3}$//" | xargs echo "$" | reattach-to-user-namespace pbcopy'
-      bind-key y copy-mode \; send-keys -X previous-prompt \; send-keys -X previous-prompt \; send-keys -X -N 1 cursor-down \; send-keys -X start-of-line \; send-keys -X next-word \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'sed "1s/^.*?\K\s+󰅐 (\d{1,2}:?){3}$//" | xargs echo "$" | reattach-to-user-namespace pbcopy'
+      ### WINDOW/PANE MANAGEMENT
+      #############################
+      bind-key - split-window -v -c '#{pane_current_path}'
+      bind-key \\ split-window -h -c '#{pane_current_path}'
+      bind-key c new-window -c '#{pane_current_path}'
+      bind-key b break-pane -d
 
-      # bind-key Y copy-mode
-      #   send-keys -X previous-prompt -o;
-      #   send-keys -X begin-selection;
-      #   send-keys -X next-prompt;
-      #   send-keys -X -N 1 cursor-up;
-      #   send-keys -X end-of-line;
-      #   send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
-      bind-key Y copy-mode \; send-keys -X previous-prompt -o \; send-keys -X begin-selection \; send-keys -X next-prompt \; send-keys -X -N 1 cursor-up \; send-keys -X end-of-line \; send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
+      bind-key d kill-pane
+      bind-key X kill-window
+      bind-key = setw synchronize-panes
 
       bind-key -n M-> 'swap-window -t +1; select-window -t +1'
       bind-key -n M-< 'swap-window -t -1; select-window -t -1'
-
-      ### WINDOW/PANE MANAGEMENT
-      #############################
-      bind - split-window -v -c '#{pane_current_path}'
-      bind \\ split-window -h -c '#{pane_current_path}'
-      bind c new-window -c '#{pane_current_path}'
-      bind b break-pane -d
-
-      bind d kill-pane
-      bind X kill-window
-      bind = setw synchronize-panes
 
       ### MOUSE/COPY MODE
       #############################
@@ -181,8 +175,8 @@
       bind-key -T copy-mode-vi ] send-keys -X next-prompt
 
       # Update default binding of `Enter` to also use copy-pipe
-      unbind -T copy-mode-vi Enter
-      bind-key -T copy-mode-vi Enter send-keys -X copy-pipe "reattach-to-user-namespace pbcopy"
+      unbind-key -T copy-mode-vi Enter
+      bind-key   -T copy-mode-vi Enter send-keys -X copy-pipe "reattach-to-user-namespace pbcopy"
     '';
 
     plugins = [
