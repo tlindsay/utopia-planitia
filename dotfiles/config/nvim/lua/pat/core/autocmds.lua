@@ -83,6 +83,18 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+local bindGroup = vim.api.nvim_create_augroup('CursorBindFugitiveBlame', {})
+vim.api.nvim_create_autocmd('BufNewFile', {
+  group = bindGroup,
+  pattern = { '*.fugitiveblame' },
+  command = 'windo set cursorbind',
+})
+vim.api.nvim_create_autocmd('BufDelete', {
+  group = bindGroup,
+  pattern = { '*.fugitiveblame' },
+  command = 'windo set nocursorbind',
+})
+
 -----------------------------------------------------------
 -- Terminal
 -----------------------------------------------------------

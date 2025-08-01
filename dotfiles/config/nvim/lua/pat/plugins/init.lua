@@ -104,7 +104,6 @@ return {
     'm4xshen/hardtime.nvim',
     lazy = false,
     dependencies = { 'MunifTanjim/nui.nvim' },
-    opts = { disable_mouse = false },
   },
   -- Pane Management
   'mrjones2014/smart-splits.nvim',

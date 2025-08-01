@@ -2,6 +2,7 @@ local wk = require('which-key')
 local colors = require('pat.core/colors')
 local utils = require('pat.utils')
 local fns = require('pat.core/functions')
+local hardtime = require('hardtime')
 -----------------------------------------------------------
 -- Define keymaps of Neovim and installed plugins.
 -----------------------------------------------------------
@@ -89,6 +90,24 @@ wk.add({
       -- Sane navigation
       { 'k', 'gk', desc = 'Up' },
       { 'j', 'gj', desc = 'Down' },
+    },
+  },
+})
+
+hardtime.setup({
+  disable_mouse = false,
+  hints = {
+    ['g[DIR]'] = {
+      message = function(keys)
+        return 'Use gl' .. keys:sub(2, 2):lower() .. ' instead of ' .. keys
+      end,
+      length = 2,
+    },
+    ['gC[io]'] = {
+      message = function(keys)
+        return 'Use gl' .. keys:sub(3, 3):upper() .. ' instead of ' .. keys
+      end,
+      length = 3,
     },
   },
 })

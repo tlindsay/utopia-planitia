@@ -23,6 +23,7 @@ end
 
 require('telescope').setup({
   defaults = {
+    border = false,
     mappings = {
       i = {
         ['<Esc>'] = actions.close,

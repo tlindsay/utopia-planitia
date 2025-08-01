@@ -73,6 +73,7 @@ require('pat.utils')
 require('pat.core/autocmds')
 require('pat.core/colors')
 require('pat.core/keymaps')
+require('pat.core/tmux-socket')
 
 -- Configure plugins
 require('pat.plugins/devicons') -- Load first for overrides

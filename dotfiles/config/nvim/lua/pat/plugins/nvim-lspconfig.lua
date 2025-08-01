@@ -306,6 +306,11 @@ local function on_attach(client, bufnr)
       desc = 'Go to Definition',
     },
     {
+      'gld',
+      '<cmd>Trouble lsp_definitions open auto_jump=false<cr>',
+      desc = 'List Definitions in Trouble',
+    },
+    {
       'gD',
       '<cmd>Trouble lsp_definitions open auto_jump=false<cr>',
       desc = 'List Definitions in Trouble',
@@ -314,6 +319,11 @@ local function on_attach(client, bufnr)
       'gi',
       '<cmd>Trouble lsp_implementations<cr>',
       desc = 'Go to Implementation',
+    },
+    {
+      'gli',
+      '<cmd>Trouble lsp_implementations open auto_jump=false<cr>',
+      desc = 'List Implementations in Trouble',
     },
     {
       'gI',
@@ -326,14 +336,29 @@ local function on_attach(client, bufnr)
       desc = 'List References in Trouble',
     },
     {
+      'glr',
+      '<cmd>Trouble lsp_references open auto_jump=false<cr>',
+      desc = 'List References in Trouble',
+    },
+    {
       'gR',
       '<cmd>Trouble lsp_references open auto_jump=false<cr>',
       desc = 'List References in Trouble',
     },
     {
-      'gCi',
-      '<cmd>Trouble lsp_incoming_calls<cr>',
+      'glI',
+      '<cmd>Trouble lsp_incoming_calls open auto_jump=false<cr>',
       desc = 'List call sites of the symbol under the cursor',
+    },
+    {
+      'gCi',
+      '<cmd>Trouble lsp_incoming_calls open auto_jump=true<cr>',
+      desc = 'Go to call site of the symbol under the cursor',
+    },
+    {
+      'glO',
+      '<cmd>Trouble lsp_outgoing_calls<cr>',
+      desc = 'List the items that are called by the symbol under the cursor',
     },
     {
       'gCo',
